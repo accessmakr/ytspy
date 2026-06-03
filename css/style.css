@@ -2397,3 +2397,1160 @@ button, a, input, textarea, select {
 
   .score-ring__fill { transition: none; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   APPENDED SECTIONS 47–59
+   Missing website wrapper components + RTL support
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   47. #master-nav-dock FIX — justify-between + injected link styles + mobile
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Override to add the required justify-between from the brief */
+#master-nav-dock {
+  justify-content: space-between;
+}
+
+/* Links injected by menu-system.js into #master-nav-dock */
+#master-nav-dock a,
+#master-nav-dock .nav-link {
+  font-family:    var(--font-ui);
+  font-size:      13px;
+  font-weight:    400;
+  color:          var(--text-muted);
+  text-decoration: none;
+  padding:        6px 10px;
+  border-radius:  var(--radius-sm);
+  white-space:    nowrap;
+  transition:     color var(--transition), background var(--transition);
+  letter-spacing: 0.01em;
+}
+
+#master-nav-dock a:hover,
+#master-nav-dock .nav-link:hover {
+  color:      var(--text-primary);
+  background: var(--bg-hover);
+}
+
+#master-nav-dock a.active,
+#master-nav-dock .nav-link.active {
+  color:       var(--accent-red);
+  font-weight: 500;
+}
+
+/* Divider injected between nav groups by menu-system.js */
+#master-nav-dock .nav-divider {
+  width:      1px;
+  height:     16px;
+  background: var(--border-primary);
+  flex-shrink: 0;
+}
+
+/* Mobile collapse — menu-system.js toggles .nav-open class on header */
+@media (max-width: 700px) {
+  #master-nav-dock {
+    position:       fixed;
+    top:            49px;   /* height of header */
+    left:           0;
+    right:          0;
+    background:     rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(16px);
+    border-bottom:  1px solid var(--border-primary);
+    flex-direction: column;
+    align-items:    flex-start;
+    padding:        8px 16px 16px;
+    gap:            4px;
+    z-index:        99;
+    transform:      translateY(-110%);
+    transition:     transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    justify-content: flex-start;
+  }
+
+  #master-nav-dock.nav-open {
+    transform: translateY(0);
+  }
+
+  #master-nav-dock a,
+  #master-nav-dock .nav-link {
+    width:   100%;
+    padding: 10px 12px;
+  }
+
+  #master-nav-dock .nav-divider {
+    width:  100%;
+    height: 1px;
+    margin: 4px 0;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   48. .trigger-search BUTTON
+   Required by search-system.js — brief specifies exact class name
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.trigger-search {
+  display:         flex;
+  align-items:     center;
+  gap:             6px;
+  background:      transparent;
+  border:          1px solid var(--border-primary);
+  border-radius:   var(--radius-md);
+  color:           var(--text-muted);
+  font-family:     var(--font-ui);
+  font-size:       13px;
+  font-weight:     400;
+  padding:         6px 12px;
+  cursor:          pointer;
+  white-space:     nowrap;
+  transition:      color var(--transition), border-color var(--transition),
+                   background var(--transition);
+  flex-shrink:     0;
+}
+
+.trigger-search:hover {
+  color:        var(--text-primary);
+  border-color: var(--border-accent);
+  background:   var(--bg-hover);
+}
+
+.trigger-search svg {
+  flex-shrink: 0;
+  stroke:      currentColor;
+}
+
+/* Mobile: hide label text, show icon only */
+@media (max-width: 640px) {
+  .trigger-search .search-label {
+    display: none;
+  }
+
+  .trigger-search {
+    padding:      6px 8px;
+    border-color: transparent;
+    background:   transparent;
+  }
+
+  .trigger-search:hover {
+    background:   var(--bg-hover);
+    border-color: var(--border-primary);
+  }
+}
+
+/* Hamburger/menu toggle button (injected by menu-system.js on mobile) */
+.nav-toggle {
+  display:       none;
+  background:    transparent;
+  border:        1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  padding:       6px 8px;
+  cursor:        pointer;
+  transition:    color var(--transition), background var(--transition);
+  flex-shrink:   0;
+}
+
+.nav-toggle:hover {
+  color:      var(--text-primary);
+  background: var(--bg-hover);
+}
+
+@media (max-width: 700px) {
+  .nav-toggle { display: flex; align-items: center; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   49. SEARCH MODAL
+   Injected into DOM by search-system.js — styles must exist before injection
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.search-modal {
+  position:        fixed;
+  inset:           0;
+  z-index:         500;
+  display:         flex;
+  align-items:     flex-start;
+  justify-content: center;
+  padding-top:     80px;
+  background:      rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  opacity:         0;
+  pointer-events:  none;
+  transition:      opacity 200ms ease;
+}
+
+.search-modal.search-modal--open {
+  opacity:        1;
+  pointer-events: auto;
+}
+
+.search-modal-inner {
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  width:         100%;
+  max-width:     560px;
+  overflow:      hidden;
+  box-shadow:    0 24px 64px rgba(0, 0, 0, 0.6);
+  transform:     translateY(-8px);
+  transition:    transform 200ms ease;
+  margin:        0 var(--page-padding);
+}
+
+.search-modal--open .search-modal-inner {
+  transform: translateY(0);
+}
+
+.search-input-wrap {
+  display:     flex;
+  align-items: center;
+  gap:         12px;
+  padding:     14px 18px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.search-input-wrap svg {
+  flex-shrink: 0;
+  color:       var(--text-muted);
+}
+
+.search-modal input[type="text"],
+.search-modal input[type="search"] {
+  flex:          1;
+  background:    transparent;
+  border:        none;
+  color:         var(--text-primary);
+  font-family:   var(--font-ui);
+  font-size:     16px;
+  outline:       none;
+  padding:       0;
+}
+
+.search-modal input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-close-btn {
+  background:    transparent;
+  border:        none;
+  color:         var(--text-muted);
+  cursor:        pointer;
+  font-size:     18px;
+  padding:       4px;
+  line-height:   1;
+  transition:    color var(--transition);
+  flex-shrink:   0;
+}
+
+.search-close-btn:hover { color: var(--text-primary); }
+
+.search-results {
+  max-height:    360px;
+  overflow-y:    auto;
+  padding:       8px 0;
+}
+
+.search-results:empty::after {
+  content:    'No results found.';
+  display:    block;
+  text-align: center;
+  padding:    24px 16px;
+  font-size:  13px;
+  color:      var(--text-muted);
+  font-style: italic;
+}
+
+.search-result-item {
+  display:     flex;
+  align-items: flex-start;
+  gap:         12px;
+  padding:     10px 18px;
+  cursor:      pointer;
+  transition:  background var(--transition);
+  text-decoration: none;
+}
+
+.search-result-item:hover {
+  background: var(--bg-hover);
+}
+
+.search-result-title {
+  font-size:   13px;
+  font-weight: 500;
+  color:       var(--text-primary);
+  line-height: 1.3;
+}
+
+.search-result-excerpt {
+  font-size:   12px;
+  color:       var(--text-muted);
+  margin-top:  3px;
+  line-height: 1.4;
+}
+
+.search-result-tag {
+  font-size:      10px;
+  font-family:    var(--font-mono);
+  color:          var(--text-muted);
+  background:     var(--bg-tertiary);
+  border:         1px solid var(--border-primary);
+  border-radius:  3px;
+  padding:        2px 5px;
+  flex-shrink:    0;
+  margin-top:     2px;
+}
+
+.search-kbd {
+  font-family:   var(--font-mono);
+  font-size:     10px;
+  color:         var(--text-muted);
+  background:    var(--bg-tertiary);
+  border:        1px solid var(--border-primary);
+  border-radius: 3px;
+  padding:       2px 5px;
+  flex-shrink:   0;
+}
+
+.search-footer {
+  display:       flex;
+  align-items:   center;
+  justify-content: space-between;
+  padding:       8px 18px;
+  border-top:    1px solid var(--border-primary);
+  font-size:     11px;
+  color:         var(--text-muted);
+  gap:           8px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   50. FAQ ACCORDION
+   12 FAQs, rotating chevron, smooth height transition, vanilla JS ready
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.faq-section {
+  margin-top: 48px;
+}
+
+.faq-section-title {
+  font-size:     20px;
+  font-weight:   600;
+  color:         var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.faq-section-sub {
+  font-size:     14px;
+  color:         var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.faq-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+  border:         1px solid var(--border-primary);
+  border-radius:  var(--radius-lg);
+  overflow:       hidden;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             16px;
+  width:           100%;
+  background:      transparent;
+  border:          none;
+  padding:         16px 20px;
+  cursor:          pointer;
+  text-align:      left;
+  font-family:     var(--font-ui);
+  font-size:       14px;
+  font-weight:     500;
+  color:           var(--text-primary);
+  line-height:     1.4;
+  transition:      background var(--transition);
+}
+
+.faq-question:hover {
+  background: var(--bg-hover);
+}
+
+.faq-item.open .faq-question {
+  color:      var(--accent-red);
+  background: var(--bg-tertiary);
+}
+
+.faq-chevron {
+  flex-shrink: 0;
+  width:       18px;
+  height:      18px;
+  color:       var(--text-muted);
+  transition:  transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+               color 150ms ease;
+  stroke:      currentColor;
+  fill:        none;
+}
+
+.faq-item.open .faq-chevron {
+  transform: rotate(180deg);
+  color:     var(--accent-red);
+}
+
+.faq-answer {
+  max-height:  0;
+  overflow:    hidden;
+  transition:  max-height 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-item.open .faq-answer {
+  max-height: 600px;   /* generous ceiling — JS never needs to calculate */
+}
+
+.faq-answer-inner {
+  padding:     4px 20px 20px;
+  font-size:   13px;
+  color:       var(--text-secondary);
+  line-height: 1.7;
+  border-top:  1px solid var(--border-primary);
+  margin-top:  0;
+}
+
+.faq-answer-inner a {
+  color:           var(--accent-red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.faq-answer-inner a:hover { color: var(--text-primary); }
+
+.faq-answer-inner code {
+  background:    var(--bg-tertiary);
+  border:        1px solid var(--border-primary);
+  border-radius: 3px;
+  padding:       1px 5px;
+  font-size:     12px;
+  color:         var(--text-code);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   51. SHARE BUTTONS
+   16 platforms, rounded pills, neutral styling, no colored branding
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.share-section {
+  margin-top:    40px;
+  padding:       24px;
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+}
+
+.share-title {
+  font-size:      11px;
+  font-weight:    500;
+  color:          var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom:  14px;
+}
+
+.share-grid {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+}
+
+.share-pill {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           6px;
+  background:    var(--bg-tertiary);
+  border:        1px solid var(--border-primary);
+  border-radius: 20px;
+  color:         var(--text-secondary);
+  font-family:   var(--font-ui);
+  font-size:     12px;
+  font-weight:   400;
+  padding:       6px 14px;
+  cursor:        pointer;
+  text-decoration: none;
+  white-space:   nowrap;
+  transition:    background var(--transition), color var(--transition),
+                 border-color var(--transition), transform 100ms ease;
+  user-select:   none;
+}
+
+.share-pill:hover {
+  background:   var(--bg-hover);
+  color:        var(--text-primary);
+  border-color: var(--border-accent);
+  transform:    translateY(-1px);
+}
+
+.share-pill:active {
+  transform: translateY(0);
+}
+
+/* Copy link pill — flashes green on success */
+.share-pill--copy.copied {
+  background:   rgba(34, 197, 94, 0.1);
+  border-color: var(--accent-green);
+  color:        var(--accent-green);
+}
+
+/* Platform icon placeholder — keeps uniform pill width */
+.share-pill-icon {
+  font-size:   12px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   52. CONTACT FORM
+   Max-width 400px, McKinsey precision aesthetic, gradient border
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.contact-section {
+  margin-top: 48px;
+}
+
+.contact-section-title {
+  font-size:     20px;
+  font-weight:   600;
+  color:         var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.contact-section-sub {
+  font-size:     14px;
+  color:         var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.contact-form-wrapper {
+  max-width: 400px;
+  position:  relative;
+}
+
+/* Gradient border using mask technique */
+.contact-form-wrapper::before {
+  content:          '';
+  position:         absolute;
+  inset:            0;
+  border-radius:    var(--radius-lg);
+  padding:          1px;
+  background:       linear-gradient(
+                      135deg,
+                      rgba(255, 59, 59, 0.4) 0%,
+                      rgba(168, 85, 247, 0.25) 50%,
+                      rgba(59, 130, 246, 0.15) 100%
+                    );
+  -webkit-mask:          linear-gradient(#fff 0 0) content-box,
+                         linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.contact-form {
+  background:    var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding:       28px;
+  position:      relative;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display:        block;
+  font-size:      11px;
+  font-weight:    500;
+  color:          var(--text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom:  7px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  background:    var(--bg-tertiary);
+  border:        1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  color:         var(--text-primary);
+  font-family:   var(--font-ui);
+  font-size:     14px;
+  padding:       10px 14px;
+  width:         100%;
+  transition:    border-color var(--transition);
+  outline:       none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent-red);
+}
+
+.contact-form textarea {
+  min-height: 110px;
+  resize:     vertical;
+}
+
+/* Honeypot — hidden from humans, visible to bots */
+.form-honeypot {
+  position:   absolute;
+  left:       -9999px;
+  top:        -9999px;
+  opacity:    0;
+  tab-index: -1;
+  aria-hidden: true;
+}
+
+.form-submit {
+  width: 100%;
+}
+
+.form-privacy-note {
+  font-size:  11px;
+  color:      var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   53. #dynamic-internal-links BLOCK
+   Populated contextually by internal-links.js
+   ───────────────────────────────────────────────────────────────────────────── */
+
+#dynamic-internal-links {
+  margin-top: 40px;
+}
+
+.internal-links-heading {
+  font-size:      11px;
+  font-weight:    500;
+  color:          var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom:  14px;
+}
+
+.internal-links-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:                   10px;
+}
+
+.internal-link-card {
+  display:          flex;
+  flex-direction:   column;
+  gap:              4px;
+  padding:          12px 14px;
+  background:       var(--bg-secondary);
+  border:           1px solid var(--border-primary);
+  border-radius:    var(--radius-md);
+  text-decoration:  none;
+  transition:       border-color var(--transition), background var(--transition);
+}
+
+.internal-link-card:hover {
+  border-color: var(--border-accent);
+  background:   var(--bg-hover);
+}
+
+.internal-link-card .link-title {
+  font-size:   13px;
+  font-weight: 500;
+  color:       var(--text-primary);
+  line-height: 1.3;
+}
+
+.internal-link-card .link-desc {
+  font-size:   11px;
+  color:       var(--text-muted);
+  line-height: 1.4;
+}
+
+.internal-link-card .link-tag {
+  font-size:      10px;
+  font-family:    var(--font-mono);
+  color:          var(--accent-red);
+  margin-top:     4px;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 700px) {
+  .internal-links-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .internal-links-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   54. CITATION SECTION
+   Hyperlinked references, structured for schema, compulsory per brief
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.citation-section {
+  margin-top:    48px;
+  padding-top:   24px;
+  border-top:    1px solid var(--border-primary);
+}
+
+.citation-section-title {
+  font-size:      11px;
+  font-weight:    500;
+  color:          var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom:  14px;
+}
+
+.citation-list {
+  list-style:  none;
+  display:     flex;
+  flex-direction: column;
+  gap:         10px;
+}
+
+.citation-item {
+  display:   flex;
+  gap:       10px;
+  font-size: 12px;
+  color:     var(--text-secondary);
+  line-height: 1.5;
+}
+
+.citation-number {
+  font-family:    var(--font-mono);
+  font-size:      10px;
+  color:          var(--text-muted);
+  background:     var(--bg-tertiary);
+  border:         1px solid var(--border-primary);
+  border-radius:  3px;
+  padding:        1px 5px;
+  flex-shrink:    0;
+  align-self:     flex-start;
+  margin-top:     2px;
+  min-width:      22px;
+  text-align:     center;
+}
+
+.citation-link {
+  color:                var(--text-secondary);
+  text-decoration:      underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--border-accent);
+  transition:           color var(--transition), text-decoration-color var(--transition);
+  word-break:           break-word;
+}
+
+.citation-link:hover {
+  color:                    var(--text-primary);
+  text-decoration-color:    var(--accent-red);
+}
+
+.citation-source-label {
+  font-family:    var(--font-mono);
+  font-size:      10px;
+  color:          var(--text-muted);
+  background:     var(--bg-tertiary);
+  border:         1px solid var(--border-primary);
+  border-radius:  3px;
+  padding:        1px 6px;
+  flex-shrink:    0;
+  align-self:     flex-start;
+  margin-top:     2px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   55. FRESHNESS BADGE
+   Dynamic date display — "Updated today" / "Last updated [date]"
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.freshness-badge {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  font-size:      11px;
+  font-family:    var(--font-mono);
+  color:          var(--text-muted);
+  background:     var(--bg-tertiary);
+  border:         1px solid var(--border-primary);
+  border-radius:  var(--radius-sm);
+  padding:        4px 10px;
+  letter-spacing: 0.03em;
+}
+
+.freshness-badge::before {
+  content:       '●';
+  font-size:     8px;
+  color:         var(--text-muted);
+  animation:     pulseDot 3s ease infinite;
+}
+
+/* Today variant — green pulse */
+.freshness-badge--today {
+  color:        var(--accent-green);
+  border-color: rgba(34, 197, 94, 0.25);
+  background:   rgba(34, 197, 94, 0.05);
+}
+
+.freshness-badge--today::before {
+  color: var(--accent-green);
+}
+
+/* Wrapper placed below hero CTA */
+.freshness-wrap {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             12px;
+  margin-top:      12px;
+  flex-wrap:       wrap;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   56. QUICK ANSWER SECTION
+   Featured-snippet-style box — stands out, SEO-optimised
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.quick-answer {
+  margin:        32px 0;
+  padding:       20px 24px;
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-primary);
+  border-left:   4px solid var(--accent-red);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  position:      relative;
+}
+
+.quick-answer-label {
+  font-size:      10px;
+  font-weight:    600;
+  color:          var(--accent-red);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom:  8px;
+  font-family:    var(--font-mono);
+}
+
+.quick-answer-text {
+  font-size:   14px;
+  color:       var(--text-primary);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.quick-answer-text strong {
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   57. LOGIC + METHODOLOGY SECTIONS
+   One sentence each — compact, professional, schema-eligible
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.logic-methodology-row {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   16px;
+  margin:                32px 0;
+}
+
+.logic-section,
+.methodology-section {
+  padding:       14px 18px;
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+}
+
+.logic-section-label,
+.methodology-section-label {
+  font-size:      10px;
+  font-weight:    600;
+  color:          var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom:  6px;
+  font-family:    var(--font-mono);
+}
+
+.logic-section-text,
+.methodology-section-text {
+  font-size:   13px;
+  color:       var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .logic-methodology-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   58. BREADCRUMB NAVIGATION
+   Schema-ready, Lighthouse-safe, Google Search Console: Breadcrumb Passed
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.breadcrumb {
+  margin-bottom: 20px;
+}
+
+.breadcrumb-list {
+  display:     flex;
+  align-items: center;
+  flex-wrap:   wrap;
+  gap:         0;
+  list-style:  none;
+  padding:     0;
+}
+
+.breadcrumb-item {
+  display:     flex;
+  align-items: center;
+  font-size:   12px;
+  color:       var(--text-muted);
+}
+
+.breadcrumb-item a {
+  color:           var(--text-muted);
+  text-decoration: none;
+  transition:      color var(--transition);
+  font-size:       12px;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--text-secondary);
+}
+
+.breadcrumb-item:last-child a,
+.breadcrumb-item:last-child span {
+  color:       var(--text-secondary);
+  font-weight: 500;
+}
+
+.breadcrumb-sep {
+  margin:   0 6px;
+  color:    var(--border-accent);
+  font-size: 10px;
+  user-select: none;
+}
+
+/* RTL breadcrumb separator flips in section 59 */
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   59. RTL SUPPORT — Arabic (dir="rtl")
+   Applied by i18n.js: document.documentElement.setAttribute('dir', 'rtl')
+   ───────────────────────────────────────────────────────────────────────────── */
+
+[dir="rtl"] {
+  direction:  rtl;
+  text-align: right;
+}
+
+/* Ticker scrolls opposite direction for RTL */
+[dir="rtl"] #ticker-track {
+  animation-name:      tickerScrollRTL;
+  animation-direction: normal;
+}
+
+@keyframes tickerScrollRTL {
+  from { transform: translateX(0); }
+  to   { transform: translateX(50%); }
+}
+
+/* Truncated tag warning — mirror margin */
+[dir="rtl"] .tag-pill--truncated::after {
+  margin-left:  0;
+  margin-right: 4px;
+}
+
+/* Breadcrumb separator mirrors for RTL */
+[dir="rtl"] .breadcrumb-sep::before {
+  content: '‹';
+}
+
+/* Left border on quick-answer moves to right for RTL */
+[dir="rtl"] .quick-answer {
+  border-left:  1px solid var(--border-primary);
+  border-right: 4px solid var(--accent-red);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* Health suggestion left border mirrors */
+[dir="rtl"] .health-suggestion {
+  border-left:  none;
+  border-right: 3px solid;
+  padding-left: 10px;
+  padding-right: 13px;
+}
+
+/* Citation number floats correctly */
+[dir="rtl"] .citation-item {
+  flex-direction: row-reverse;
+}
+
+/* Form labels align right */
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+/* Export row reverses */
+[dir="rtl"] .export-row {
+  flex-direction: row-reverse;
+}
+
+/* Char counter remaining aligns left (opposite in RTL) */
+[dir="rtl"] #char-remaining {
+  margin-left:  0;
+  margin-right: auto;
+}
+
+/* Input wrapper reverses for RTL */
+[dir="rtl"] .input-wrapper {
+  flex-direction: row-reverse;
+}
+
+/* CJK font fallbacks — injected conditionally by i18n.js,
+   but defined here as the target font stack */
+:root {
+  --font-cjk-ja: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN',
+                 'Hiragino Sans', 'Yu Gothic', system-ui, sans-serif;
+  --font-cjk-ko: 'Noto Sans KR', 'Apple SD Gothic Neo',
+                 'Malgun Gothic', system-ui, sans-serif;
+  --font-devanagari: 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-arabic:     'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+/* Applied by i18n.js via data-lang attribute on <html> */
+[data-lang="ja"] body { font-family: var(--font-cjk-ja); }
+[data-lang="ko"] body { font-family: var(--font-cjk-ko); }
+[data-lang="hi"] body { font-family: var(--font-devanagari); }
+[data-lang="ar"] body { font-family: var(--font-arabic); }
+
+/* Language selector widget — injected by i18n.js */
+.lang-selector {
+  display:       flex;
+  align-items:   center;
+  gap:           6px;
+  background:    transparent;
+  border:        1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  font-family:   var(--font-mono);
+  font-size:     11px;
+  padding:       5px 10px;
+  cursor:        pointer;
+  transition:    color var(--transition), border-color var(--transition);
+  flex-shrink:   0;
+}
+
+.lang-selector:hover {
+  color:        var(--text-primary);
+  border-color: var(--border-accent);
+}
+
+.lang-selector-globe {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Language dropdown panel */
+.lang-dropdown {
+  position:      absolute;
+  top:           calc(100% + 6px);
+  right:         0;
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  min-width:     160px;
+  z-index:       300;
+  overflow:      hidden;
+  box-shadow:    0 8px 32px rgba(0, 0, 0, 0.5);
+  opacity:       0;
+  transform:     translateY(-4px);
+  pointer-events: none;
+  transition:    opacity 150ms ease, transform 150ms ease;
+}
+
+.lang-dropdown.open {
+  opacity:        1;
+  transform:      translateY(0);
+  pointer-events: auto;
+}
+
+.lang-option {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  padding:     9px 14px;
+  cursor:      pointer;
+  font-size:   13px;
+  color:       var(--text-secondary);
+  transition:  background var(--transition), color var(--transition);
+  border:      none;
+  background:  transparent;
+  width:       100%;
+  text-align:  left;
+  font-family: var(--font-ui);
+}
+
+.lang-option:hover {
+  background: var(--bg-hover);
+  color:      var(--text-primary);
+}
+
+.lang-option.active {
+  color:       var(--accent-red);
+  font-weight: 500;
+}
+
+.lang-option-native {
+  font-size: 12px;
+  color:     var(--text-muted);
+  margin-left: auto;
+}
+
+/* Language selector wrap — positioned relative for dropdown */
+.lang-selector-wrap {
+  position: relative;
+}
