@@ -1,0 +1,620 @@
+{
+  "_comment": "ytspy master locale — English (en). All other locales must map every key defined here. Keys missing in a locale fall back to this file. Do not remove or rename keys — add new ones only.",
+  "_version": "1.0.0",
+
+  "meta": {
+    "title": "ytspy — YouTube Tag Extractor + Thumbnail Downloader",
+    "description": "Extract hidden YouTube tags, download thumbnails in 5 resolutions, analyze competitor tags, and score your tag strategy. Free, instant, no login required.",
+    "keywords": "youtube tag extractor, youtube thumbnail downloader, bulk youtube tags, youtube tag analyzer, free youtube seo tool, competitor tag analysis"
+  },
+
+  "nav": {
+    "search": "Search",
+    "language": "Language",
+    "menu_open": "Open menu",
+    "menu_close": "Close menu",
+    "home": "Home",
+    "guides": "Guides",
+    "about": "About",
+    "contact": "Contact"
+  },
+
+  "hero": {
+    "h1_line1": "Extract YouTube tags.",
+    "h1_line2": "Download thumbnails.",
+    "h1_line3": "Outrank everyone.",
+    "sub": "Paste any YouTube URL. Get hidden tags, thumbnail downloads, competitor analysis — free, instant, no account needed.",
+    "tagline1": "YouTube Intelligence. Decoded.",
+    "tagline2": "Extract. Analyze. Outrank.",
+    "seasonal_spring": "Spring Edition",
+    "seasonal_summer": "Summer Edition",
+    "seasonal_fall": "Fall Edition",
+    "seasonal_winter": "Winter Edition"
+  },
+
+  "input": {
+    "placeholder": "Paste YouTube URL here — youtube.com/watch?v=... or youtu.be/...",
+    "paste_btn": "Paste",
+    "extract_btn": "Extract",
+    "clipboard_detected": "YouTube URL detected in clipboard — press Extract or Enter.",
+    "invalid_url_toast": "Please paste a valid YouTube URL or video ID."
+  },
+
+  "cta": {
+    "v1": "Extract",
+    "v2": "Analyse",
+    "v3": "Spy on it",
+    "v4": "Decode it",
+    "v5": "Get tags",
+    "v6": "Reveal tags"
+  },
+
+  "mode": {
+    "both": "Both",
+    "tags_only": "Tags only",
+    "thumbnails_only": "Thumbnails only"
+  },
+
+  "meta_card": {
+    "load_metadata": "Load full metadata",
+    "badge_live": "LIVE",
+    "badge_short": "SHORT",
+    "badge_restricted": "AGE RESTRICTED",
+    "badge_cached": "CACHED",
+    "title_unavailable": "Title unavailable"
+  },
+
+  "tags_panel": {
+    "title": "Extracted tags",
+    "char_limit_label": "/ 500 characters",
+    "remaining": "{{n}} remaining",
+    "over_limit": "{{n}} OVER LIMIT",
+    "short_tail_label": "Short-tail",
+    "mid_tail_label": "Mid-tail",
+    "long_tail_label": "Long-tail",
+    "one_word": "1 word",
+    "two_words": "2 words",
+    "three_plus": "3+ words",
+    "no_tags_default": "No tags found for this video.",
+    "copy_as_label": "Copy as:",
+    "save_template_btn": "Save as template",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tags",
+    "hashtags_title": "Hashtags in description",
+    "truncated_title": "silently ignored by YouTube (over 500-char limit)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} characters remaining — tag budget is well used.",
+    "getting_close": "{{remaining}} characters remaining — getting close to the limit. Consider trimming shorter tags to make room.",
+    "near_limit": "Only {{remaining}} characters remain — nearly at the limit.",
+    "under_tagged_severe": "Only {{pct}}% of the 500-character budget used. More tags create more discovery pathways.",
+    "under_tagged_moderate": "{{remaining}} characters available. There is room for {{n}} more long-tail tags.",
+    "over_limit": "⚠ {{over}} characters over limit — {{count}} tag(s) at the end of the list are silently ignored by YouTube. Highlighted in red below."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "This creator did not add tags to this video. Thumbnails and metadata are still available below.",
+    "age_restricted": "This video is age-restricted. Tag data is not accessible without login. Thumbnails are still available.",
+    "private": "This video is private or unlisted. Thumbnail URLs are still generated from the video ID.",
+    "live_stream": "Live streams use a different metadata structure. Tags may become available after the stream ends.",
+    "members_only": "This is a members-only video. Tag data requires channel membership to access.",
+    "all_layers_failed": "Tag extraction was unsuccessful for this video. This can happen with some restricted videos. Thumbnails are still available."
+  },
+
+  "copy_formats": {
+    "plain": "Plain text",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "YouTube-ready"
+  },
+
+  "copy_success": "Tags copied as {{format}}.",
+  "copy_failed": "Copy failed — please try again.",
+  "single_tag_copied": "Tag copied.",
+  "tags_file_downloaded": "Tags file downloaded.",
+
+  "health": {
+    "panel_title": "Tag Health Score",
+    "out_of": "/ 100",
+    "label_excellent": "Excellent",
+    "label_good": "Good",
+    "label_average": "Average",
+    "label_weak": "Weak",
+    "label_no_tags": "No tags",
+    "grade_a_plus": "A+",
+    "grade_a": "A",
+    "grade_b_plus": "B+",
+    "grade_b": "B",
+    "grade_c_plus": "C+",
+    "grade_c": "C",
+    "grade_d": "D",
+    "grade_f": "F",
+    "grade_na": "N/A",
+    "comp_budget": "Budget Efficiency",
+    "comp_tail": "Tail Distribution",
+    "comp_diversity": "Word Diversity",
+    "comp_hashtag": "Hashtag Alignment",
+    "suggestions_label": "Improvements",
+    "potential_gain": "+{{n}} pts",
+    "no_tags_summary": "No tags were found for this video. The creator may not have added tags, or they may be unavailable for this video type."
+  },
+
+  "budget_labels": {
+    "optimal": "Optimal",
+    "good": "Good",
+    "under_used": "Under-used",
+    "severely_under": "Severely under-used",
+    "over_limit": "Over limit",
+    "no_tags": "No tags"
+  },
+
+  "distribution_labels": {
+    "well_balanced": "Well balanced",
+    "fairly_balanced": "Fairly balanced",
+    "uneven": "Uneven",
+    "heavily_skewed": "Heavily skewed",
+    "no_data": "No data"
+  },
+
+  "diversity_labels": {
+    "excellent": "Excellent variety",
+    "good": "Good variety",
+    "repetitive": "Repetitive",
+    "very_repetitive": "Very repetitive",
+    "no_data": "No data"
+  },
+
+  "hashtag_labels": {
+    "perfect": "Perfect alignment",
+    "strong": "Strong alignment",
+    "partial": "Partial alignment",
+    "weak": "Weak alignment",
+    "none": "No alignment",
+    "no_hashtags": "No hashtags"
+  },
+
+  "health_insights": {
+    "budget_optimal": "Excellent use of the tag budget — {{used}} of 500 characters ({{pct}}%). This is the optimal range.",
+    "budget_over_packed": "Tag budget is very full at {{pct}}%. {{remaining}} characters remain — consider whether all tags add value.",
+    "budget_good": "{{remaining}} characters remaining. Good usage — consider adding 1–2 more descriptive long-tail tags.",
+    "budget_under": "Only {{pct}}% of the 500-character budget is used. Adding more specific long-tail tags would improve discoverability.",
+    "budget_severe": "Significantly under-tagged — only {{used}} of 500 characters used. More tags create more potential discovery pathways.",
+    "budget_over": "Tag budget exceeded by {{over}} characters. YouTube silently truncates tags from the end of your list. Remove the highlighted tags to fix this.",
+    "tail_too_short": "{{pct}}% of tags are single-word — highly competitive. Add 2-word and 3+-word tags to target less competitive, more specific searches.",
+    "tail_too_long": "{{pct}}% of tags are long-tail (3+ words). While specific, adding some shorter 1–2 word tags improves broad discoverability.",
+    "tail_too_mid": "{{pct}}% of tags are mid-tail (2 words). Consider adding a few single-word broad tags and some 3+ word specific tags.",
+    "tail_few": "Only {{count}} tags — too few to analyse distribution meaningfully. Aim for at least 8–12 tags across all three types.",
+    "tail_balanced": "{{short}} short-tail, {{mid}} mid-tail, {{long}} long-tail tags. Distribution is well balanced.",
+    "diversity_low_unique": "Only {{n}} unique words across all tags — very repetitive. Each tag should introduce new vocabulary to cover different search queries.",
+    "diversity_concentrated": "The word '{{word}}' appears in over {{pct}}% of all tag words. Diversify by adding tags that don't rely on this keyword.",
+    "diversity_moderate": "{{unique}} unique words across {{total}} total ({{pct}}% diversity ratio). A few keywords repeat heavily — try adding tags with different vocabulary.",
+    "diversity_strong": "Strong vocabulary variety — {{unique}} unique words out of {{total}} total ({{pct}}%). Each tag is introducing new search territory.",
+    "hashtag_perfect": "All {{count}} hashtag(s) appear in the tag list — perfect alignment.",
+    "hashtag_partial": "{{aligned}} of {{total}} hashtags appear in the tags. Consider adding: {{missing}}.",
+    "hashtag_weak": "Only {{aligned}} of {{total}} hashtags appear in the tags. Adding the missing hashtag words as tags would strengthen topical consistency.",
+    "hashtag_none_aligned": "None of the {{total}} hashtag(s) appear in the tag list. These are a missed opportunity: {{missing}}.",
+    "hashtag_no_hashtags": "This video has no hashtags in the description. Adding 2–3 relevant hashtags that also appear in your tags can strengthen topical signals."
+  },
+
+  "health_summaries": {
+    "excellent": "Excellent tag strategy. This video is well optimised for discovery across all four dimensions.",
+    "good": "Good overall tag strategy. The main area to improve is {{weakest}}, which would push this video into excellent territory.",
+    "average": "Average tag strategy. Addressing {{gaps}} would meaningfully improve this video's discoverability.",
+    "weak": "Weak tag strategy with significant gaps across multiple dimensions. Review the suggestions below to identify the highest-impact improvements."
+  },
+
+  "health_suggestions": {
+    "over_budget": "Remove or shorten tags to get below the 500-character limit. {{count}} tag(s) are currently being ignored by YouTube.",
+    "under_budget_severe": "Only {{pct}}% of the 500-character tag budget is used. Add more specific long-tail tags to fill the remaining {{remaining}} characters.",
+    "under_budget_moderate": "{{remaining}} characters remain in the tag budget. There is room for 1–3 more descriptive tags.",
+    "too_many_short": "{{pct}}% of tags are single-word — highly competitive. Add 2-word and 3+-word tags to target less competitive, more specific searches.",
+    "not_enough_long": "Only {{pct}}% of tags are long-tail (3+ words). Long-tail tags have less competition and convert better. Aim for ~40%.",
+    "balance_distribution": "Tag distribution could be more balanced. Ideal: ~20% single-word, ~40% two-word, ~40% three-or-more-word tags.",
+    "high_concentration": "One keyword dominates {{pct}}% of all tag words. Add tags that introduce completely different vocabulary to cover more search queries.",
+    "low_diversity": "Word diversity is below average ({{pct}}% unique). Tags are repeating vocabulary. Try adding tags that cover adjacent topics.",
+    "missing_hashtags": "{{count}} hashtag(s) from the description don't appear in the tags: {{missing}}.",
+    "no_hashtags": "No hashtags found in the description. Adding 2–3 relevant hashtags that also appear in your tag list can strengthen topical signals."
+  },
+
+  "thumbnails": {
+    "panel_title": "Thumbnails",
+    "preview_label": "How it looks on YouTube search",
+    "placement_heading": "Thumbnail placement preview",
+    "placement_sub": "How your thumbnail renders in 5 YouTube contexts",
+    "canva_text": "Want to redesign this thumbnail?",
+    "canva_cta": "Edit in Canva →",
+    "download_btn": "↓ Download",
+    "downloading": "Downloading…",
+    "webp_note": "Newer format — may not open in all image editing apps",
+    "unavailable": "Not available for this video",
+    "unavailable_reason": "This video does not have a 1280×720 thumbnail. Use SD or HQ instead.",
+    "placement_desktop_home": "Desktop Homepage",
+    "placement_desktop_search": "Desktop Search",
+    "placement_mobile_search": "Mobile Search",
+    "placement_suggested": "Suggested Videos",
+    "placement_notification": "Bell Notification",
+    "placement_desc_desktop_home": "Primary discovery surface — how most subscribers first see your video",
+    "placement_desc_desktop_search": "Search results page — critical for non-subscriber discovery",
+    "placement_desc_mobile_search": "Mobile search — where over 70% of YouTube traffic originates",
+    "placement_desc_suggested": "Suggested sidebar — drives a significant share of total views",
+    "placement_desc_notification": "Subscriber notification icon — must be readable at 48 × 48px",
+    "placement_shorts_feed": "Shorts Feed",
+    "placement_desc_shorts_feed": "Vertical Shorts feed — the primary discovery surface for Shorts"
+  },
+
+  "affiliate": {
+    "label": "RECOMMENDED",
+    "feature_label": "DID YOU KNOW",
+    "feature_placement": "Multi-placement thumbnail preview",
+    "feature_placement_sub": "See your thumbnail in 5 YouTube contexts simultaneously",
+    "feature_health": "Tag health score 0–100",
+    "feature_health_sub": "Four-component analysis of your tag strategy",
+    "feature_steal": "Steal competitor tags",
+    "feature_steal_sub": "One click copies every tag you're missing",
+    "feature_zip": "Bulk ZIP download",
+    "feature_zip_sub": "10 thumbnails, one click, assembled in your browser",
+    "feature_shorts": "YouTube Shorts supported",
+    "feature_shorts_sub": "youtube.com/shorts/ URLs fully extracted",
+    "feature_templates": "Tag template library",
+    "feature_templates_sub": "Save your research. Reuse it forever.",
+    "feature_free": "Zero login required",
+    "feature_free_sub": "No account, no limits, no tracking",
+    "feature_char": "Character budget optimizer",
+    "feature_char_sub": "See exactly which tags YouTube silently ignores"
+  },
+
+  "ticker": {
+    "anchor_label": "● YTSPY SYSTEMS",
+    "engine_label": "EXTRACTION ENGINE",
+    "engine_value": "● OPERATIONAL",
+    "proxy_label": "PROXY API",
+    "proxy_value": "● HEALTHY",
+    "fallback_label": "4-LAYER FALLBACK",
+    "fallback_value": "● ACTIVE",
+    "cdn_label": "THUMBNAIL CDN",
+    "cdn_value": "● ONLINE  5 FORMATS",
+    "bulk_label": "BULK PROCESSOR",
+    "bulk_value": "● READY  10 URL MAX",
+    "cache_label": "CDN CACHE",
+    "cache_value": "● 5 MIN TTL",
+    "sw_label": "SERVICE WORKER",
+    "sw_value": "● INSTALLED",
+    "supabase_label": "SUPABASE CACHE",
+    "supabase_value": "● 24 HR TTL",
+    "f_placement_label": "MULTI-PLACEMENT PREVIEW",
+    "f_placement_value": "→ 5 YouTube rendering contexts",
+    "f_health_label": "TAG HEALTH SCORE",
+    "f_health_value": "→ Rate your strategy 0–100",
+    "f_steal_label": "STEAL COMPETITOR TAGS",
+    "f_steal_value": "→ One-click copy of gaps",
+    "f_zip_label": "BULK ZIP DOWNLOAD",
+    "f_zip_value": "→ 10 thumbnails one click",
+    "f_shorts_label": "SHORTS SUPPORTED",
+    "f_shorts_value": "→ /shorts/ URLs fully extracted",
+    "f_char_label": "CHARACTER OPTIMIZER",
+    "f_char_value": "→ Truncated tags highlighted in red",
+    "f_templates_label": "TEMPLATE LIBRARY",
+    "f_templates_value": "→ Save and reuse tag research",
+    "f_urls_label": "ALL URL FORMATS",
+    "f_urls_value": "→ youtu.be · /shorts/ · bare ID",
+    "f_free_label": "ZERO LOGIN",
+    "f_free_value": "→ No account · No limits · No tracking"
+  },
+
+  "bulk": {
+    "title": "Bulk extract",
+    "badge_new": "NEW",
+    "description": "Paste up to 10 URLs — get tags for all videos + a combined frequency table",
+    "expand": "Expand ↓",
+    "collapse": "Collapse ↑",
+    "textarea_placeholder": "Paste one YouTube URL per line (up to 10)\nhttps://youtube.com/watch?v=...\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Extract all",
+    "extracting": "Extracting {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URLs",
+    "hint_invalid": "{{count}} / 10 URLs · {{invalid}} invalid — will be skipped",
+    "hint_duplicates": "{{count}} / 10 URLs · {{dupes}} duplicate(s) removed",
+    "hint_over_limit": "{{count}} / 10 URLs · Only first 10 will be processed",
+    "zip_btn": "Download all thumbnails as ZIP",
+    "zipping": "Zipping {{done}}/{{total}}…",
+    "csv_btn": "Download research CSV",
+    "copy_union_btn": "Copy all unique tags",
+    "freq_table_title": "Tag frequency across all videos",
+    "freq_table_desc": "Tags sorted by how many of the pasted videos share them. High-frequency = dominant niche tags.",
+    "freq_th_tag": "Tag",
+    "freq_th_appears": "Appears in",
+    "freq_th_frequency": "Frequency",
+    "freq_th_type": "Type",
+    "show_tags_btn": "Show tags ↓",
+    "hide_tags_btn": "Hide tags ↑",
+    "video_failed": "Video {{n}}: Failed to extract",
+    "zip_success": "Downloaded {{count}} thumbnails as ZIP.",
+    "zip_skipped": "({{skipped}} failed to load.)",
+    "zip_failed": "ZIP download failed.",
+    "csv_downloaded": "Research CSV downloaded.",
+    "union_copied": "{{count}} unique tags copied (YouTube-ready format).",
+    "no_urls_error": "Paste at least one valid YouTube URL.",
+    "summary": "Analysed {{success}} video(s){{failed}}. Found {{tags}} unique tags across all videos{{universal}}. Average: {{avg_tags}} tags per video · Health score {{avg_health}}/100."
+  },
+
+  "overlap": {
+    "title": "Competitor tag analysis",
+    "description": "Paste your video + a competitor's video — see exactly which tags they use that you don't",
+    "my_label": "Your video URL",
+    "their_label": "Competitor URL",
+    "my_placeholder": "https://youtube.com/watch?v=YOUR_VIDEO",
+    "their_placeholder": "https://youtube.com/watch?v=COMPETITOR_VIDEO",
+    "analyze_btn": "Analyze overlap",
+    "analyzing": "Analysing…",
+    "shared_title": "Shared tags",
+    "missing_title": "You're missing",
+    "unique_title": "Your unique tags",
+    "shared_desc": "Both videos use these",
+    "missing_desc": "They have these — you don't. High-value targets.",
+    "unique_desc": "Only your video uses these",
+    "steal_btn": "Steal these tags",
+    "save_template_btn": "Save to template",
+    "steal_success": "{{count}} missing tags copied (YouTube-ready).",
+    "error_need_my": "Please enter your video URL.",
+    "error_need_their": "Please enter the competitor video URL.",
+    "error_my_failed": "Your video: {{error}}",
+    "error_their_failed": "Competitor video: {{error}}",
+    "overlap_label_very_high": "Very high overlap",
+    "overlap_label_high": "High overlap",
+    "overlap_label_moderate": "Moderate overlap",
+    "overlap_label_low": "Low overlap",
+    "overlap_label_very_low": "Very low overlap",
+    "overlap_label_no_data": "No data",
+    "col_empty_both": "Neither video has tags. Add tags to both videos to compare them.",
+    "col_empty_mine": "Your video has no tags. Extract a video with tags to run comparison.",
+    "col_empty_theirs": "The competitor video has no tags — nothing to compare against.",
+    "col_empty_shared_none": "No tags in common. These videos are targeting completely different searches.",
+    "col_empty_missing_none": "You already use all of the competitor's tags. No gaps to fill.",
+    "col_empty_unique_none": "All your tags are also used by the competitor. No unique tags."
+  },
+
+  "templates": {
+    "title": "Tag templates",
+    "description": "Save tag sets you reuse across videos",
+    "empty": "No templates yet. After extracting a video, click \"Save as template\" to save that video's tags for future use.",
+    "apply_btn": "Apply",
+    "delete_btn": "Delete",
+    "confirm_delete": "Delete this template? This cannot be undone.",
+    "deleted_toast": "Template deleted.",
+    "save_prompt_title": "Name this template ({{count}} tags):",
+    "save_prompt_preview": "First {{n}} tags: {{preview}}",
+    "saved_toast": "Template \"{{name}}\" saved.",
+    "save_failed_toast": "Failed to save template.",
+    "extract_first_toast": "Extract a video first.",
+    "suggestions_heading": "Relevant saved templates",
+    "new_tags_label": "+{{count}} new tags",
+    "strategy_union": "Add new tags",
+    "strategy_union_desc": "Keep all current tags and add any new ones from the template. Duplicates are removed.",
+    "strategy_replace": "Replace all tags",
+    "strategy_replace_desc": "Discard current tags and use only the template. Useful for starting fresh.",
+    "strategy_prepend": "Prioritise template",
+    "strategy_prepend_desc": "Template tags appear first, current tags follow. Tag order matters for YouTube.",
+    "strategy_append": "Add at end",
+    "strategy_append_desc": "Keep current tags in position, add template tags at the end.",
+    "merge_added": "{{count}} new tag(s) added from template. {{chars}}/500 characters used.",
+    "merge_no_new": "No new tags to add — all template tags are already in your list.",
+    "merge_replaced": "Replaced {{count}} tag(s) with the template. {{chars}}/500 characters used.",
+    "merge_over_limit": "⚠ Result exceeds 500-character limit ({{chars}} chars) — some tags will be truncated by YouTube.",
+    "name_required": "Template name is required.",
+    "name_too_long": "Template name must be 100 characters or fewer.",
+    "name_invalid": "Template name must contain at least one letter or number.",
+    "tags_empty": "A template must contain at least one tag.",
+    "tags_over_budget": "This template uses {{chars}} characters — {{over}} over the 500-character limit.",
+    "export_btn": "Export templates",
+    "import_btn": "Import templates",
+    "import_success": "Imported {{count}} template(s).",
+    "import_partial": "Imported {{count}}, skipped {{skipped}} (already exist).",
+    "import_failed": "Import failed — invalid file format."
+  },
+
+  "history": {
+    "title": "Recent extractions",
+    "description": "Saved locally in your browser — no account needed",
+    "clear_btn": "Clear history",
+    "confirm_clear": "Clear all extraction history? This cannot be undone.",
+    "cleared_toast": "History cleared.",
+    "empty": "No extractions yet — paste a YouTube URL above to get started.",
+    "reextract_btn": "Re-extract",
+    "remove_btn": "✕",
+    "just_now": "Just now",
+    "minutes_ago": "{{n}}m ago",
+    "hours_ago": "{{n}}h ago",
+    "days_ago": "{{n}}d ago",
+    "date_format": "MMM D"
+  },
+
+  "errors": {
+    "invalid_url": "Please enter a valid YouTube URL or video ID.",
+    "not_found": "This video was not found. It may have been deleted or made private.",
+    "rate_limited": "You have made too many requests. Please wait a moment before trying again.",
+    "timeout": "The request timed out. YouTube may be slow right now — please try again.",
+    "network": "Could not connect to the server. Check your internet connection and try again.",
+    "offline": "You appear to be offline. Check your connection and try again.",
+    "members_only": "This video is for channel members only and cannot be analyzed.",
+    "age_restricted": "This video is age-restricted and cannot be analyzed without a login.",
+    "unknown": "An unexpected error occurred. Please try again.",
+    "extraction_failed_title": "Extraction failed",
+    "retry_btn": "Retry ↻",
+    "public_video_hint": "Make sure the URL is a public YouTube video. Private, age-restricted, and members-only videos may not work.",
+    "retried_toast": "Extracted on second attempt — YouTube was slow.",
+    "recovery_timeout": "The request timed out. YouTube may be slow right now.",
+    "recovery_offline": "You appear to be offline. Check your connection and try again.",
+    "recovery_rate_limited": "Too many requests. Please wait 60 seconds and try again.",
+    "recovery_not_found": "This video does not exist, was deleted, or is private.",
+    "recovery_age_restricted": "Age-restricted videos cannot be analysed without authentication. Try a public video from the same channel."
+  },
+
+  "trust": {
+    "rating": "4.9★ satisfaction",
+    "creators": "Trusted by creators worldwide",
+    "free": "Free. No login. No limits."
+  },
+
+  "share": {
+    "section_title": "Share this tool",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "twitter": "Twitter / X",
+    "linkedin": "LinkedIn",
+    "reddit": "Reddit",
+    "quora": "Quora",
+    "telegram": "Telegram",
+    "email": "Email",
+    "pinterest": "Pinterest",
+    "discord": "Discord",
+    "medium": "Medium",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "snapchat": "Snapchat",
+    "vimeo": "Vimeo",
+    "copy_link": "Copy link",
+    "link_copied": "Link copied!"
+  },
+
+  "faq": {
+    "section_title": "Frequently asked questions",
+    "section_sub": "Everything you need to know about YouTube tag extraction, thumbnail downloading, and creator SEO.",
+    "q1": "What are YouTube tags and do they still matter for SEO?",
+    "a1": "YouTube tags are keywords you add to a video to help YouTube understand its topic. While tags carry less weight than they did several years ago, they still contribute to how YouTube categorises your content — especially for searches where the tag matches the query exactly. They are one signal among many, including the title, description, and viewer engagement. Most successful creators still use tags strategically, particularly long-tail phrases (3+ words) that match specific search intent.",
+    "q2": "What is the YouTube tag character limit?",
+    "a2": "YouTube enforces a 500-character limit on the combined length of all tags for a video, including the separators between them. Tags are counted as a single comma-separated string. When you exceed this limit, YouTube silently truncates tags from the end of your list — the excess tags are simply ignored without any warning. ytspy's character counter shows exactly how much budget a video has used and highlights any tags that would be cut off.",
+    "q3": "Can I extract tags from any YouTube video?",
+    "a3": "You can extract tags from any public YouTube video where the creator has added tags. Age-restricted videos, private videos, and members-only videos cannot be accessed without authentication, so tag data is unavailable for those. Some creators choose not to add tags at all — in that case ytspy will still show thumbnails and metadata, but the tag list will be empty. YouTube Shorts are also supported.",
+    "q4": "What is the difference between short-tail, mid-tail, and long-tail tags?",
+    "a4": "Short-tail tags are single words (e.g. 'gaming'). They are broad, high-traffic, and extremely competitive. Mid-tail tags are two words (e.g. 'gaming tips'). They balance reach with specificity. Long-tail tags are three or more words (e.g. 'how to improve aim in FPS games'). They are highly specific, face less competition, and often convert better because they match precise search intent. The optimal tag strategy uses a mix of all three types, weighted toward long-tail.",
+    "q5": "How do I download YouTube thumbnails in the highest quality?",
+    "a5": "ytspy provides thumbnails in five resolutions: 1280×720 (Max resolution), 640×480 (Standard), 480×360 (High quality), 320×180 (Medium quality), and WebP format. The 1280×720 resolution is available for most videos but not all — older videos or videos without custom thumbnails may only have lower resolutions. The download is handled as a direct file download — no right-click required.",
+    "q6": "What is the tag health score?",
+    "a6": "The tag health score is a 0–100 composite rating of how well a video's tag strategy is optimised. It measures four things: budget efficiency (how well the 500-character budget is used), tail distribution (how balanced the mix of short, mid, and long-tail tags is), word diversity (how varied the vocabulary across tags is), and hashtag alignment (whether the description hashtags also appear as tags). A score above 86 is excellent. The breakdown explains exactly what to improve.",
+    "q7": "How does the bulk extraction feature work?",
+    "a7": "Paste up to 10 YouTube URLs into the bulk textarea, one per line. ytspy fetches them in parallel batches and returns all tags, a frequency table showing which tags appear across multiple videos, per-video health scores, and a one-click ZIP download of all thumbnails. The frequency table highlights which tags are common across the niche — these are high-competition niche tags. You can also download the complete results as a CSV for use in spreadsheets.",
+    "q8": "How do I analyse competitor tags?",
+    "a8": "Use the Competitor tag analysis section. Paste your video URL and a competitor's URL. ytspy extracts both tag lists and shows you three columns: tags both videos share, tags the competitor has that you don't, and your unique tags. The missing column is sorted by estimated SEO value — long-tail tags first. A single button copies all missing tags in YouTube-ready format so you can paste them directly into YouTube Studio.",
+    "q9": "Does ytspy work with YouTube Shorts?",
+    "a9": "Yes. YouTube Shorts URLs (youtube.com/shorts/VIDEO_ID) are fully supported. ytspy normalises them to the equivalent watch page before extraction. Shorts thumbnails are displayed in the appropriate vertical preview contexts. Note that some Shorts may have limited metadata since they are a different content format from regular videos.",
+    "q10": "Is ytspy free? Are there any limits?",
+    "a10": "ytspy is completely free with no account required. There are no daily limits on single extractions. The bulk mode processes up to 10 videos per run, which is a practical limit rather than an artificial one. The tool runs on serverless infrastructure with a rate limit of 15 requests per minute per IP address to prevent abuse — this would only affect automated scripts, not regular use.",
+    "q11": "What is the tag template library?",
+    "a11": "The template library lets you save named sets of tags for future use. After extracting a video you frequently tag similarly — a podcast episode, a tutorial in an ongoing series, or a product review in a consistent niche — you can save its tags as a named template. When uploading a new video, you can apply any saved template with one click, choosing whether to add to existing tags, replace them, or put the template tags first. Templates are stored in your browser and never leave your device.",
+    "q12": "Why does the multi-placement thumbnail preview matter?",
+    "a12": "YouTube thumbnails appear in five distinct contexts — desktop homepage, desktop search, mobile search, suggested video sidebar, and bell notification — each rendering at a different size. A thumbnail that looks excellent at full resolution can be unreadable at 48×48 pixels, which is the size of a notification icon. Text-heavy thumbnails in particular often fail at small sizes. ytspy shows all five contexts simultaneously so you can evaluate whether your thumbnail communicates clearly at every scale before uploading."
+  },
+
+  "contact": {
+    "section_title": "Request & contact",
+    "section_sub": "Have a question, found a bug, or want to suggest a feature? Every message is read.",
+    "name_label": "Name",
+    "email_label": "Email",
+    "message_label": "Message",
+    "name_placeholder": "Your name",
+    "email_placeholder": "your@email.com",
+    "message_placeholder": "Tell us what's on your mind...",
+    "submit_btn": "Send message",
+    "success_alert": "Thank you! Your request has been transmitted.",
+    "error_alert": "Oops! There was a problem submitting your form."
+  },
+
+  "citation": {
+    "section_title": "References & sources",
+    "c1_text": "YouTube Help — Add tags to your video",
+    "c1_url": "https://support.google.com/youtube/answer/146402",
+    "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Search and discovery on YouTube",
+    "c2_url": "https://creatoracademy.youtube.com/",
+    "c2_label": "YouTube",
+    "c3_text": "hiQ Labs, Inc. v. LinkedIn Corp. — scraping public data is legal",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html",
+    "c3_label": "US Court",
+    "c4_text": "Google Brand Guidelines — permissible use of YouTube trademark",
+    "c4_url": "https://about.youtube/brand-resources/",
+    "c4_label": "Google"
+  },
+
+  "quick_answer": {
+    "label": "QUICK ANSWER",
+    "text": "YouTube tags are hidden keywords embedded in a video's source code. ytspy extracts them from any public YouTube video, shows you competitor tags you're missing, and scores your tag strategy — all free, with no login required."
+  },
+
+  "logic": {
+    "label": "LOGIC",
+    "text": "YouTube embeds all video metadata including tags inside a JavaScript object called ytInitialData in every public video page — no API key required."
+  },
+
+  "methodology": {
+    "label": "METHODOLOGY",
+    "text": "ytspy uses a 4-layer server-side extraction chain with automatic fallback, returning only structured JSON — never raw HTML — to the browser."
+  },
+
+  "freshness": {
+    "today": "Updated today",
+    "last_updated": "Last updated {{date}}"
+  },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Free forever. No ads. No data collected.",
+    "disclaimer": "ytspy is an independent tool. Not affiliated with, endorsed by, or connected to YouTube, Google LLC, or Alphabet Inc. YouTube is a trademark of Google LLC.",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookies Policy",
+    "terms": "Terms of Use",
+    "contact": "Contact",
+    "about": "About",
+    "twitter_link": "Twitter / X",
+    "github_link": "GitHub"
+  },
+
+  "seo_content": {
+    "h2_how_works": "How YouTube tag extraction works",
+    "p_how_works": "Every public YouTube video embeds its tags in the page source code. ytspy fetches that page server-side, extracts all metadata from the ytInitialData JavaScript object, and returns clean structured data — no API key required, no rate limits for end users.",
+    "h2_char_limit": "What is the YouTube tag character limit?",
+    "p_char_limit": "YouTube enforces a 500-character limit on the total combined length of all tags for a video, including separators. Most creators don't know they've exceeded this limit until tags are silently truncated. The character counter on ytspy shows exactly how much of the 500-character budget any video has used.",
+    "h2_bulk_zip": "Bulk YouTube thumbnail download",
+    "p_bulk_zip": "Downloading thumbnails for multiple YouTube videos one at a time is slow. ytspy lets you paste up to 10 URLs and download all thumbnails as a single ZIP file with one click — no server upload required, the ZIP is assembled entirely in your browser.",
+    "h2_competitor": "YouTube tag gap analysis — free competitor research",
+    "p_competitor": "Understanding which tags your competitors use that you don't is one of the highest-leverage actions in YouTube SEO. ytspy shows the exact tag gap between your video and any competitor video, highlighting the tags most likely to help your discovery."
+  },
+
+  "offline": {
+    "page_title": "You're offline — ytspy",
+    "heading": "You're offline",
+    "sub": "New extractions require an internet connection. Your saved history and templates are available below.",
+    "retry_btn": "Try again",
+    "cached_history_title": "Your recent extractions",
+    "no_history": "No saved extractions yet."
+  },
+
+  "pwa": {
+    "install_prompt": "Add ytspy to your home screen for instant access.",
+    "install_btn": "Install",
+    "install_dismiss": "Not now"
+  },
+
+  "lang": {
+    "select": "Language",
+    "en": "English",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "hi": "Hindi",
+    "id": "Indonesian",
+    "fr": "French",
+    "de": "German",
+    "it": "Italian",
+    "tr": "Turkish",
+    "pl": "Polish",
+    "nl": "Dutch",
+    "ru": "Russian",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "ar": "Arabic",
+    "he": "Hebrew",
+    "vi": "Vietnamese",
+    "tl": "Filipino",
+    "th": "Thai",
+    "uk": "Ukrainian"
+  }
+}
