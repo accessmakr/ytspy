@@ -1,0 +1,502 @@
+{
+  "_language": "Français (French)",
+  "_code": "fr",
+  "_note": "Standard French. Covers France, Belgium, Switzerland, and Francophone Africa.",
+
+  "meta": {
+    "title": "ytspy — Extracteur de Tags YouTube + Téléchargeur de Miniatures",
+    "description": "Extrayez les tags cachés de YouTube, téléchargez les miniatures en 5 résolutions, analysez les tags des concurrents. Gratuit, sans inscription.",
+    "keywords": "extracteur tags youtube, télécharger miniature youtube, analyseur tags youtube, outil seo youtube gratuit"
+  },
+
+  "nav": {
+    "search": "Rechercher",
+    "language": "Langue",
+    "menu_open": "Ouvrir le menu",
+    "menu_close": "Fermer le menu",
+    "home": "Accueil",
+    "guides": "Guides",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+
+  "hero": {
+    "h1_line1": "Extrayez les tags YouTube.",
+    "h1_line2": "Téléchargez les miniatures.",
+    "h1_line3": "Surpassez tout le monde.",
+    "sub": "Collez n'importe quelle URL YouTube. Obtenez les tags cachés, téléchargez les miniatures, analysez les concurrents — gratuitement, sans compte.",
+    "tagline1": "L'intelligence YouTube. Décodée.",
+    "tagline2": "Extrayez. Analysez. Surpassez.",
+    "seasonal_spring": "Édition Printemps",
+    "seasonal_summer": "Édition Été",
+    "seasonal_fall": "Édition Automne",
+    "seasonal_winter": "Édition Hiver"
+  },
+
+  "input": {
+    "placeholder": "Collez l'URL YouTube ici — youtube.com/watch?v=... ou youtu.be/...",
+    "paste_btn": "Coller",
+    "extract_btn": "Extraire",
+    "clipboard_detected": "URL YouTube détectée dans le presse-papiers — appuyez sur Extraire ou Entrée.",
+    "invalid_url_toast": "Veuillez coller une URL YouTube valide ou un identifiant de vidéo."
+  },
+
+  "cta": {
+    "v1": "Extraire",
+    "v2": "Analyser",
+    "v3": "Espionner",
+    "v4": "Décoder",
+    "v5": "Voir les tags",
+    "v6": "Révéler les tags"
+  },
+
+  "mode": {
+    "both": "Les deux",
+    "tags_only": "Tags seulement",
+    "thumbnails_only": "Miniatures seulement"
+  },
+
+  "meta_card": {
+    "load_metadata": "Charger les métadonnées complètes",
+    "badge_live": "EN DIRECT",
+    "badge_short": "SHORT",
+    "badge_restricted": "ÂGE REQUIS",
+    "badge_cached": "EN CACHE",
+    "title_unavailable": "Titre indisponible"
+  },
+
+  "tags_panel": {
+    "title": "Tags extraits",
+    "char_limit_label": "/ 500 caractères",
+    "remaining": "{{n}} restants",
+    "over_limit": "{{n}} AU-DESSUS DE LA LIMITE",
+    "short_tail_label": "Queue courte",
+    "mid_tail_label": "Queue moyenne",
+    "long_tail_label": "Queue longue",
+    "one_word": "1 mot",
+    "two_words": "2 mots",
+    "three_plus": "3+ mots",
+    "no_tags_default": "Aucun tag trouvé pour cette vidéo.",
+    "copy_as_label": "Copier en tant que :",
+    "save_template_btn": "Enregistrer comme modèle",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tags",
+    "hashtags_title": "Hashtags dans la description",
+    "truncated_title": "ignoré silencieusement par YouTube (limite de 500 caractères dépassée)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} caractères restants — budget de tags bien utilisé.",
+    "getting_close": "{{remaining}} caractères restants — on approche de la limite.",
+    "near_limit": "Seulement {{remaining}} caractères restants — presque à la limite.",
+    "under_tagged_severe": "Seulement {{pct}}% du budget de 500 caractères utilisé. Plus de tags créent plus de chemins de découverte.",
+    "under_tagged_moderate": "{{remaining}} caractères disponibles. Il y a de la place pour {{n}} tags longue traîne supplémentaires.",
+    "over_limit": "⚠ {{over}} caractères au-dessus de la limite — {{count}} tag(s) à la fin de la liste sont silencieusement ignorés par YouTube. Surlignés en rouge ci-dessous."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Ce créateur n'a pas ajouté de tags à cette vidéo. Les miniatures et métadonnées sont toujours disponibles ci-dessous.",
+    "age_restricted": "Cette vidéo est restreinte aux mineurs. Les données de tags ne sont pas accessibles sans connexion.",
+    "private": "Cette vidéo est privée ou non répertoriée. Les URLs des miniatures sont générées à partir de l'identifiant de la vidéo.",
+    "live_stream": "Les diffusions en direct utilisent une structure de métadonnées différente. Les tags peuvent être disponibles après la fin de la diffusion.",
+    "members_only": "C'est une vidéo réservée aux membres. Les données de tags nécessitent un abonnement à la chaîne.",
+    "all_layers_failed": "L'extraction des tags n'a pas réussi pour cette vidéo. Les miniatures sont toujours disponibles."
+  },
+
+  "copy_formats": {
+    "plain": "Texte brut",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "Prêt pour YouTube"
+  },
+
+  "copy_success": "Tags copiés en tant que {{format}}.",
+  "copy_failed": "Échec de la copie — veuillez réessayer.",
+  "single_tag_copied": "Tag copié.",
+  "tags_file_downloaded": "Fichier de tags téléchargé.",
+
+  "health": {
+    "panel_title": "Score de Santé des Tags",
+    "out_of": "/ 100",
+    "label_excellent": "Excellent",
+    "label_good": "Bon",
+    "label_average": "Moyen",
+    "label_weak": "Faible",
+    "label_no_tags": "Sans tags",
+    "grade_a_plus": "A+",
+    "grade_a": "A",
+    "grade_b_plus": "B+",
+    "grade_b": "B",
+    "grade_c_plus": "C+",
+    "grade_c": "C",
+    "grade_d": "D",
+    "grade_f": "F",
+    "grade_na": "N/A",
+    "comp_budget": "Efficacité du Budget",
+    "comp_tail": "Distribution des Queues",
+    "comp_diversity": "Diversité des Mots",
+    "comp_hashtag": "Alignement des Hashtags",
+    "suggestions_label": "Améliorations",
+    "potential_gain": "+{{n}} pts",
+    "no_tags_summary": "Aucun tag trouvé pour cette vidéo."
+  },
+
+  "budget_labels": {
+    "optimal": "Optimal",
+    "good": "Bon",
+    "under_used": "Peu utilisé",
+    "severely_under": "Très peu utilisé",
+    "over_limit": "Au-dessus de la limite",
+    "no_tags": "Sans tags"
+  },
+
+  "distribution_labels": {
+    "well_balanced": "Bien équilibré",
+    "fairly_balanced": "Assez équilibré",
+    "uneven": "Inégal",
+    "heavily_skewed": "Très déséquilibré",
+    "no_data": "Pas de données"
+  },
+
+  "diversity_labels": {
+    "excellent": "Excellente variété",
+    "good": "Bonne variété",
+    "repetitive": "Répétitif",
+    "very_repetitive": "Très répétitif",
+    "no_data": "Pas de données"
+  },
+
+  "hashtag_labels": {
+    "perfect": "Alignement parfait",
+    "strong": "Alignement fort",
+    "partial": "Alignement partiel",
+    "weak": "Alignement faible",
+    "none": "Pas d'alignement",
+    "no_hashtags": "Pas de hashtags"
+  },
+
+  "thumbnails": {
+    "panel_title": "Miniatures",
+    "preview_label": "Apparence dans la recherche YouTube",
+    "placement_heading": "Aperçu du positionnement de la miniature",
+    "placement_sub": "Comment votre miniature s'affiche dans 5 contextes YouTube",
+    "canva_text": "Vous souhaitez repenser cette miniature ?",
+    "canva_cta": "Modifier dans Canva →",
+    "download_btn": "↓ Télécharger",
+    "downloading": "Téléchargement…",
+    "webp_note": "Format moderne — peut ne pas s'ouvrir dans tous les éditeurs",
+    "unavailable": "Non disponible pour cette vidéo",
+    "unavailable_reason": "Cette vidéo n'a pas de miniature 1280×720. Utilisez SD ou HQ.",
+    "placement_desktop_home": "Accueil Bureau",
+    "placement_desktop_search": "Recherche Bureau",
+    "placement_mobile_search": "Recherche Mobile",
+    "placement_suggested": "Vidéos Suggérées",
+    "placement_notification": "Notification",
+    "placement_shorts_feed": "Fil Shorts"
+  },
+
+  "bulk": {
+    "title": "Extraction en masse",
+    "badge_new": "NOUVEAU",
+    "description": "Collez jusqu'à 10 URLs — obtenez les tags de toutes les vidéos + un tableau de fréquence combiné",
+    "expand": "Développer ↓",
+    "collapse": "Réduire ↑",
+    "textarea_placeholder": "Collez une URL YouTube par ligne (jusqu'à 10)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Tout extraire",
+    "extracting": "Extraction {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URLs",
+    "hint_invalid": "{{count}} / 10 URLs · {{invalid}} invalide(s) — seront ignorées",
+    "hint_duplicates": "{{count}} / 10 URLs · {{dupes}} doublon(s) supprimé(s)",
+    "hint_over_limit": "{{count}} / 10 URLs · Seules les 10 premières seront traitées",
+    "zip_btn": "Télécharger toutes les miniatures en ZIP",
+    "zipping": "Compression {{done}}/{{total}}…",
+    "csv_btn": "Télécharger le CSV de recherche",
+    "copy_union_btn": "Copier tous les tags uniques",
+    "freq_table_title": "Fréquence des tags dans toutes les vidéos",
+    "freq_table_desc": "Tags triés par nombre de vidéos les partageant.",
+    "freq_th_tag": "Tag",
+    "freq_th_appears": "Apparaît dans",
+    "freq_th_frequency": "Fréquence",
+    "freq_th_type": "Type",
+    "show_tags_btn": "Afficher les tags ↓",
+    "hide_tags_btn": "Masquer les tags ↑",
+    "video_failed": "Vidéo {{n}} : Échec de l'extraction",
+    "zip_success": "{{count}} miniatures téléchargées en ZIP.",
+    "zip_skipped": "({{skipped}} n'ont pas pu être chargées.)",
+    "zip_failed": "Échec de la création du ZIP.",
+    "csv_downloaded": "CSV de recherche téléchargé.",
+    "union_copied": "{{count}} tags uniques copiés (format prêt pour YouTube).",
+    "no_urls_error": "Collez au moins une URL YouTube valide.",
+    "summary": "{{success}} vidéo(s) analysée(s). {{tags}} tags uniques trouvés."
+  },
+
+  "overlap": {
+    "title": "Analyse des tags concurrents",
+    "description": "Collez votre vidéo + celle d'un concurrent — voyez exactement quels tags ils utilisent que vous n'utilisez pas",
+    "my_label": "URL de votre vidéo",
+    "their_label": "URL du concurrent",
+    "my_placeholder": "https://youtube.com/watch?v=VOTRE_VIDEO",
+    "their_placeholder": "https://youtube.com/watch?v=VIDEO_CONCURRENT",
+    "analyze_btn": "Analyser le chevauchement",
+    "analyzing": "Analyse en cours…",
+    "shared_title": "Tags partagés",
+    "missing_title": "Il vous manque",
+    "unique_title": "Vos tags uniques",
+    "shared_desc": "Les deux vidéos utilisent ces tags",
+    "missing_desc": "Ils les ont — pas vous. Cibles à haute valeur.",
+    "unique_desc": "Seule votre vidéo utilise ces tags",
+    "steal_btn": "Récupérer ces tags",
+    "save_template_btn": "Enregistrer comme modèle",
+    "steal_success": "{{count}} tags manquants copiés (prêts pour YouTube).",
+    "error_need_my": "Veuillez saisir l'URL de votre vidéo.",
+    "error_need_their": "Veuillez saisir l'URL de la vidéo concurrente.",
+    "error_my_failed": "Votre vidéo : {{error}}",
+    "error_their_failed": "Vidéo concurrente : {{error}}",
+    "overlap_label_very_high": "Chevauchement très élevé",
+    "overlap_label_high": "Chevauchement élevé",
+    "overlap_label_moderate": "Chevauchement modéré",
+    "overlap_label_low": "Faible chevauchement",
+    "overlap_label_very_low": "Très faible chevauchement",
+    "overlap_label_no_data": "Pas de données",
+    "col_empty_both": "Aucune vidéo n'a de tags.",
+    "col_empty_mine": "Votre vidéo n'a pas de tags.",
+    "col_empty_theirs": "La vidéo concurrente n'a pas de tags.",
+    "col_empty_shared_none": "Aucun tag en commun.",
+    "col_empty_missing_none": "Vous utilisez déjà tous les tags du concurrent.",
+    "col_empty_unique_none": "Tous vos tags sont également utilisés par le concurrent."
+  },
+
+  "templates": {
+    "title": "Modèles de tags",
+    "description": "Enregistrez des ensembles de tags que vous réutilisez dans plusieurs vidéos",
+    "empty": "Aucun modèle pour l'instant. Extrayez une vidéo et cliquez sur \"Enregistrer comme modèle\".",
+    "apply_btn": "Appliquer",
+    "delete_btn": "Supprimer",
+    "confirm_delete": "Supprimer ce modèle ? Cette action est irréversible.",
+    "deleted_toast": "Modèle supprimé.",
+    "save_prompt_title": "Nommez ce modèle ({{count}} tags) :",
+    "save_prompt_preview": "{{n}} premiers tags : {{preview}}",
+    "saved_toast": "Modèle \"{{name}}\" enregistré.",
+    "save_failed_toast": "Échec de l'enregistrement du modèle.",
+    "extract_first_toast": "Extrayez d'abord une vidéo.",
+    "suggestions_heading": "Modèles enregistrés pertinents",
+    "new_tags_label": "+{{count}} nouveaux tags",
+    "strategy_union": "Ajouter de nouveaux tags",
+    "strategy_union_desc": "Conservez tous les tags actuels et ajoutez les nouveaux du modèle.",
+    "strategy_replace": "Remplacer tous les tags",
+    "strategy_replace_desc": "Supprimez les tags actuels et utilisez uniquement le modèle.",
+    "strategy_prepend": "Prioriser le modèle",
+    "strategy_prepend_desc": "Les tags du modèle apparaissent en premier.",
+    "strategy_append": "Ajouter à la fin",
+    "strategy_append_desc": "Conservez les tags actuels et ajoutez ceux du modèle à la fin.",
+    "merge_added": "{{count}} nouveau(x) tag(s) ajouté(s). {{chars}}/500 caractères utilisés.",
+    "merge_no_new": "Pas de nouveaux tags — tous les tags du modèle sont déjà dans votre liste.",
+    "merge_replaced": "{{count}} tag(s) remplacé(s). {{chars}}/500 caractères utilisés.",
+    "merge_over_limit": "⚠ Le résultat dépasse la limite de 500 caractères ({{chars}}) — certains tags seront tronqués.",
+    "name_required": "Le nom du modèle est requis.",
+    "name_too_long": "Le nom doit comporter 100 caractères ou moins.",
+    "name_invalid": "Le nom doit contenir au moins une lettre ou un chiffre.",
+    "tags_empty": "Un modèle doit contenir au moins un tag.",
+    "tags_over_budget": "Ce modèle utilise {{chars}} caractères — {{over}} au-dessus de la limite.",
+    "export_btn": "Exporter les modèles",
+    "import_btn": "Importer les modèles",
+    "import_success": "{{count}} modèle(s) importé(s).",
+    "import_partial": "{{count}} importés, {{skipped}} ignorés (existent déjà).",
+    "import_failed": "Échec de l'importation — format de fichier invalide."
+  },
+
+  "history": {
+    "title": "Extractions récentes",
+    "description": "Enregistré localement dans votre navigateur — sans compte requis",
+    "clear_btn": "Effacer l'historique",
+    "confirm_clear": "Effacer tout l'historique ? Cette action est irréversible.",
+    "cleared_toast": "Historique effacé.",
+    "empty": "Aucune extraction pour l'instant — collez une URL YouTube ci-dessus pour commencer.",
+    "reextract_btn": "Réextraire",
+    "remove_btn": "✕",
+    "just_now": "À l'instant",
+    "minutes_ago": "il y a {{n}}min",
+    "hours_ago": "il y a {{n}}h",
+    "days_ago": "il y a {{n}}j",
+    "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Veuillez saisir une URL YouTube valide ou un identifiant de vidéo.",
+    "not_found": "Cette vidéo est introuvable. Elle a peut-être été supprimée ou rendue privée.",
+    "rate_limited": "Trop de requêtes. Veuillez patienter avant de réessayer.",
+    "timeout": "La requête a expiré. YouTube est peut-être lent — veuillez réessayer.",
+    "network": "Impossible de se connecter au serveur. Vérifiez votre connexion internet.",
+    "offline": "Vous semblez être hors ligne. Vérifiez votre connexion.",
+    "members_only": "Cette vidéo est réservée aux membres de la chaîne.",
+    "age_restricted": "Cette vidéo est restreinte aux mineurs.",
+    "unknown": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "extraction_failed_title": "Échec de l'extraction",
+    "retry_btn": "Réessayer ↻",
+    "public_video_hint": "Assurez-vous que l'URL est une vidéo YouTube publique.",
+    "retried_toast": "Extrait lors de la deuxième tentative — YouTube était lent.",
+    "recovery_timeout": "La requête a expiré. YouTube est peut-être lent.",
+    "recovery_offline": "Vous semblez être hors ligne.",
+    "recovery_rate_limited": "Trop de requêtes. Attendez 60 secondes.",
+    "recovery_not_found": "Cette vidéo n'existe pas, a été supprimée ou est privée.",
+    "recovery_age_restricted": "Les vidéos restreintes aux mineurs ne peuvent pas être analysées sans authentification."
+  },
+
+  "trust": {
+    "rating": "4,9★ satisfaction",
+    "creators": "Approuvé par des créateurs du monde entier",
+    "free": "Gratuit. Sans inscription. Sans limites."
+  },
+
+  "share": {
+    "section_title": "Partager cet outil",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "twitter": "Twitter / X",
+    "linkedin": "LinkedIn",
+    "reddit": "Reddit",
+    "quora": "Quora",
+    "telegram": "Telegram",
+    "email": "E-mail",
+    "pinterest": "Pinterest",
+    "discord": "Discord",
+    "medium": "Medium",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "snapchat": "Snapchat",
+    "vimeo": "Vimeo",
+    "copy_link": "Copier le lien",
+    "link_copied": "Lien copié !"
+  },
+
+  "faq": {
+    "section_title": "Questions fréquentes",
+    "section_sub": "Tout ce que vous devez savoir sur l'extraction des tags YouTube et le téléchargement des miniatures.",
+    "q1": "Que sont les tags YouTube et sont-ils encore importants pour le SEO ?",
+    "a1": "Les tags YouTube sont des mots-clés que vous ajoutez à une vidéo pour aider YouTube à comprendre son sujet. Bien qu'ils aient moins de poids qu'auparavant, ils contribuent toujours à la façon dont YouTube catégorise votre contenu.",
+    "q2": "Quelle est la limite de caractères pour les tags YouTube ?",
+    "a2": "YouTube applique une limite de 500 caractères pour la longueur combinée de tous les tags d'une vidéo. Lorsque vous dépassez cette limite, YouTube tronque silencieusement les tags à la fin de votre liste.",
+    "q3": "Puis-je extraire les tags de n'importe quelle vidéo YouTube ?",
+    "a3": "Vous pouvez extraire les tags de n'importe quelle vidéo YouTube publique. Les vidéos restreintes, privées et réservées aux membres ne sont pas accessibles sans authentification.",
+    "q4": "Quelle est la différence entre les tags à queue courte, moyenne et longue ?",
+    "a4": "Les tags à queue courte sont des mots uniques — larges et très compétitifs. Ceux à queue moyenne ont deux mots. Ceux à longue traîne ont trois mots ou plus — très spécifiques et moins concurrentiels.",
+    "q5": "Comment télécharger des miniatures YouTube en meilleure qualité ?",
+    "a5": "ytspy propose des miniatures en cinq résolutions : 1280×720, 640×480, 480×360, 320×180 et format WebP.",
+    "q6": "Que mesure le score de santé des tags ?",
+    "a6": "Le score de santé est une note composite de 0 à 100 qui mesure l'efficacité du budget, la distribution des queues, la diversité du vocabulaire et l'alignement des hashtags.",
+    "q7": "Comment fonctionne l'extraction en masse ?",
+    "a7": "Collez jusqu'à 10 URLs dans la zone de texte. ytspy les traite par lots et renvoie tous les tags, un tableau de fréquence et un ZIP de toutes les miniatures.",
+    "q8": "Comment analyser les tags des concurrents ?",
+    "a8": "Utilisez la section d'analyse des concurrents. Collez votre URL et celle du concurrent. ytspy affiche trois colonnes : tags partagés, tags manquants et vos tags uniques.",
+    "q9": "ytspy fonctionne-t-il avec YouTube Shorts ?",
+    "a9": "Oui. Les URLs YouTube Shorts sont entièrement prises en charge.",
+    "q10": "ytspy est-il gratuit ? Y a-t-il des limites ?",
+    "a10": "ytspy est entièrement gratuit sans compte. Le mode masse traite jusqu'à 10 vidéos par session.",
+    "q11": "Qu'est-ce que la bibliothèque de modèles de tags ?",
+    "a11": "La bibliothèque vous permet d'enregistrer des ensembles de tags nommés pour une utilisation future. Les modèles sont stockés dans votre navigateur.",
+    "q12": "Pourquoi l'aperçu du positionnement des miniatures est-il important ?",
+    "a12": "Les miniatures apparaissent dans cinq contextes différents, chacun à une taille différente. Une miniature excellente en haute résolution peut être illisible à 48×48 pixels. ytspy affiche les cinq contextes simultanément."
+  },
+
+  "contact": {
+    "section_title": "Demande et contact",
+    "section_sub": "Vous avez une question, trouvé un bug ou souhaitez suggérer une fonctionnalité ? Nous lisons chaque message.",
+    "name_label": "Nom",
+    "email_label": "E-mail",
+    "message_label": "Message",
+    "name_placeholder": "Votre nom",
+    "email_placeholder": "votre@email.com",
+    "message_placeholder": "Dites-nous ce que vous pensez...",
+    "submit_btn": "Envoyer le message",
+    "success_alert": "Merci ! Votre demande a été transmise.",
+    "error_alert": "Oups ! Un problème est survenu lors de l'envoi de votre message."
+  },
+
+  "citation": {
+    "section_title": "Références et sources",
+    "c1_text": "Aide YouTube — Ajouter des tags à votre vidéo",
+    "c1_url": "https://support.google.com/youtube/answer/146402",
+    "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Recherche et découverte",
+    "c2_url": "https://creatoracademy.youtube.com/",
+    "c2_label": "YouTube",
+    "c3_text": "hiQ Labs c. LinkedIn — le scraping de données publiques est légal",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html",
+    "c3_label": "Tribunal USA",
+    "c4_text": "Directives de marque Google — utilisation autorisée de la marque YouTube",
+    "c4_url": "https://about.youtube/brand-resources/",
+    "c4_label": "Google"
+  },
+
+  "quick_answer": {
+    "label": "RÉPONSE RAPIDE",
+    "text": "Les tags YouTube sont des mots-clés cachés intégrés dans le code source d'une vidéo. ytspy les extrait de n'importe quelle vidéo publique, montre les tags des concurrents qui vous manquent et évalue votre stratégie — gratuitement, sans inscription."
+  },
+
+  "logic": {
+    "label": "LOGIQUE",
+    "text": "YouTube intègre toutes les métadonnées vidéo, y compris les tags, dans un objet JavaScript appelé ytInitialData sur chaque page publique — sans clé API requise."
+  },
+
+  "methodology": {
+    "label": "MÉTHODOLOGIE",
+    "text": "ytspy utilise une chaîne d'extraction à 4 couches côté serveur avec repli automatique, renvoyant uniquement du JSON structuré au navigateur."
+  },
+
+  "freshness": {
+    "today": "Mis à jour aujourd'hui",
+    "last_updated": "Dernière mise à jour {{date}}"
+  },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Gratuit pour toujours. Sans publicités. Sans collecte de données.",
+    "disclaimer": "ytspy est un outil indépendant. Non affilié, approuvé ou connecté à YouTube, Google LLC ou Alphabet Inc. YouTube est une marque déposée de Google LLC.",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Politique de cookies",
+    "terms": "Conditions d'utilisation",
+    "contact": "Contact",
+    "about": "À propos",
+    "twitter_link": "Twitter / X",
+    "github_link": "GitHub"
+  },
+
+  "offline": {
+    "page_title": "Vous êtes hors ligne — ytspy",
+    "heading": "Vous êtes hors ligne",
+    "sub": "Les nouvelles extractions nécessitent une connexion internet. Votre historique et vos modèles enregistrés sont disponibles ci-dessous.",
+    "retry_btn": "Réessayer",
+    "cached_history_title": "Vos extractions récentes",
+    "no_history": "Aucune extraction enregistrée pour l'instant."
+  },
+
+  "pwa": {
+    "install_prompt": "Ajoutez ytspy à votre écran d'accueil pour un accès instantané.",
+    "install_btn": "Installer",
+    "install_dismiss": "Pas maintenant"
+  },
+
+  "lang": {
+    "select": "Langue",
+    "en": "Anglais",
+    "es": "Espagnol",
+    "pt": "Portugais",
+    "hi": "Hindi",
+    "id": "Indonésien",
+    "fr": "Français",
+    "de": "Allemand",
+    "it": "Italien",
+    "tr": "Turc",
+    "pl": "Polonais",
+    "nl": "Néerlandais",
+    "ru": "Russe",
+    "ja": "Japonais",
+    "ko": "Coréen",
+    "ar": "Arabe",
+    "he": "Hébreu",
+    "vi": "Vietnamien",
+    "tl": "Filipino",
+    "th": "Thaï",
+    "uk": "Ukrainien"
+  }
+}
