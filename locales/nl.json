@@ -1,0 +1,387 @@
+{
+  "_language": "Nederlands (Dutch)",
+  "_code": "nl",
+
+  "meta": {
+    "title": "ytspy — YouTube Tag Extractor + Thumbnail Downloader",
+    "description": "Extraheer verborgen YouTube-tags, download thumbnails in 5 resoluties, analyseer concurrentietags en beoordeel je strategie. Gratis, geen account nodig.",
+    "keywords": "youtube tag extractor, youtube thumbnail downloaden, youtube tags analyseren, youtube seo tool gratis"
+  },
+
+  "nav": {
+    "search": "Zoeken",
+    "language": "Taal",
+    "menu_open": "Menu openen",
+    "menu_close": "Menu sluiten",
+    "home": "Home",
+    "guides": "Gidsen",
+    "about": "Over ons",
+    "contact": "Contact"
+  },
+
+  "hero": {
+    "h1_line1": "YouTube-tags extraheren.",
+    "h1_line2": "Thumbnails downloaden.",
+    "h1_line3": "Iedereen overtreffen.",
+    "sub": "Plak een YouTube-URL. Ontvang verborgen tags, thumbnails, concurrentieanalyse — gratis, zonder account.",
+    "tagline1": "YouTube-intelligentie. Gedecodeerd.",
+    "tagline2": "Extraheer. Analyseer. Overwin.",
+    "seasonal_spring": "Lente-editie",
+    "seasonal_summer": "Zomer-editie",
+    "seasonal_fall": "Herfst-editie",
+    "seasonal_winter": "Winter-editie"
+  },
+
+  "input": {
+    "placeholder": "Plak YouTube-URL hier — youtube.com/watch?v=... of youtu.be/...",
+    "paste_btn": "Plakken",
+    "extract_btn": "Extraheren",
+    "clipboard_detected": "YouTube-URL gedetecteerd in klembord — druk op Extraheren of Enter.",
+    "invalid_url_toast": "Voer een geldige YouTube-URL of video-ID in."
+  },
+
+  "cta": {
+    "v1": "Extraheren",
+    "v2": "Analyseren",
+    "v3": "Bespioneren",
+    "v4": "Decoderen",
+    "v5": "Tags ophalen",
+    "v6": "Tags onthullen"
+  },
+
+  "mode": {
+    "both": "Beide",
+    "tags_only": "Alleen tags",
+    "thumbnails_only": "Alleen thumbnails"
+  },
+
+  "meta_card": {
+    "load_metadata": "Volledige metadata laden",
+    "badge_live": "LIVE",
+    "badge_short": "SHORT",
+    "badge_restricted": "LEEFTIJDSBEPERKING",
+    "badge_cached": "GECACHED",
+    "title_unavailable": "Titel niet beschikbaar"
+  },
+
+  "tags_panel": {
+    "title": "Geëxtraheerde tags",
+    "char_limit_label": "/ 500 tekens",
+    "remaining": "{{n}} resterend",
+    "over_limit": "{{n}} BOVEN LIMIET",
+    "short_tail_label": "Short-tail",
+    "mid_tail_label": "Mid-tail",
+    "long_tail_label": "Long-tail",
+    "one_word": "1 woord",
+    "two_words": "2 woorden",
+    "three_plus": "3+ woorden",
+    "no_tags_default": "Geen tags gevonden voor deze video.",
+    "copy_as_label": "Kopiëren als:",
+    "save_template_btn": "Opslaan als sjabloon",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tags",
+    "hashtags_title": "Hashtags in beschrijving",
+    "truncated_title": "stilzwijgend genegeerd door YouTube (500-tekenlimiet overschreden)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} tekens resterend — tagbudget goed benut.",
+    "getting_close": "{{remaining}} tekens resterend — nadert de limiet.",
+    "near_limit": "Nog maar {{remaining}} tekens — bijna op de limiet.",
+    "under_tagged_severe": "Slechts {{pct}}% van het 500-tekenbudget benut. Meer tags creëren meer ontdekkingswegen.",
+    "under_tagged_moderate": "{{remaining}} tekens beschikbaar. Ruimte voor {{n}} extra long-tail tags.",
+    "over_limit": "⚠ {{over}} tekens boven limiet — {{count}} tag(s) aan het einde worden stilzwijgend genegeerd door YouTube. Hieronder rood gemarkeerd."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Deze maker heeft geen tags toegevoegd. Thumbnails en metadata zijn nog beschikbaar.",
+    "age_restricted": "Deze video heeft leeftijdsbeperkingen. Taggegevens zijn niet toegankelijk zonder inloggen.",
+    "private": "Deze video is privé of niet vermeld.",
+    "live_stream": "Livestreams gebruiken een andere metadatastructuur.",
+    "members_only": "Dit is een video exclusief voor leden.",
+    "all_layers_failed": "Tag-extractie was niet succesvol. Thumbnails zijn nog beschikbaar."
+  },
+
+  "copy_formats": {
+    "plain": "Platte tekst",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "YouTube-klaar"
+  },
+
+  "copy_success": "Tags gekopieerd als {{format}}.",
+  "copy_failed": "Kopiëren mislukt — probeer opnieuw.",
+  "single_tag_copied": "Tag gekopieerd.",
+  "tags_file_downloaded": "Tagsbestand gedownload.",
+
+  "health": {
+    "panel_title": "Tag-gezondheidsscore",
+    "out_of": "/ 100",
+    "label_excellent": "Uitstekend",
+    "label_good": "Goed",
+    "label_average": "Gemiddeld",
+    "label_weak": "Zwak",
+    "label_no_tags": "Geen tags",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "N/B",
+    "comp_budget": "Budgetefficiëntie",
+    "comp_tail": "Tail-verdeling",
+    "comp_diversity": "Woorddiversiteit",
+    "comp_hashtag": "Hashtag-afstemming",
+    "suggestions_label": "Verbeteringen",
+    "potential_gain": "+{{n}} ptn",
+    "no_tags_summary": "Geen tags gevonden voor deze video."
+  },
+
+  "budget_labels": { "optimal": "Optimaal", "good": "Goed", "under_used": "Weinig benut", "severely_under": "Sterk onderbenut", "over_limit": "Boven limiet", "no_tags": "Geen tags" },
+  "distribution_labels": { "well_balanced": "Goed uitgebalanceerd", "fairly_balanced": "Redelijk uitgebalanceerd", "uneven": "Ongelijkmatig", "heavily_skewed": "Sterk scheef", "no_data": "Geen gegevens" },
+  "diversity_labels": { "excellent": "Uitstekende variëteit", "good": "Goede variëteit", "repetitive": "Herhalend", "very_repetitive": "Zeer herhalend", "no_data": "Geen gegevens" },
+  "hashtag_labels": { "perfect": "Perfecte afstemming", "strong": "Sterke afstemming", "partial": "Gedeeltelijke afstemming", "weak": "Zwakke afstemming", "none": "Geen afstemming", "no_hashtags": "Geen hashtags" },
+
+  "thumbnails": {
+    "panel_title": "Thumbnails",
+    "preview_label": "Zo ziet het eruit in YouTube-zoekresultaten",
+    "placement_heading": "Thumbnail plaatsingsvoorbeeld",
+    "placement_sub": "Hoe je thumbnail wordt weergegeven in 5 YouTube-contexten",
+    "canva_text": "Wil je deze thumbnail opnieuw ontwerpen?",
+    "canva_cta": "Bewerken in Canva →",
+    "download_btn": "↓ Downloaden",
+    "downloading": "Downloaden…",
+    "webp_note": "Nieuwer formaat — opent mogelijk niet in alle bewerkingsprogramma's",
+    "unavailable": "Niet beschikbaar voor deze video",
+    "unavailable_reason": "Deze video heeft geen 1280×720 thumbnail. Gebruik SD of HQ.",
+    "placement_desktop_home": "Desktop Startpagina",
+    "placement_desktop_search": "Desktop Zoeken",
+    "placement_mobile_search": "Mobiel Zoeken",
+    "placement_suggested": "Voorgestelde video's",
+    "placement_notification": "Melding",
+    "placement_shorts_feed": "Shorts Feed"
+  },
+
+  "bulk": {
+    "title": "Bulk extraheren",
+    "badge_new": "NIEUW",
+    "description": "Plak tot 10 URL's — ontvang tags van alle video's + gecombineerde frequentietabel",
+    "expand": "Uitklappen ↓",
+    "collapse": "Inklappen ↑",
+    "textarea_placeholder": "Plak één YouTube-URL per regel (tot 10)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Alles extraheren",
+    "extracting": "Extraheren {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL's",
+    "hint_invalid": "{{count}} / 10 URL's · {{invalid}} ongeldig — worden overgeslagen",
+    "hint_duplicates": "{{count}} / 10 URL's · {{dupes}} duplicaat/duplicaten verwijderd",
+    "hint_over_limit": "{{count}} / 10 URL's · Alleen de eerste 10 worden verwerkt",
+    "zip_btn": "Alle thumbnails als ZIP downloaden",
+    "zipping": "Comprimeren {{done}}/{{total}}…",
+    "csv_btn": "Onderzoeks-CSV downloaden",
+    "copy_union_btn": "Alle unieke tags kopiëren",
+    "freq_table_title": "Tag-frequentie over alle video's",
+    "freq_table_desc": "Tags gesorteerd op hoeveel video's ze delen.",
+    "freq_th_tag": "Tag", "freq_th_appears": "Verschijnt in", "freq_th_frequency": "Frequentie", "freq_th_type": "Type",
+    "show_tags_btn": "Tags tonen ↓",
+    "hide_tags_btn": "Tags verbergen ↑",
+    "video_failed": "Video {{n}}: Extractie mislukt",
+    "zip_success": "{{count}} thumbnails als ZIP gedownload.",
+    "zip_skipped": "({{skipped}} konden niet worden geladen.)",
+    "zip_failed": "ZIP-download mislukt.",
+    "csv_downloaded": "Onderzoeks-CSV gedownload.",
+    "union_copied": "{{count}} unieke tags gekopieerd (YouTube-klaar formaat).",
+    "no_urls_error": "Plak minimaal één geldige YouTube-URL.",
+    "summary": "{{success}} video('s) geanalyseerd. {{tags}} unieke tags gevonden."
+  },
+
+  "overlap": {
+    "title": "Concurrentie tag-analyse",
+    "description": "Plak jouw video + die van een concurrent — zie precies welke tags zij hebben die jij niet hebt",
+    "my_label": "Jouw video-URL",
+    "their_label": "Concurrent-URL",
+    "my_placeholder": "https://youtube.com/watch?v=JOUW_VIDEO",
+    "their_placeholder": "https://youtube.com/watch?v=CONCURRENT_VIDEO",
+    "analyze_btn": "Overlap analyseren",
+    "analyzing": "Analyseren…",
+    "shared_title": "Gedeelde tags",
+    "missing_title": "Jij mist",
+    "unique_title": "Jouw unieke tags",
+    "shared_desc": "Beide video's gebruiken deze",
+    "missing_desc": "Zij hebben deze — jij niet. Waardevolle doelen.",
+    "unique_desc": "Alleen jouw video gebruikt deze",
+    "steal_btn": "Deze tags stelen",
+    "save_template_btn": "Opslaan als sjabloon",
+    "steal_success": "{{count}} ontbrekende tags gekopieerd (YouTube-klaar).",
+    "error_need_my": "Voer jouw video-URL in.",
+    "error_need_their": "Voer de concurrent-URL in.",
+    "error_my_failed": "Jouw video: {{error}}",
+    "error_their_failed": "Concurrent-video: {{error}}",
+    "overlap_label_very_high": "Zeer hoge overlap",
+    "overlap_label_high": "Hoge overlap",
+    "overlap_label_moderate": "Matige overlap",
+    "overlap_label_low": "Lage overlap",
+    "overlap_label_very_low": "Zeer lage overlap",
+    "overlap_label_no_data": "Geen gegevens",
+    "col_empty_both": "Geen video heeft tags.",
+    "col_empty_mine": "Jouw video heeft geen tags.",
+    "col_empty_theirs": "De concurrent-video heeft geen tags.",
+    "col_empty_shared_none": "Geen gemeenschappelijke tags.",
+    "col_empty_missing_none": "Je gebruikt al alle tags van de concurrent.",
+    "col_empty_unique_none": "Al jouw tags worden ook door de concurrent gebruikt."
+  },
+
+  "templates": {
+    "title": "Tag-sjablonen",
+    "description": "Sla tag-sets op die je hergebruikt in meerdere video's",
+    "empty": "Nog geen sjablonen. Extraheer een video en klik op \"Opslaan als sjabloon\".",
+    "apply_btn": "Toepassen", "delete_btn": "Verwijderen",
+    "confirm_delete": "Dit sjabloon verwijderen? Dit kan niet ongedaan worden gemaakt.",
+    "deleted_toast": "Sjabloon verwijderd.",
+    "save_prompt_title": "Naam voor dit sjabloon ({{count}} tags):",
+    "save_prompt_preview": "Eerste {{n}} tags: {{preview}}",
+    "saved_toast": "Sjabloon \"{{name}}\" opgeslagen.",
+    "save_failed_toast": "Sjabloon opslaan mislukt.",
+    "extract_first_toast": "Extraheer eerst een video.",
+    "suggestions_heading": "Relevante opgeslagen sjablonen",
+    "new_tags_label": "+{{count}} nieuwe tags",
+    "strategy_union": "Nieuwe tags toevoegen",
+    "strategy_union_desc": "Behoud alle huidige tags en voeg nieuwe uit het sjabloon toe.",
+    "strategy_replace": "Alle tags vervangen",
+    "strategy_replace_desc": "Verwijder huidige tags en gebruik alleen het sjabloon.",
+    "strategy_prepend": "Sjabloon prioriteren",
+    "strategy_prepend_desc": "Sjabloontags verschijnen eerst.",
+    "strategy_append": "Aan het einde toevoegen",
+    "strategy_append_desc": "Behoud huidige tags en voeg sjabloontags aan het einde toe.",
+    "merge_added": "{{count}} nieuwe tag(s) toegevoegd. {{chars}}/500 tekens gebruikt.",
+    "merge_no_new": "Geen nieuwe tags — alle sjabloontags staan al in je lijst.",
+    "merge_replaced": "{{count}} tag(s) vervangen. {{chars}}/500 tekens gebruikt.",
+    "merge_over_limit": "⚠ Resultaat overschrijdt 500-tekenlimiet ({{chars}}) — sommige tags worden afgekapt.",
+    "name_required": "Sjabloonnaam is vereist.",
+    "name_too_long": "Naam moet 100 tekens of minder zijn.",
+    "name_invalid": "Naam moet minimaal één letter of cijfer bevatten.",
+    "tags_empty": "Een sjabloon moet minimaal één tag hebben.",
+    "tags_over_budget": "Dit sjabloon gebruikt {{chars}} tekens — {{over}} boven de limiet.",
+    "export_btn": "Sjablonen exporteren", "import_btn": "Sjablonen importeren",
+    "import_success": "{{count}} sjabloon(en) geïmporteerd.",
+    "import_partial": "{{count}} geïmporteerd, {{skipped}} overgeslagen (bestaan al).",
+    "import_failed": "Import mislukt — ongeldig bestandsformaat."
+  },
+
+  "history": {
+    "title": "Recente extracties",
+    "description": "Lokaal opgeslagen in je browser — geen account nodig",
+    "clear_btn": "Geschiedenis wissen",
+    "confirm_clear": "Volledige geschiedenis wissen? Dit kan niet ongedaan worden gemaakt.",
+    "cleared_toast": "Geschiedenis gewist.",
+    "empty": "Nog geen extracties — plak een YouTube-URL hierboven om te beginnen.",
+    "reextract_btn": "Opnieuw extraheren", "remove_btn": "✕",
+    "just_now": "Zojuist", "minutes_ago": "{{n}}min geleden",
+    "hours_ago": "{{n}}u geleden", "days_ago": "{{n}}d geleden", "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Voer een geldige YouTube-URL of video-ID in.",
+    "not_found": "Deze video is niet gevonden. Mogelijk verwijderd of privé gemaakt.",
+    "rate_limited": "Te veel verzoeken. Even wachten.",
+    "timeout": "Verzoek verlopen. YouTube kan traag zijn — probeer opnieuw.",
+    "network": "Geen verbinding met server. Controleer internetverbinding.",
+    "offline": "Je lijkt offline te zijn. Controleer verbinding.",
+    "members_only": "Deze video is alleen voor kanaalleden.",
+    "age_restricted": "Deze video heeft leeftijdsbeperkingen.",
+    "unknown": "Onverwachte fout. Probeer opnieuw.",
+    "extraction_failed_title": "Extractie mislukt",
+    "retry_btn": "Opnieuw proberen ↻",
+    "public_video_hint": "Zorg dat de URL een openbare YouTube-video is.",
+    "retried_toast": "Geëxtraheerd bij tweede poging — YouTube was traag.",
+    "recovery_timeout": "Verzoek verlopen. YouTube kan traag zijn.",
+    "recovery_offline": "Je lijkt offline te zijn.",
+    "recovery_rate_limited": "Te veel verzoeken. Wacht 60 seconden.",
+    "recovery_not_found": "Deze video bestaat niet, is verwijderd of is privé.",
+    "recovery_age_restricted": "Video's met leeftijdsbeperking kunnen niet worden geanalyseerd zonder authenticatie."
+  },
+
+  "trust": { "rating": "4,9★ tevredenheid", "creators": "Vertrouwd door creators wereldwijd", "free": "Gratis. Geen aanmelding. Geen limieten." },
+
+  "share": {
+    "section_title": "Deel deze tool",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "E-mail", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "Link kopiëren", "link_copied": "Link gekopieerd!"
+  },
+
+  "faq": {
+    "section_title": "Veelgestelde vragen",
+    "section_sub": "Alles wat je moet weten over YouTube-tag-extractie en thumbnail-downloads.",
+    "q1": "Wat zijn YouTube-tags en zijn ze nog steeds belangrijk voor SEO?",
+    "a1": "YouTube-tags zijn zoekwoorden die je toevoegt aan een video om YouTube te helpen het onderwerp te begrijpen. Ze hebben minder gewicht dan vroeger, maar dragen nog bij aan hoe YouTube je content categoriseert.",
+    "q2": "Wat is de tekenlimiet voor YouTube-tags?",
+    "a2": "YouTube heeft een limiet van 500 tekens voor de totale lengte van alle tags. Bij overschrijding worden tags stilzwijgend afgekapt zonder waarschuwing.",
+    "q3": "Kan ik tags van elke YouTube-video extraheren?",
+    "a3": "Je kunt tags extraheren van elke openbare YouTube-video. Video's met leeftijdsbeperking, privévideo's en leden-exclusieve video's zijn niet toegankelijk zonder inloggen.",
+    "q4": "Wat is het verschil tussen short-, mid- en long-tail tags?",
+    "a4": "Short-tail zijn enkele woorden — breed en zeer competitief. Mid-tail zijn twee woorden. Long-tail hebben drie of meer woorden — zeer specifiek en minder concurrentie.",
+    "q5": "Hoe download ik YouTube-thumbnails in de hoogste kwaliteit?",
+    "a5": "ytspy biedt thumbnails in vijf resoluties: 1280×720, 640×480, 480×360, 320×180 en WebP-formaat.",
+    "q6": "Wat meet de tag-gezondheidsscore?",
+    "a6": "Het is een samengestelde 0-100-beoordeling van budgetefficiëntie, tail-verdeling, woorddiversiteit en hashtag-afstemming.",
+    "q7": "Hoe werkt de bulk-extractie?",
+    "a7": "Plak tot 10 URL's. ytspy verwerkt ze in batches en geeft alle tags, een frequentietabel en een ZIP van alle thumbnails terug.",
+    "q8": "Hoe analyseer ik concurrentietags?",
+    "a8": "Gebruik de sectie concurrentieanalyse. Plak jouw URL en die van de concurrent. ytspy toont drie kolommen: gedeelde tags, ontbrekende tags en unieke tags.",
+    "q9": "Werkt ytspy met YouTube Shorts?",
+    "a9": "Ja. YouTube Shorts-URL's worden volledig ondersteund.",
+    "q10": "Is ytspy gratis? Zijn er limieten?",
+    "a10": "ytspy is volledig gratis zonder account. De bulkmodus verwerkt tot 10 video's per keer.",
+    "q11": "Wat is de tag-sjabloonbibliotheek?",
+    "a11": "De bibliotheek laat je benoemde tag-sets opslaan voor toekomstig gebruik. Pas elk opgeslagen sjabloon met één klik toe.",
+    "q12": "Waarom is de thumbnail-plaatsingsvoorbeeld belangrijk?",
+    "a12": "YouTube-thumbnails verschijnen in vijf verschillende contexten, elk op een andere grootte. Een uitstekende thumbnail kan onleesbaar zijn bij 48×48 pixels (meldingen)."
+  },
+
+  "contact": {
+    "section_title": "Verzoek & contact",
+    "section_sub": "Vraag, bug gevonden of functiesuggestie? We lezen elk bericht.",
+    "name_label": "Naam", "email_label": "E-mail", "message_label": "Bericht",
+    "name_placeholder": "Jouw naam", "email_placeholder": "jouw@email.nl",
+    "message_placeholder": "Vertel ons wat je denkt...",
+    "submit_btn": "Bericht verzenden",
+    "success_alert": "Bedankt! Je verzoek is verzonden.",
+    "error_alert": "Oeps! Er was een probleem bij het verzenden."
+  },
+
+  "citation": {
+    "section_title": "Referenties & bronnen",
+    "c1_text": "YouTube Help — Tags toevoegen aan je video",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Zoeken en ontdekken op YouTube",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs v. LinkedIn — scrapen van openbare gegevens is legaal",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "US Rechtbank",
+    "c4_text": "Google Merkrichtlijnen — toegestaan gebruik van het YouTube-merk",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "SNEL ANTWOORD", "text": "YouTube-tags zijn verborgen zoekwoorden in de broncode van een video. ytspy extraheert ze uit elke openbare YouTube-video, toont ontbrekende concurrentietags en beoordeelt je strategie — alles gratis, zonder aanmelding." },
+  "logic": { "label": "LOGICA", "text": "YouTube slaat alle videometadata inclusief tags op in een JavaScript-object genaamd ytInitialData op elke openbare videopagina — geen API-sleutel vereist." },
+  "methodology": { "label": "METHODOLOGIE", "text": "ytspy gebruikt een 4-laags server-side extractieketen met automatische fallback en geeft alleen gestructureerde JSON terug aan de browser." },
+  "freshness": { "today": "Vandaag bijgewerkt", "last_updated": "Laatst bijgewerkt {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Voor altijd gratis. Geen advertenties. Geen gegevensverzameling.",
+    "disclaimer": "ytspy is een onafhankelijke tool. Niet gelieerd aan, goedgekeurd door of verbonden met YouTube, Google LLC of Alphabet Inc. YouTube is een handelsmerk van Google LLC.",
+    "privacy": "Privacybeleid", "cookies": "Cookiebeleid", "terms": "Gebruiksvoorwaarden",
+    "contact": "Contact", "about": "Over ons", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "Je bent offline — ytspy", "heading": "Je bent offline", "sub": "Nieuwe extracties vereisen een internetverbinding. Opgeslagen geschiedenis en sjablonen zijn hieronder beschikbaar.", "retry_btn": "Opnieuw proberen", "cached_history_title": "Je recente extracties", "no_history": "Nog geen opgeslagen extracties." },
+  "pwa": { "install_prompt": "Voeg ytspy toe aan je startscherm voor directe toegang.", "install_btn": "Installeren", "install_dismiss": "Niet nu" },
+
+  "lang": {
+    "select": "Taal",
+    "en": "Engels", "es": "Spaans", "pt": "Portugees", "hi": "Hindi",
+    "id": "Indonesisch", "fr": "Frans", "de": "Duits", "it": "Italiaans",
+    "tr": "Turks", "pl": "Pools", "nl": "Nederlands", "ru": "Russisch",
+    "ja": "Japans", "ko": "Koreaans", "ar": "Arabisch", "he": "Hebreeuws",
+    "vi": "Vietnamees", "tl": "Filipijns", "th": "Thais", "uk": "Oekraïens"
+  }
+}
