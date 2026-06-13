@@ -1,0 +1,387 @@
+{
+  "_language": "Türkçe (Turkish)",
+  "_code": "tr",
+
+  "meta": {
+    "title": "ytspy — YouTube Etiket Çıkarıcı + Küçük Resim İndirici",
+    "description": "Gizli YouTube etiketlerini çıkarın, küçük resimleri 5 çözünürlükte indirin, rakip etiketleri analiz edin ve stratejinizi puanlayın. Ücretsiz, kayıt gerekmez.",
+    "keywords": "youtube etiket çıkarıcı, youtube küçük resim indirme, youtube etiket analizi, ücretsiz youtube seo aracı"
+  },
+
+  "nav": {
+    "search": "Ara",
+    "language": "Dil",
+    "menu_open": "Menüyü aç",
+    "menu_close": "Menüyü kapat",
+    "home": "Ana Sayfa",
+    "guides": "Kılavuzlar",
+    "about": "Hakkında",
+    "contact": "İletişim"
+  },
+
+  "hero": {
+    "h1_line1": "YouTube etiketlerini çıkarın.",
+    "h1_line2": "Küçük resimleri indirin.",
+    "h1_line3": "Herkesi geçin.",
+    "sub": "Herhangi bir YouTube URL'si yapıştırın. Gizli etiketler, küçük resimler, rakip analizi — ücretsiz, hesap gerekmez.",
+    "tagline1": "YouTube Zekası. Çözüldü.",
+    "tagline2": "Çıkar. Analiz et. Geç.",
+    "seasonal_spring": "İlkbahar Sürümü",
+    "seasonal_summer": "Yaz Sürümü",
+    "seasonal_fall": "Sonbahar Sürümü",
+    "seasonal_winter": "Kış Sürümü"
+  },
+
+  "input": {
+    "placeholder": "YouTube URL'sini buraya yapıştırın — youtube.com/watch?v=... veya youtu.be/...",
+    "paste_btn": "Yapıştır",
+    "extract_btn": "Çıkar",
+    "clipboard_detected": "Panoda YouTube URL'si algılandı — Çıkar'a veya Enter'a basın.",
+    "invalid_url_toast": "Lütfen geçerli bir YouTube URL'si veya video kimliği girin."
+  },
+
+  "cta": {
+    "v1": "Çıkar",
+    "v2": "Analiz et",
+    "v3": "Gözetle",
+    "v4": "Çöz",
+    "v5": "Etiketleri al",
+    "v6": "Etiketleri ortaya çıkar"
+  },
+
+  "mode": {
+    "both": "İkisi de",
+    "tags_only": "Yalnızca etiketler",
+    "thumbnails_only": "Yalnızca küçük resimler"
+  },
+
+  "meta_card": {
+    "load_metadata": "Tam meta verileri yükle",
+    "badge_live": "CANLI",
+    "badge_short": "SHORT",
+    "badge_restricted": "YAŞ KISITLAMALI",
+    "badge_cached": "ÖNBELLEKTEKİ",
+    "title_unavailable": "Başlık mevcut değil"
+  },
+
+  "tags_panel": {
+    "title": "Çıkarılan etiketler",
+    "char_limit_label": "/ 500 karakter",
+    "remaining": "{{n}} kaldı",
+    "over_limit": "{{n}} LİMİT ÜSTÜ",
+    "short_tail_label": "Kısa kuyruk",
+    "mid_tail_label": "Orta kuyruk",
+    "long_tail_label": "Uzun kuyruk",
+    "one_word": "1 kelime",
+    "two_words": "2 kelime",
+    "three_plus": "3+ kelime",
+    "no_tags_default": "Bu video için etiket bulunamadı.",
+    "copy_as_label": "Kopyala:",
+    "save_template_btn": "Şablon olarak kaydet",
+    "tag_count_one": "{{n}} etiket",
+    "tag_count_many": "{{n}} etiket",
+    "hashtags_title": "Açıklamadaki hashtag'ler",
+    "truncated_title": "YouTube tarafından sessizce yoksayıldı (500 karakter sınırı aşıldı)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} karakter kaldı — etiket bütçesi iyi kullanılıyor.",
+    "getting_close": "{{remaining}} karakter kaldı — limite yaklaşılıyor.",
+    "near_limit": "Yalnızca {{remaining}} karakter kaldı — limite neredeyse ulaşıldı.",
+    "under_tagged_severe": "500 karakterlik bütçenin yalnızca {{pct}}%'i kullanıldı. Daha fazla etiket daha fazla keşif yolu oluşturur.",
+    "under_tagged_moderate": "{{remaining}} karakter mevcut. {{n}} tane daha uzun kuyruklu etiket için yer var.",
+    "over_limit": "⚠ Limitin {{over}} karakter üzerinde — listedeki {{count}} etiket YouTube tarafından sessizce yoksayılıyor. Aşağıda kırmızıyla vurgulandı."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Bu içerik üreticisi etiket eklememiş. Küçük resimler ve meta veriler hâlâ mevcut.",
+    "age_restricted": "Bu video yaş kısıtlamalıdır. Etiket verileri oturum açmadan erişilebilir değil.",
+    "private": "Bu video gizli veya listelenmemiş.",
+    "live_stream": "Canlı yayınlar farklı bir meta veri yapısı kullanır.",
+    "members_only": "Bu video yalnızca kanal üyelerine özeldir.",
+    "all_layers_failed": "Bu video için etiket çıkarma başarısız oldu. Küçük resimler hâlâ mevcut."
+  },
+
+  "copy_formats": {
+    "plain": "Düz metin",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "YouTube'a hazır"
+  },
+
+  "copy_success": "Etiketler {{format}} olarak kopyalandı.",
+  "copy_failed": "Kopyalama başarısız — lütfen tekrar deneyin.",
+  "single_tag_copied": "Etiket kopyalandı.",
+  "tags_file_downloaded": "Etiket dosyası indirildi.",
+
+  "health": {
+    "panel_title": "Etiket Sağlık Puanı",
+    "out_of": "/ 100",
+    "label_excellent": "Mükemmel",
+    "label_good": "İyi",
+    "label_average": "Ortalama",
+    "label_weak": "Zayıf",
+    "label_no_tags": "Etiket yok",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "Y/A",
+    "comp_budget": "Bütçe Verimliliği",
+    "comp_tail": "Kuyruk Dağılımı",
+    "comp_diversity": "Kelime Çeşitliliği",
+    "comp_hashtag": "Hashtag Uyumu",
+    "suggestions_label": "İyileştirmeler",
+    "potential_gain": "+{{n}} puan",
+    "no_tags_summary": "Bu video için etiket bulunamadı."
+  },
+
+  "budget_labels": { "optimal": "Optimal", "good": "İyi", "under_used": "Az kullanılmış", "severely_under": "Çok az kullanılmış", "over_limit": "Limit üstü", "no_tags": "Etiket yok" },
+  "distribution_labels": { "well_balanced": "İyi dengeli", "fairly_balanced": "Oldukça dengeli", "uneven": "Dengesiz", "heavily_skewed": "Çok çarpık", "no_data": "Veri yok" },
+  "diversity_labels": { "excellent": "Mükemmel çeşitlilik", "good": "İyi çeşitlilik", "repetitive": "Tekrarlayan", "very_repetitive": "Çok tekrarlayan", "no_data": "Veri yok" },
+  "hashtag_labels": { "perfect": "Mükemmel uyum", "strong": "Güçlü uyum", "partial": "Kısmi uyum", "weak": "Zayıf uyum", "none": "Uyum yok", "no_hashtags": "Hashtag yok" },
+
+  "thumbnails": {
+    "panel_title": "Küçük Resimler",
+    "preview_label": "YouTube aramasında nasıl göründüğü",
+    "placement_heading": "Küçük resim yerleşim önizlemesi",
+    "placement_sub": "Küçük resminizin 5 YouTube bağlamında nasıl görüntülendiği",
+    "canva_text": "Bu küçük resmi yeniden tasarlamak ister misiniz?",
+    "canva_cta": "Canva'da düzenle →",
+    "download_btn": "↓ İndir",
+    "downloading": "İndiriliyor…",
+    "webp_note": "Daha yeni format — tüm görüntü düzenleyicilerde açılmayabilir",
+    "unavailable": "Bu video için mevcut değil",
+    "unavailable_reason": "Bu videonun 1280×720 küçük resmi yok. SD veya HQ kullanın.",
+    "placement_desktop_home": "Masaüstü Ana Sayfa",
+    "placement_desktop_search": "Masaüstü Arama",
+    "placement_mobile_search": "Mobil Arama",
+    "placement_suggested": "Önerilen Videolar",
+    "placement_notification": "Bildirim",
+    "placement_shorts_feed": "Shorts Akışı"
+  },
+
+  "bulk": {
+    "title": "Toplu çıkarma",
+    "badge_new": "YENİ",
+    "description": "10'a kadar URL yapıştırın — tüm videoların etiketlerini + birleşik frekans tablosunu alın",
+    "expand": "Genişlet ↓",
+    "collapse": "Daralt ↑",
+    "textarea_placeholder": "Satır başına bir YouTube URL'si yapıştırın (10'a kadar)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Tümünü çıkar",
+    "extracting": "Çıkarılıyor {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL",
+    "hint_invalid": "{{count}} / 10 URL · {{invalid}} geçersiz — atlanacak",
+    "hint_duplicates": "{{count}} / 10 URL · {{dupes}} tekrar kaldırıldı",
+    "hint_over_limit": "{{count}} / 10 URL · Yalnızca ilk 10 işlenecek",
+    "zip_btn": "Tüm küçük resimleri ZIP olarak indir",
+    "zipping": "Sıkıştırılıyor {{done}}/{{total}}…",
+    "csv_btn": "Araştırma CSV'sini indir",
+    "copy_union_btn": "Tüm benzersiz etiketleri kopyala",
+    "freq_table_title": "Tüm videolardaki etiket sıklığı",
+    "freq_table_desc": "Etiketler, kaç videonun paylaştığına göre sıralanmış.",
+    "freq_th_tag": "Etiket", "freq_th_appears": "Görüldüğü yer", "freq_th_frequency": "Sıklık", "freq_th_type": "Tür",
+    "show_tags_btn": "Etiketleri göster ↓",
+    "hide_tags_btn": "Etiketleri gizle ↑",
+    "video_failed": "Video {{n}}: Çıkarma başarısız",
+    "zip_success": "{{count}} küçük resim ZIP olarak indirildi.",
+    "zip_skipped": "({{skipped}} yüklenemedi.)",
+    "zip_failed": "ZIP indirmesi başarısız.",
+    "csv_downloaded": "Araştırma CSV'si indirildi.",
+    "union_copied": "{{count}} benzersiz etiket kopyalandı (YouTube'a hazır format).",
+    "no_urls_error": "En az bir geçerli YouTube URL'si yapıştırın.",
+    "summary": "{{success}} video analiz edildi. {{tags}} benzersiz etiket bulundu."
+  },
+
+  "overlap": {
+    "title": "Rakip etiket analizi",
+    "description": "Videonuzu + bir rakibin videosunu yapıştırın — onların sahip olup sizin sahip olmadığınız etiketleri görün",
+    "my_label": "Videonuzun URL'si",
+    "their_label": "Rakip URL'si",
+    "my_placeholder": "https://youtube.com/watch?v=VİDEONUZ",
+    "their_placeholder": "https://youtube.com/watch?v=RAKİP_VİDEO",
+    "analyze_btn": "Örtüşmeyi analiz et",
+    "analyzing": "Analiz ediliyor…",
+    "shared_title": "Ortak etiketler",
+    "missing_title": "Eksik olanlar",
+    "unique_title": "Benzersiz etiketleriniz",
+    "shared_desc": "Her iki video da bunları kullanıyor",
+    "missing_desc": "Onlarda var — sizde yok. Yüksek değerli hedefler.",
+    "unique_desc": "Yalnızca videonuz bunları kullanıyor",
+    "steal_btn": "Bu etiketleri çal",
+    "save_template_btn": "Şablon olarak kaydet",
+    "steal_success": "{{count}} eksik etiket kopyalandı (YouTube'a hazır).",
+    "error_need_my": "Lütfen videonuzun URL'sini girin.",
+    "error_need_their": "Lütfen rakip video URL'sini girin.",
+    "error_my_failed": "Videonuz: {{error}}",
+    "error_their_failed": "Rakip video: {{error}}",
+    "overlap_label_very_high": "Çok yüksek örtüşme",
+    "overlap_label_high": "Yüksek örtüşme",
+    "overlap_label_moderate": "Orta örtüşme",
+    "overlap_label_low": "Düşük örtüşme",
+    "overlap_label_very_low": "Çok düşük örtüşme",
+    "overlap_label_no_data": "Veri yok",
+    "col_empty_both": "Hiçbir videonun etiketi yok.",
+    "col_empty_mine": "Videonuzun etiketi yok.",
+    "col_empty_theirs": "Rakip videonun etiketi yok.",
+    "col_empty_shared_none": "Ortak etiket yok.",
+    "col_empty_missing_none": "Rakibin tüm etiketlerini zaten kullanıyorsunuz.",
+    "col_empty_unique_none": "Tüm etiketleriniz rakip tarafından da kullanılıyor."
+  },
+
+  "templates": {
+    "title": "Etiket şablonları",
+    "description": "Birden fazla videoda yeniden kullandığınız etiket kümelerini kaydedin",
+    "empty": "Henüz şablon yok. Bir video çıkarın ve \"Şablon olarak kaydet\"e tıklayın.",
+    "apply_btn": "Uygula", "delete_btn": "Sil",
+    "confirm_delete": "Bu şablon silinsin mi? Bu işlem geri alınamaz.",
+    "deleted_toast": "Şablon silindi.",
+    "save_prompt_title": "Bu şablon için isim ({{count}} etiket):",
+    "save_prompt_preview": "İlk {{n}} etiket: {{preview}}",
+    "saved_toast": "\"{{name}}\" şablonu kaydedildi.",
+    "save_failed_toast": "Şablon kaydedilemedi.",
+    "extract_first_toast": "Önce bir video çıkarın.",
+    "suggestions_heading": "İlgili kayıtlı şablonlar",
+    "new_tags_label": "+{{count}} yeni etiket",
+    "strategy_union": "Yeni etiket ekle",
+    "strategy_union_desc": "Tüm mevcut etiketleri koru ve şablondan yenilerini ekle.",
+    "strategy_replace": "Tüm etiketleri değiştir",
+    "strategy_replace_desc": "Mevcut etiketleri sil ve yalnızca şablonu kullan.",
+    "strategy_prepend": "Şablona öncelik ver",
+    "strategy_prepend_desc": "Şablon etiketleri önce gelir.",
+    "strategy_append": "Sona ekle",
+    "strategy_append_desc": "Mevcut etiketleri koru ve şablon etiketlerini sona ekle.",
+    "merge_added": "{{count}} yeni etiket eklendi. {{chars}}/500 karakter kullanıldı.",
+    "merge_no_new": "Yeni etiket yok — tüm şablon etiketleri zaten listenizde.",
+    "merge_replaced": "{{count}} etiket değiştirildi. {{chars}}/500 karakter kullanıldı.",
+    "merge_over_limit": "⚠ Sonuç 500 karakter limitini aşıyor ({{chars}}) — bazı etiketler kesilebilir.",
+    "name_required": "Şablon adı gerekli.",
+    "name_too_long": "Ad en fazla 100 karakter olmalı.",
+    "name_invalid": "Ad en az bir harf veya rakam içermeli.",
+    "tags_empty": "Şablon en az bir etiket içermeli.",
+    "tags_over_budget": "Bu şablon {{chars}} karakter kullanıyor — limitin {{over}} üzerinde.",
+    "export_btn": "Şablonları dışa aktar", "import_btn": "Şablonları içe aktar",
+    "import_success": "{{count}} şablon içe aktarıldı.",
+    "import_partial": "{{count}} içe aktarıldı, {{skipped}} atlandı (zaten mevcut).",
+    "import_failed": "İçe aktarma başarısız — geçersiz dosya formatı."
+  },
+
+  "history": {
+    "title": "Son çıkarmalar",
+    "description": "Tarayıcınızda yerel olarak kaydedildi — hesap gerekmez",
+    "clear_btn": "Geçmişi temizle",
+    "confirm_clear": "Tüm geçmiş silinsin mi? Bu işlem geri alınamaz.",
+    "cleared_toast": "Geçmiş temizlendi.",
+    "empty": "Henüz çıkarma yok — başlamak için yukarıya bir YouTube URL'si yapıştırın.",
+    "reextract_btn": "Yeniden çıkar", "remove_btn": "✕",
+    "just_now": "Az önce", "minutes_ago": "{{n}} dk önce",
+    "hours_ago": "{{n}} sa önce", "days_ago": "{{n}} gün önce", "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Lütfen geçerli bir YouTube URL'si veya video kimliği girin.",
+    "not_found": "Bu video bulunamadı. Silinmiş veya gizlenmiş olabilir.",
+    "rate_limited": "Çok fazla istek. Lütfen bir an bekleyin.",
+    "timeout": "İstek zaman aşımına uğradı. YouTube yavaş olabilir — tekrar deneyin.",
+    "network": "Sunucuya bağlanılamadı. İnternet bağlantınızı kontrol edin.",
+    "offline": "Çevrimdışı görünüyorsunuz. Bağlantınızı kontrol edin.",
+    "members_only": "Bu video yalnızca kanal üyelerine özeldir.",
+    "age_restricted": "Bu video yaş kısıtlamalıdır.",
+    "unknown": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "extraction_failed_title": "Çıkarma başarısız",
+    "retry_btn": "Tekrar dene ↻",
+    "public_video_hint": "URL'nin herkese açık bir YouTube videosu olduğundan emin olun.",
+    "retried_toast": "İkinci denemede çıkarıldı — YouTube yavaştı.",
+    "recovery_timeout": "İstek zaman aşımına uğradı. YouTube yavaş olabilir.",
+    "recovery_offline": "Çevrimdışı görünüyorsunuz.",
+    "recovery_rate_limited": "Çok fazla istek. 60 saniye bekleyin.",
+    "recovery_not_found": "Bu video mevcut değil, silindi veya gizlidir.",
+    "recovery_age_restricted": "Yaş kısıtlamalı videolar kimlik doğrulaması olmadan analiz edilemez."
+  },
+
+  "trust": { "rating": "4,9★ memnuniyet", "creators": "Dünya genelinde içerik üreticileri tarafından güvenilir", "free": "Ücretsiz. Kayıt yok. Sınır yok." },
+
+  "share": {
+    "section_title": "Bu aracı paylaş",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "E-posta", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "Bağlantıyı kopyala", "link_copied": "Bağlantı kopyalandı!"
+  },
+
+  "faq": {
+    "section_title": "Sık sorulan sorular",
+    "section_sub": "YouTube etiket çıkarma ve küçük resim indirme hakkında bilmeniz gereken her şey.",
+    "q1": "YouTube etiketleri nedir ve SEO için hâlâ önemli mi?",
+    "a1": "YouTube etiketleri, YouTube'un bir videonun konusunu anlamasına yardımcı olmak için eklediğiniz anahtar kelimelerdir. Yıllar öncesine göre daha az ağırlık taşısalar da içeriğinizin kategorize edilmesine katkıda bulunmaya devam ederler.",
+    "q2": "YouTube etiketleri için karakter sınırı nedir?",
+    "a2": "YouTube, tüm etiketlerin toplam uzunluğu için 500 karakterlik bir sınır uygular. Bu sınır aşıldığında, YouTube etiketleri uyarı vermeden sessizce listeden keser.",
+    "q3": "Herhangi bir YouTube videosundan etiket çıkarabilir miyim?",
+    "a3": "İçerik üreticisinin etiket eklediği herhangi bir herkese açık YouTube videosundan etiket çıkarabilirsiniz. Yaş kısıtlamalı, gizli ve yalnızca üyelere özel videolar oturum açmadan erişilebilir değildir.",
+    "q4": "Kısa kuyruk, orta kuyruk ve uzun kuyruk etiketleri arasındaki fark nedir?",
+    "a4": "Kısa kuyruk tek kelimelerdir — geniş kapsamlı ve çok rekabetçi. Orta kuyruk iki kelimedir. Uzun kuyruk üç veya daha fazla kelimedir — çok spesifik ve daha az rekabetçi.",
+    "q5": "YouTube küçük resimlerini en yüksek kalitede nasıl indirebilirim?",
+    "a5": "ytspy beş çözünürlükte küçük resim sunar: 1280×720, 640×480, 480×360, 320×180 ve WebP formatı.",
+    "q6": "Etiket sağlık puanı ne ölçer?",
+    "a6": "Bütçe verimliliği, kuyruk dağılımı, kelime çeşitliliği ve hashtag uyumunu ölçen 0-100 bileşik bir değerlendirmedir.",
+    "q7": "Toplu çıkarma nasıl çalışır?",
+    "a7": "10'a kadar URL yapıştırın. ytspy bunları toplu olarak işler ve tüm etiketleri, frekans tablosunu ve tüm küçük resimlerin ZIP'ini döndürür.",
+    "q8": "Rakip etiketleri nasıl analiz ederim?",
+    "a8": "Rakip analizi bölümünü kullanın. Kendi URL'nizi ve rakibin URL'sini yapıştırın. ytspy üç sütun gösterir: ortak etiketler, eksik etiketler ve benzersiz etiketler.",
+    "q9": "ytspy YouTube Shorts ile çalışır mı?",
+    "a9": "Evet. YouTube Shorts URL'leri tam olarak desteklenmektedir.",
+    "q10": "ytspy ücretsiz mi? Sınırlamalar var mı?",
+    "a10": "ytspy hesap gerektirmeden tamamen ücretsizdir. Toplu mod çalıştırma başına 10'a kadar video işler.",
+    "q11": "Etiket şablonu kütüphanesi nedir?",
+    "a11": "Kütüphane, gelecekte kullanmak üzere adlandırılmış etiket kümeleri kaydetmenizi sağlar. Yeni bir video yüklerken tek tıklamayla herhangi bir kaydedilmiş şablonu uygulayın.",
+    "q12": "Küçük resim yerleşim önizlemesi neden önemli?",
+    "a12": "YouTube küçük resimleri beş farklı bağlamda görünür ve her biri farklı boyutlarda. Yüksek çözünürlükte mükemmel görünen bir küçük resim, 48×48 piksel boyutunda (bildirimler) okunamaz olabilir."
+  },
+
+  "contact": {
+    "section_title": "İstek ve iletişim",
+    "section_sub": "Sorunuz mu var, hata mı buldunuz veya özellik önermek mi istiyorsunuz? Her mesajı okuyoruz.",
+    "name_label": "Ad", "email_label": "E-posta", "message_label": "Mesaj",
+    "name_placeholder": "Adınız", "email_placeholder": "siz@email.com",
+    "message_placeholder": "Aklınızdakileri bize anlatın...",
+    "submit_btn": "Mesaj gönder",
+    "success_alert": "Teşekkürler! İsteğiniz iletildi.",
+    "error_alert": "Hay aksi! Formunuzu gönderirken bir sorun oluştu."
+  },
+
+  "citation": {
+    "section_title": "Referanslar ve kaynaklar",
+    "c1_text": "YouTube Yardım — Videonuza etiket ekleme",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — YouTube'da arama ve keşif",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs v. LinkedIn — kamuya açık verilerin toplanması yasaldır",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "ABD Mahkemesi",
+    "c4_text": "Google Marka Kılavuzları — YouTube markasının izin verilen kullanımı",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "HIZLI YANIT", "text": "YouTube etiketleri, bir videonun kaynak koduna gömülü gizli anahtar kelimelerdir. ytspy bunları herhangi bir herkese açık YouTube videosundan çıkarır, eksik rakip etiketlerini gösterir ve stratejinizi puanlar — hepsi ücretsiz, kayıt gerekmez." },
+  "logic": { "label": "MANTIK", "text": "YouTube, etiketler dahil tüm video meta verilerini her herkese açık video sayfasındaki ytInitialData adlı bir JavaScript nesnesine gömer — API anahtarı gerekmez." },
+  "methodology": { "label": "METODOLOJİ", "text": "ytspy, otomatik geri dönüşlü 4 katmanlı sunucu taraflı çıkarma zinciri kullanır ve tarayıcıya yalnızca yapılandırılmış JSON döndürür." },
+  "freshness": { "today": "Bugün güncellendi", "last_updated": "Son güncelleme {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Sonsuza kadar ücretsiz. Reklam yok. Veri toplanmaz.",
+    "disclaimer": "ytspy bağımsız bir araçtır. YouTube, Google LLC veya Alphabet Inc. ile bağlantılı, onaylanmış veya ilişkili değildir. YouTube, Google LLC'nin ticari markasıdır.",
+    "privacy": "Gizlilik Politikası", "cookies": "Çerez Politikası", "terms": "Kullanım Koşulları",
+    "contact": "İletişim", "about": "Hakkında", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "Çevrimdışısınız — ytspy", "heading": "Çevrimdışısınız", "sub": "Yeni çıkarmalar için internet bağlantısı gerekir. Kayıtlı geçmişiniz ve şablonlarınız aşağıda mevcuttur.", "retry_btn": "Tekrar dene", "cached_history_title": "Son çıkarmalarınız", "no_history": "Henüz kayıtlı çıkarma yok." },
+  "pwa": { "install_prompt": "Anlık erişim için ytspy'ı ana ekranınıza ekleyin.", "install_btn": "Yükle", "install_dismiss": "Şimdi değil" },
+
+  "lang": {
+    "select": "Dil",
+    "en": "İngilizce", "es": "İspanyolca", "pt": "Portekizce", "hi": "Hintçe",
+    "id": "Endonezce", "fr": "Fransızca", "de": "Almanca", "it": "İtalyanca",
+    "tr": "Türkçe", "pl": "Lehçe", "nl": "Hollandaca", "ru": "Rusça",
+    "ja": "Japonca", "ko": "Korece", "ar": "Arapça", "he": "İbranice",
+    "vi": "Vietnamca", "tl": "Filipince", "th": "Tayca", "uk": "Ukraynaca"
+  }
+}
