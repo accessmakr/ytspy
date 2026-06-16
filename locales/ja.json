@@ -1,0 +1,387 @@
+{
+  "_language": "日本語 (Japanese)",
+  "_code": "ja",
+
+  "meta": {
+    "title": "ytspy — YouTubeタグ抽出ツール + サムネイルダウンローダー",
+    "description": "隠れたYouTubeタグを抽出し、5種類の解像度でサムネイルをダウンロード、競合タグを分析してタグ戦略を評価。完全無料、登録不要。",
+    "keywords": "youtubeタグ抽出, youtubeサムネイルダウンロード, youtubeタグ分析, 無料youtube seoツール"
+  },
+
+  "nav": {
+    "search": "検索",
+    "language": "言語",
+    "menu_open": "メニューを開く",
+    "menu_close": "メニューを閉じる",
+    "home": "ホーム",
+    "guides": "ガイド",
+    "about": "概要",
+    "contact": "お問い合わせ"
+  },
+
+  "hero": {
+    "h1_line1": "YouTubeタグを抽出。",
+    "h1_line2": "サムネイルをダウンロード。",
+    "h1_line3": "全員を上回る。",
+    "sub": "YouTubeのURLを貼り付けるだけ。隠れたタグ、サムネイル、競合分析をアカウント不要で無料取得。",
+    "tagline1": "YouTubeインテリジェンス。解読済み。",
+    "tagline2": "抽出。分析。超越。",
+    "seasonal_spring": "春版",
+    "seasonal_summer": "夏版",
+    "seasonal_fall": "秋版",
+    "seasonal_winter": "冬版"
+  },
+
+  "input": {
+    "placeholder": "YouTubeのURLをここに貼り付け — youtube.com/watch?v=... または youtu.be/...",
+    "paste_btn": "貼り付け",
+    "extract_btn": "抽出",
+    "clipboard_detected": "クリップボードにYouTubeのURLを検出 — 抽出ボタンかEnterを押してください。",
+    "invalid_url_toast": "有効なYouTubeのURLまたは動画IDを入力してください。"
+  },
+
+  "cta": {
+    "v1": "抽出する",
+    "v2": "分析する",
+    "v3": "スパイする",
+    "v4": "解読する",
+    "v5": "タグを取得",
+    "v6": "タグを確認"
+  },
+
+  "mode": {
+    "both": "両方",
+    "tags_only": "タグのみ",
+    "thumbnails_only": "サムネイルのみ"
+  },
+
+  "meta_card": {
+    "load_metadata": "完全なメタデータを読み込む",
+    "badge_live": "ライブ",
+    "badge_short": "ショート",
+    "badge_restricted": "年齢制限あり",
+    "badge_cached": "キャッシュ済み",
+    "title_unavailable": "タイトル取得不可"
+  },
+
+  "tags_panel": {
+    "title": "抽出されたタグ",
+    "char_limit_label": "/ 500文字",
+    "remaining": "残り{{n}}文字",
+    "over_limit": "{{n}}文字オーバー",
+    "short_tail_label": "ショートテール",
+    "mid_tail_label": "ミドルテール",
+    "long_tail_label": "ロングテール",
+    "one_word": "1語",
+    "two_words": "2語",
+    "three_plus": "3語以上",
+    "no_tags_default": "この動画にはタグが見つかりませんでした。",
+    "copy_as_label": "コピー形式:",
+    "save_template_btn": "テンプレートとして保存",
+    "tag_count_one": "{{n}}個のタグ",
+    "tag_count_many": "{{n}}個のタグ",
+    "hashtags_title": "説明欄のハッシュタグ",
+    "truncated_title": "YouTubeに無視されています（500文字制限超過）"
+  },
+
+  "char_hints": {
+    "optimal": "残り{{remaining}}文字 — タグ予算を効果的に活用できています。",
+    "getting_close": "残り{{remaining}}文字 — 上限に近づいています。",
+    "near_limit": "残りわずか{{remaining}}文字 — 上限まであとわずかです。",
+    "under_tagged_severe": "500文字予算の{{pct}}%しか使用していません。タグを増やすことで発見の機会が広がります。",
+    "under_tagged_moderate": "残り{{remaining}}文字。あと{{n}}個のロングテールタグを追加できます。",
+    "over_limit": "⚠ {{over}}文字オーバー — リスト末尾の{{count}}個のタグがYouTubeに無視されています。以下に赤でハイライト表示。"
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "このクリエイターはタグを設定していません。サムネイルとメタデータは利用可能です。",
+    "age_restricted": "この動画は年齢制限があります。ログインなしではタグデータにアクセスできません。",
+    "private": "この動画は非公開または限定公開です。",
+    "live_stream": "ライブ配信は異なるメタデータ構造を使用しています。",
+    "members_only": "この動画はメンバー限定です。",
+    "all_layers_failed": "タグの抽出に失敗しました。サムネイルは利用可能です。"
+  },
+
+  "copy_formats": {
+    "plain": "プレーンテキスト",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "YouTube用"
+  },
+
+  "copy_success": "タグを{{format}}形式でコピーしました。",
+  "copy_failed": "コピーに失敗しました — もう一度お試しください。",
+  "single_tag_copied": "タグをコピーしました。",
+  "tags_file_downloaded": "タグファイルをダウンロードしました。",
+
+  "health": {
+    "panel_title": "タグ健全性スコア",
+    "out_of": "/ 100",
+    "label_excellent": "優秀",
+    "label_good": "良好",
+    "label_average": "平均",
+    "label_weak": "弱い",
+    "label_no_tags": "タグなし",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "N/A",
+    "comp_budget": "予算効率",
+    "comp_tail": "テール分布",
+    "comp_diversity": "単語多様性",
+    "comp_hashtag": "ハッシュタグ整合性",
+    "suggestions_label": "改善点",
+    "potential_gain": "+{{n}}点",
+    "no_tags_summary": "この動画にはタグが見つかりませんでした。"
+  },
+
+  "budget_labels": { "optimal": "最適", "good": "良好", "under_used": "少ない", "severely_under": "非常に少ない", "over_limit": "超過", "no_tags": "タグなし" },
+  "distribution_labels": { "well_balanced": "バランスが良い", "fairly_balanced": "まずまず", "uneven": "偏りあり", "heavily_skewed": "大きく偏り", "no_data": "データなし" },
+  "diversity_labels": { "excellent": "優秀な多様性", "good": "良好な多様性", "repetitive": "繰り返しが多い", "very_repetitive": "非常に繰り返しが多い", "no_data": "データなし" },
+  "hashtag_labels": { "perfect": "完璧な整合", "strong": "強い整合", "partial": "部分的な整合", "weak": "弱い整合", "none": "整合なし", "no_hashtags": "ハッシュタグなし" },
+
+  "thumbnails": {
+    "panel_title": "サムネイル",
+    "preview_label": "YouTube検索での表示",
+    "placement_heading": "サムネイル配置プレビュー",
+    "placement_sub": "5つのYouTube表示コンテキストでのサムネイル表示",
+    "canva_text": "このサムネイルをリデザインしたいですか？",
+    "canva_cta": "Canvaで編集 →",
+    "download_btn": "↓ ダウンロード",
+    "downloading": "ダウンロード中…",
+    "webp_note": "新しいフォーマット — 一部の画像エディタで開けない場合があります",
+    "unavailable": "この動画では利用不可",
+    "unavailable_reason": "この動画には1280×720のサムネイルがありません。SDまたはHQをご利用ください。",
+    "placement_desktop_home": "デスクトップ ホーム",
+    "placement_desktop_search": "デスクトップ 検索",
+    "placement_mobile_search": "モバイル 検索",
+    "placement_suggested": "おすすめ動画",
+    "placement_notification": "通知",
+    "placement_shorts_feed": "Shortsフィード"
+  },
+
+  "bulk": {
+    "title": "一括抽出",
+    "badge_new": "新機能",
+    "description": "最大10件のURLを貼り付け — 全動画のタグ + 統合頻度テーブルを取得",
+    "expand": "展開 ↓",
+    "collapse": "折りたたむ ↑",
+    "textarea_placeholder": "1行に1つのYouTube URLを貼り付け（最大10件）\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "すべて抽出",
+    "extracting": "抽出中 {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL",
+    "hint_invalid": "{{count}} / 10 URL · {{invalid}}件無効 — スキップされます",
+    "hint_duplicates": "{{count}} / 10 URL · {{dupes}}件の重複を削除",
+    "hint_over_limit": "{{count}} / 10 URL · 最初の10件のみ処理されます",
+    "zip_btn": "すべてのサムネイルをZIPでダウンロード",
+    "zipping": "圧縮中 {{done}}/{{total}}…",
+    "csv_btn": "調査CSVをダウンロード",
+    "copy_union_btn": "すべてのユニークタグをコピー",
+    "freq_table_title": "全動画のタグ頻度",
+    "freq_table_desc": "タグを共有する動画数順に並べ替え。",
+    "freq_th_tag": "タグ", "freq_th_appears": "出現", "freq_th_frequency": "頻度", "freq_th_type": "種別",
+    "show_tags_btn": "タグを表示 ↓",
+    "hide_tags_btn": "タグを非表示 ↑",
+    "video_failed": "動画{{n}}: 抽出失敗",
+    "zip_success": "{{count}}件のサムネイルをZIPでダウンロードしました。",
+    "zip_skipped": "（{{skipped}}件の読み込みに失敗。）",
+    "zip_failed": "ZIPのダウンロードに失敗しました。",
+    "csv_downloaded": "調査CSVをダウンロードしました。",
+    "union_copied": "{{count}}件のユニークタグをコピーしました（YouTube用フォーマット）。",
+    "no_urls_error": "有効なYouTube URLを少なくとも1つ貼り付けてください。",
+    "summary": "{{success}}件の動画を分析。{{tags}}個のユニークタグを発見。"
+  },
+
+  "overlap": {
+    "title": "競合タグ分析",
+    "description": "自分の動画 + 競合の動画を貼り付け — 相手が持ち自分にないタグを確認",
+    "my_label": "自分の動画URL",
+    "their_label": "競合のURL",
+    "my_placeholder": "https://youtube.com/watch?v=自分の動画",
+    "their_placeholder": "https://youtube.com/watch?v=競合の動画",
+    "analyze_btn": "重複を分析",
+    "analyzing": "分析中…",
+    "shared_title": "共通タグ",
+    "missing_title": "不足タグ",
+    "unique_title": "自分だけのタグ",
+    "shared_desc": "両方の動画で使用",
+    "missing_desc": "競合が持つタグ — 高価値のターゲット。",
+    "unique_desc": "自分の動画のみで使用",
+    "steal_btn": "これらのタグをコピー",
+    "save_template_btn": "テンプレートとして保存",
+    "steal_success": "{{count}}件の不足タグをコピーしました（YouTube用）。",
+    "error_need_my": "自分の動画URLを入力してください。",
+    "error_need_their": "競合動画のURLを入力してください。",
+    "error_my_failed": "自分の動画: {{error}}",
+    "error_their_failed": "競合動画: {{error}}",
+    "overlap_label_very_high": "非常に高い重複",
+    "overlap_label_high": "高い重複",
+    "overlap_label_moderate": "中程度の重複",
+    "overlap_label_low": "低い重複",
+    "overlap_label_very_low": "非常に低い重複",
+    "overlap_label_no_data": "データなし",
+    "col_empty_both": "どちらの動画にもタグがありません。",
+    "col_empty_mine": "自分の動画にタグがありません。",
+    "col_empty_theirs": "競合動画にタグがありません。",
+    "col_empty_shared_none": "共通タグはありません。",
+    "col_empty_missing_none": "競合のタグをすべて使用しています。",
+    "col_empty_unique_none": "自分のタグはすべて競合も使用しています。"
+  },
+
+  "templates": {
+    "title": "タグテンプレート",
+    "description": "複数の動画で再利用するタグセットを保存",
+    "empty": "テンプレートがありません。動画を抽出して「テンプレートとして保存」をクリックしてください。",
+    "apply_btn": "適用", "delete_btn": "削除",
+    "confirm_delete": "このテンプレートを削除しますか？元に戻すことはできません。",
+    "deleted_toast": "テンプレートを削除しました。",
+    "save_prompt_title": "このテンプレートの名前（{{count}}個のタグ）:",
+    "save_prompt_preview": "最初の{{n}}個のタグ: {{preview}}",
+    "saved_toast": "テンプレート「{{name}}」を保存しました。",
+    "save_failed_toast": "テンプレートの保存に失敗しました。",
+    "extract_first_toast": "先に動画を抽出してください。",
+    "suggestions_heading": "関連する保存済みテンプレート",
+    "new_tags_label": "+{{count}}個の新しいタグ",
+    "strategy_union": "新しいタグを追加",
+    "strategy_union_desc": "現在のタグをすべて保持し、テンプレートから新しいタグを追加。",
+    "strategy_replace": "すべてのタグを置き換え",
+    "strategy_replace_desc": "現在のタグを破棄し、テンプレートのみを使用。",
+    "strategy_prepend": "テンプレートを優先",
+    "strategy_prepend_desc": "テンプレートのタグが先に来る。",
+    "strategy_append": "末尾に追加",
+    "strategy_append_desc": "現在のタグを保持し、テンプレートのタグを末尾に追加。",
+    "merge_added": "{{count}}個の新しいタグを追加しました。{{chars}}/500文字使用中。",
+    "merge_no_new": "新しいタグなし — すべてのテンプレートタグはすでにリストにあります。",
+    "merge_replaced": "{{count}}個のタグを置き換えました。{{chars}}/500文字使用中。",
+    "merge_over_limit": "⚠ 結果が500文字制限を超えています（{{chars}}文字）— 一部のタグが切り捨てられます。",
+    "name_required": "テンプレート名は必須です。",
+    "name_too_long": "名前は100文字以内にしてください。",
+    "name_invalid": "名前には少なくとも1文字または数字が必要です。",
+    "tags_empty": "テンプレートには少なくとも1つのタグが必要です。",
+    "tags_over_budget": "このテンプレートは{{chars}}文字を使用しています — 制限を{{over}}文字超過。",
+    "export_btn": "テンプレートをエクスポート", "import_btn": "テンプレートをインポート",
+    "import_success": "{{count}}個のテンプレートをインポートしました。",
+    "import_partial": "{{count}}個インポート、{{skipped}}個スキップ（すでに存在）。",
+    "import_failed": "インポート失敗 — 無効なファイル形式。"
+  },
+
+  "history": {
+    "title": "最近の抽出",
+    "description": "ブラウザにローカル保存 — アカウント不要",
+    "clear_btn": "履歴を消去",
+    "confirm_clear": "すべての履歴を消去しますか？元に戻すことはできません。",
+    "cleared_toast": "履歴を消去しました。",
+    "empty": "まだ抽出はありません — 上のYouTube URLを貼り付けて始めましょう。",
+    "reextract_btn": "再抽出", "remove_btn": "✕",
+    "just_now": "たった今", "minutes_ago": "{{n}}分前",
+    "hours_ago": "{{n}}時間前", "days_ago": "{{n}}日前", "date_format": "M月D日"
+  },
+
+  "errors": {
+    "invalid_url": "有効なYouTubeのURLまたは動画IDを入力してください。",
+    "not_found": "この動画は見つかりませんでした。削除または非公開になっている可能性があります。",
+    "rate_limited": "リクエストが多すぎます。しばらくお待ちください。",
+    "timeout": "リクエストがタイムアウトしました。YouTubeが遅い可能性があります — 再試行してください。",
+    "network": "サーバーに接続できませんでした。インターネット接続を確認してください。",
+    "offline": "オフラインのようです。接続を確認してください。",
+    "members_only": "この動画はチャンネルメンバー限定です。",
+    "age_restricted": "この動画は年齢制限があります。",
+    "unknown": "予期しないエラーが発生しました。再試行してください。",
+    "extraction_failed_title": "抽出失敗",
+    "retry_btn": "再試行 ↻",
+    "public_video_hint": "URLが公開されているYouTube動画であることを確認してください。",
+    "retried_toast": "2回目の試行で抽出しました — YouTubeが遅かったようです。",
+    "recovery_timeout": "リクエストがタイムアウトしました。YouTubeが遅い可能性があります。",
+    "recovery_offline": "オフラインのようです。",
+    "recovery_rate_limited": "リクエストが多すぎます。60秒待ってください。",
+    "recovery_not_found": "この動画は存在しない、削除された、または非公開です。",
+    "recovery_age_restricted": "年齢制限のある動画は認証なしでは分析できません。"
+  },
+
+  "trust": { "rating": "4.9★ 満足度", "creators": "世界中のクリエイターが信頼", "free": "無料。ログイン不要。制限なし。" },
+
+  "share": {
+    "section_title": "このツールをシェア",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "メール", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "リンクをコピー", "link_copied": "リンクをコピーしました！"
+  },
+
+  "faq": {
+    "section_title": "よくある質問",
+    "section_sub": "YouTubeタグの抽出とサムネイルのダウンロードについて知っておくべきこと。",
+    "q1": "YouTubeタグとは何ですか？SEOにまだ重要ですか？",
+    "a1": "YouTubeタグはYouTubeが動画のトピックを理解するのに役立つキーワードです。以前より重要性は低下しましたが、コンテンツの分類に貢献しています。",
+    "q2": "YouTubeタグの文字数制限は何ですか？",
+    "a2": "YouTubeはすべてのタグの合計長に500文字の制限を設けています。超過するとリスト末尾のタグが警告なしに無視されます。",
+    "q3": "すべてのYouTube動画からタグを抽出できますか？",
+    "a3": "タグが設定されている公開YouTube動画からタグを抽出できます。年齢制限、非公開、メンバー限定動画はログインなしではアクセスできません。",
+    "q4": "ショートテール、ミドルテール、ロングテールタグの違いは？",
+    "a4": "ショートテールは1語 — 幅広く非常に競争的。ミドルテールは2語。ロングテールは3語以上 — 非常に具体的で競争が少ない。",
+    "q5": "最高品質のYouTubeサムネイルをダウンロードするには？",
+    "a5": "ytspyは5種類の解像度でサムネイルを提供します：1280×720、640×480、480×360、320×180、WebP形式。",
+    "q6": "タグ健全性スコアは何を測定しますか？",
+    "a6": "予算効率、テール分布、単語多様性、ハッシュタグ整合性を測定する0〜100の複合評価です。",
+    "q7": "一括抽出はどのように機能しますか？",
+    "a7": "最大10件のURLを貼り付けます。ytspyはバッチ処理し、すべてのタグ、頻度テーブル、すべてのサムネイルのZIPを返します。",
+    "q8": "競合タグを分析するには？",
+    "a8": "競合分析セクションを使用します。自分のURLと競合のURLを貼り付けます。ytspyは3列を表示：共通タグ、不足タグ、自分だけのタグ。",
+    "q9": "ytspyはYouTube Shortsに対応していますか？",
+    "a9": "はい。YouTube ShortsのURLは完全にサポートされています。",
+    "q10": "ytspyは無料ですか？制限はありますか？",
+    "a10": "ytspyはアカウント不要で完全無料です。一括モードは1回に最大10件の動画を処理します。",
+    "q11": "タグテンプレートライブラリとは何ですか？",
+    "a11": "ライブラリでは将来の使用のために名前付きタグセットを保存できます。ワンクリックで保存済みテンプレートを適用できます。",
+    "q12": "サムネイル配置プレビューはなぜ重要ですか？",
+    "a12": "YouTubeのサムネイルは5つの異なるコンテキストで表示され、それぞれ異なるサイズです。48×48ピクセル（通知）では素晴らしいサムネイルも判読できない場合があります。"
+  },
+
+  "contact": {
+    "section_title": "お問い合わせ",
+    "section_sub": "質問、バグの発見、機能提案がありますか？すべてのメッセージを確認します。",
+    "name_label": "名前", "email_label": "メール", "message_label": "メッセージ",
+    "name_placeholder": "お名前", "email_placeholder": "your@email.jp",
+    "message_placeholder": "お気軽にご連絡ください...",
+    "submit_btn": "送信",
+    "success_alert": "ありがとうございます！リクエストを受け付けました。",
+    "error_alert": "送信中に問題が発生しました。"
+  },
+
+  "citation": {
+    "section_title": "参考資料",
+    "c1_text": "YouTubeヘルプ — 動画にタグを追加する",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — YouTubeでの検索と発見",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs対LinkedIn — 公開データのスクレイピングは合法",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "米国裁判所",
+    "c4_text": "Googleブランドガイドライン — YouTubeトレードマークの許可された使用",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "クイックアンサー", "text": "YouTubeタグは動画のソースコードに埋め込まれた隠れたキーワードです。ytspyはすべての公開YouTube動画からタグを抽出し、不足している競合タグを表示し、戦略を評価します — 完全無料、登録不要。" },
+  "logic": { "label": "ロジック", "text": "YouTubeはすべての公開動画ページのytInitialDataというJavaScriptオブジェクトにタグを含むすべての動画メタデータを埋め込んでいます — APIキー不要。" },
+  "methodology": { "label": "メソドロジー", "text": "ytspyは自動フォールバック付きの4層サーバーサイド抽出チェーンを使用し、ブラウザには構造化JSONのみを返します。" },
+  "freshness": { "today": "本日更新", "last_updated": "最終更新: {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "永久無料。広告なし。データ収集なし。",
+    "disclaimer": "ytspyは独立したツールです。YouTube、Google LLC、またはAlphabet Incと提携、承認、または接続されていません。YouTubeはGoogle LLCの商標です。",
+    "privacy": "プライバシーポリシー", "cookies": "Cookieポリシー", "terms": "利用規約",
+    "contact": "お問い合わせ", "about": "概要", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "オフライン — ytspy", "heading": "オフラインです", "sub": "新しい抽出にはインターネット接続が必要です。保存済みの履歴とテンプレートは以下で利用可能です。", "retry_btn": "再試行", "cached_history_title": "最近の抽出", "no_history": "保存済みの抽出はまだありません。" },
+  "pwa": { "install_prompt": "即時アクセスのためにytspyをホーム画面に追加。", "install_btn": "インストール", "install_dismiss": "後で" },
+
+  "lang": {
+    "select": "言語",
+    "en": "英語", "es": "スペイン語", "pt": "ポルトガル語", "hi": "ヒンディー語",
+    "id": "インドネシア語", "fr": "フランス語", "de": "ドイツ語", "it": "イタリア語",
+    "tr": "トルコ語", "pl": "ポーランド語", "nl": "オランダ語", "ru": "ロシア語",
+    "ja": "日本語", "ko": "韓国語", "ar": "アラビア語", "he": "ヘブライ語",
+    "vi": "ベトナム語", "tl": "フィリピン語", "th": "タイ語", "uk": "ウクライナ語"
+  }
+}
