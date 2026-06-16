@@ -1,0 +1,387 @@
+{
+  "_language": "한국어 (Korean)",
+  "_code": "ko",
+
+  "meta": {
+    "title": "ytspy — 유튜브 태그 추출기 + 썸네일 다운로더",
+    "description": "숨겨진 유튜브 태그를 추출하고, 5가지 해상도로 썸네일을 다운로드하고, 경쟁자 태그를 분석하세요. 완전 무료, 가입 불필요.",
+    "keywords": "유튜브 태그 추출기, 유튜브 썸네일 다운로드, 유튜브 태그 분석, 무료 유튜브 seo 도구"
+  },
+
+  "nav": {
+    "search": "검색",
+    "language": "언어",
+    "menu_open": "메뉴 열기",
+    "menu_close": "메뉴 닫기",
+    "home": "홈",
+    "guides": "가이드",
+    "about": "소개",
+    "contact": "문의"
+  },
+
+  "hero": {
+    "h1_line1": "유튜브 태그를 추출하세요.",
+    "h1_line2": "썸네일을 다운로드하세요.",
+    "h1_line3": "모든 경쟁자를 앞서세요.",
+    "sub": "유튜브 URL을 붙여넣으세요. 숨겨진 태그, 썸네일, 경쟁자 분석을 계정 없이 무료로 받아보세요.",
+    "tagline1": "유튜브 인텔리전스. 해독됨.",
+    "tagline2": "추출. 분석. 초월.",
+    "seasonal_spring": "봄 에디션",
+    "seasonal_summer": "여름 에디션",
+    "seasonal_fall": "가을 에디션",
+    "seasonal_winter": "겨울 에디션"
+  },
+
+  "input": {
+    "placeholder": "여기에 유튜브 URL 붙여넣기 — youtube.com/watch?v=... 또는 youtu.be/...",
+    "paste_btn": "붙여넣기",
+    "extract_btn": "추출",
+    "clipboard_detected": "클립보드에서 유튜브 URL이 감지되었습니다 — 추출 버튼이나 Enter를 누르세요.",
+    "invalid_url_toast": "유효한 유튜브 URL 또는 동영상 ID를 입력해주세요."
+  },
+
+  "cta": {
+    "v1": "추출하기",
+    "v2": "분석하기",
+    "v3": "스파이하기",
+    "v4": "해독하기",
+    "v5": "태그 가져오기",
+    "v6": "태그 확인"
+  },
+
+  "mode": {
+    "both": "둘 다",
+    "tags_only": "태그만",
+    "thumbnails_only": "썸네일만"
+  },
+
+  "meta_card": {
+    "load_metadata": "전체 메타데이터 로드",
+    "badge_live": "라이브",
+    "badge_short": "쇼츠",
+    "badge_restricted": "연령 제한",
+    "badge_cached": "캐시됨",
+    "title_unavailable": "제목 없음"
+  },
+
+  "tags_panel": {
+    "title": "추출된 태그",
+    "char_limit_label": "/ 500자",
+    "remaining": "{{n}}자 남음",
+    "over_limit": "{{n}}자 초과",
+    "short_tail_label": "단일어",
+    "mid_tail_label": "중간 꼬리",
+    "long_tail_label": "긴 꼬리",
+    "one_word": "1단어",
+    "two_words": "2단어",
+    "three_plus": "3단어 이상",
+    "no_tags_default": "이 동영상에서 태그를 찾을 수 없습니다.",
+    "copy_as_label": "복사 형식:",
+    "save_template_btn": "템플릿으로 저장",
+    "tag_count_one": "태그 {{n}}개",
+    "tag_count_many": "태그 {{n}}개",
+    "hashtags_title": "설명의 해시태그",
+    "truncated_title": "유튜브에 의해 무시됨 (500자 제한 초과)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}}자 남음 — 태그 예산을 잘 활용하고 있습니다.",
+    "getting_close": "{{remaining}}자 남음 — 제한에 가까워지고 있습니다.",
+    "near_limit": "{{remaining}}자만 남았습니다 — 거의 제한에 달했습니다.",
+    "under_tagged_severe": "500자 예산의 {{pct}}%만 사용했습니다. 태그를 더 추가하면 더 많은 발견 경로가 생깁니다.",
+    "under_tagged_moderate": "{{remaining}}자 사용 가능합니다. 긴 꼬리 태그 {{n}}개를 더 추가할 공간이 있습니다.",
+    "over_limit": "⚠ {{over}}자 초과 — 목록 마지막의 태그 {{count}}개가 유튜브에 의해 조용히 무시됩니다. 아래 빨간색으로 표시됩니다."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "이 크리에이터는 태그를 추가하지 않았습니다. 썸네일과 메타데이터는 여전히 사용 가능합니다.",
+    "age_restricted": "이 동영상은 연령 제한이 있습니다. 로그인 없이는 태그 데이터에 접근할 수 없습니다.",
+    "private": "이 동영상은 비공개 또는 일부 공개입니다.",
+    "live_stream": "라이브 스트림은 다른 메타데이터 구조를 사용합니다.",
+    "members_only": "이 동영상은 채널 멤버 전용입니다.",
+    "all_layers_failed": "태그 추출에 실패했습니다. 썸네일은 여전히 사용 가능합니다."
+  },
+
+  "copy_formats": {
+    "plain": "일반 텍스트",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "유튜브용"
+  },
+
+  "copy_success": "태그를 {{format}} 형식으로 복사했습니다.",
+  "copy_failed": "복사 실패 — 다시 시도해 주세요.",
+  "single_tag_copied": "태그가 복사되었습니다.",
+  "tags_file_downloaded": "태그 파일이 다운로드되었습니다.",
+
+  "health": {
+    "panel_title": "태그 건강 점수",
+    "out_of": "/ 100",
+    "label_excellent": "우수",
+    "label_good": "양호",
+    "label_average": "보통",
+    "label_weak": "미흡",
+    "label_no_tags": "태그 없음",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "N/A",
+    "comp_budget": "예산 효율성",
+    "comp_tail": "꼬리 분포",
+    "comp_diversity": "단어 다양성",
+    "comp_hashtag": "해시태그 정렬",
+    "suggestions_label": "개선점",
+    "potential_gain": "+{{n}}점",
+    "no_tags_summary": "이 동영상에서 태그를 찾을 수 없습니다."
+  },
+
+  "budget_labels": { "optimal": "최적", "good": "양호", "under_used": "적게 사용됨", "severely_under": "매우 적게 사용됨", "over_limit": "한도 초과", "no_tags": "태그 없음" },
+  "distribution_labels": { "well_balanced": "잘 균형잡힘", "fairly_balanced": "어느 정도 균형", "uneven": "불균형", "heavily_skewed": "매우 편향됨", "no_data": "데이터 없음" },
+  "diversity_labels": { "excellent": "우수한 다양성", "good": "좋은 다양성", "repetitive": "반복적", "very_repetitive": "매우 반복적", "no_data": "데이터 없음" },
+  "hashtag_labels": { "perfect": "완벽한 정렬", "strong": "강한 정렬", "partial": "부분 정렬", "weak": "약한 정렬", "none": "정렬 없음", "no_hashtags": "해시태그 없음" },
+
+  "thumbnails": {
+    "panel_title": "썸네일",
+    "preview_label": "유튜브 검색에서의 모습",
+    "placement_heading": "썸네일 배치 미리보기",
+    "placement_sub": "5가지 유튜브 컨텍스트에서 썸네일이 표시되는 방식",
+    "canva_text": "이 썸네일을 다시 디자인하고 싶으신가요?",
+    "canva_cta": "Canva에서 편집 →",
+    "download_btn": "↓ 다운로드",
+    "downloading": "다운로드 중…",
+    "webp_note": "최신 형식 — 일부 이미지 편집기에서 열리지 않을 수 있습니다",
+    "unavailable": "이 동영상에서 사용 불가",
+    "unavailable_reason": "이 동영상에는 1280×720 썸네일이 없습니다. SD 또는 HQ를 사용하세요.",
+    "placement_desktop_home": "데스크톱 홈",
+    "placement_desktop_search": "데스크톱 검색",
+    "placement_mobile_search": "모바일 검색",
+    "placement_suggested": "추천 동영상",
+    "placement_notification": "알림",
+    "placement_shorts_feed": "쇼츠 피드"
+  },
+
+  "bulk": {
+    "title": "일괄 추출",
+    "badge_new": "신규",
+    "description": "최대 10개 URL 붙여넣기 — 모든 동영상의 태그 + 통합 빈도 테이블 받기",
+    "expand": "펼치기 ↓",
+    "collapse": "접기 ↑",
+    "textarea_placeholder": "줄당 하나의 유튜브 URL 붙여넣기 (최대 10개)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "모두 추출",
+    "extracting": "추출 중 {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL",
+    "hint_invalid": "{{count}} / 10 URL · {{invalid}}개 유효하지 않음 — 건너뜁니다",
+    "hint_duplicates": "{{count}} / 10 URL · {{dupes}}개 중복 제거됨",
+    "hint_over_limit": "{{count}} / 10 URL · 처음 10개만 처리됩니다",
+    "zip_btn": "모든 썸네일 ZIP으로 다운로드",
+    "zipping": "압축 중 {{done}}/{{total}}…",
+    "csv_btn": "리서치 CSV 다운로드",
+    "copy_union_btn": "고유 태그 모두 복사",
+    "freq_table_title": "전체 동영상의 태그 빈도",
+    "freq_table_desc": "태그를 공유하는 동영상 수로 정렬됨.",
+    "freq_th_tag": "태그", "freq_th_appears": "등장", "freq_th_frequency": "빈도", "freq_th_type": "유형",
+    "show_tags_btn": "태그 보기 ↓",
+    "hide_tags_btn": "태그 숨기기 ↑",
+    "video_failed": "동영상 {{n}}: 추출 실패",
+    "zip_success": "{{count}}개의 썸네일이 ZIP으로 다운로드되었습니다.",
+    "zip_skipped": "({{skipped}}개를 로드할 수 없었습니다.)",
+    "zip_failed": "ZIP 다운로드 실패.",
+    "csv_downloaded": "리서치 CSV가 다운로드되었습니다.",
+    "union_copied": "{{count}}개의 고유 태그가 복사되었습니다 (유튜브용 형식).",
+    "no_urls_error": "유효한 유튜브 URL을 최소 하나 붙여넣으세요.",
+    "summary": "{{success}}개 동영상 분석 완료. {{tags}}개의 고유 태그 발견."
+  },
+
+  "overlap": {
+    "title": "경쟁자 태그 분석",
+    "description": "내 동영상 + 경쟁자 동영상 붙여넣기 — 그들이 가지고 있고 나는 없는 태그 확인",
+    "my_label": "내 동영상 URL",
+    "their_label": "경쟁자 URL",
+    "my_placeholder": "https://youtube.com/watch?v=내_동영상",
+    "their_placeholder": "https://youtube.com/watch?v=경쟁자_동영상",
+    "analyze_btn": "겹침 분석",
+    "analyzing": "분석 중…",
+    "shared_title": "공통 태그",
+    "missing_title": "부족한 태그",
+    "unique_title": "나만의 태그",
+    "shared_desc": "두 동영상 모두 사용",
+    "missing_desc": "그들이 가진 것 — 나는 없음. 높은 가치 목표.",
+    "unique_desc": "내 동영상만 사용",
+    "steal_btn": "이 태그 복사하기",
+    "save_template_btn": "템플릿으로 저장",
+    "steal_success": "{{count}}개의 부족한 태그가 복사되었습니다 (유튜브용).",
+    "error_need_my": "내 동영상 URL을 입력해주세요.",
+    "error_need_their": "경쟁자 동영상 URL을 입력해주세요.",
+    "error_my_failed": "내 동영상: {{error}}",
+    "error_their_failed": "경쟁자 동영상: {{error}}",
+    "overlap_label_very_high": "매우 높은 겹침",
+    "overlap_label_high": "높은 겹침",
+    "overlap_label_moderate": "중간 겹침",
+    "overlap_label_low": "낮은 겹침",
+    "overlap_label_very_low": "매우 낮은 겹침",
+    "overlap_label_no_data": "데이터 없음",
+    "col_empty_both": "두 동영상 모두 태그가 없습니다.",
+    "col_empty_mine": "내 동영상에 태그가 없습니다.",
+    "col_empty_theirs": "경쟁자 동영상에 태그가 없습니다.",
+    "col_empty_shared_none": "공통 태그가 없습니다.",
+    "col_empty_missing_none": "경쟁자의 모든 태그를 이미 사용하고 있습니다.",
+    "col_empty_unique_none": "내 모든 태그를 경쟁자도 사용합니다."
+  },
+
+  "templates": {
+    "title": "태그 템플릿",
+    "description": "여러 동영상에서 재사용하는 태그 세트 저장",
+    "empty": "아직 템플릿이 없습니다. 동영상을 추출한 후 «템플릿으로 저장»을 클릭하세요.",
+    "apply_btn": "적용", "delete_btn": "삭제",
+    "confirm_delete": "이 템플릿을 삭제할까요? 되돌릴 수 없습니다.",
+    "deleted_toast": "템플릿이 삭제되었습니다.",
+    "save_prompt_title": "이 템플릿의 이름 ({{count}}개 태그):",
+    "save_prompt_preview": "처음 {{n}}개 태그: {{preview}}",
+    "saved_toast": "템플릿 «{{name}}»이 저장되었습니다.",
+    "save_failed_toast": "템플릿 저장 실패.",
+    "extract_first_toast": "먼저 동영상을 추출하세요.",
+    "suggestions_heading": "관련 저장된 템플릿",
+    "new_tags_label": "+{{count}}개의 새 태그",
+    "strategy_union": "새 태그 추가",
+    "strategy_union_desc": "현재 태그를 유지하고 템플릿에서 새 태그를 추가합니다.",
+    "strategy_replace": "모든 태그 교체",
+    "strategy_replace_desc": "현재 태그를 버리고 템플릿만 사용합니다.",
+    "strategy_prepend": "템플릿 우선",
+    "strategy_prepend_desc": "템플릿 태그가 먼저 옵니다.",
+    "strategy_append": "끝에 추가",
+    "strategy_append_desc": "현재 태그를 유지하고 템플릿 태그를 끝에 추가합니다.",
+    "merge_added": "{{count}}개의 새 태그가 추가되었습니다. {{chars}}/500자 사용됨.",
+    "merge_no_new": "새 태그 없음 — 템플릿의 모든 태그가 이미 목록에 있습니다.",
+    "merge_replaced": "{{count}}개의 태그가 교체되었습니다. {{chars}}/500자 사용됨.",
+    "merge_over_limit": "⚠ 결과가 500자 제한을 초과합니다 ({{chars}}자) — 일부 태그가 잘릴 수 있습니다.",
+    "name_required": "템플릿 이름이 필요합니다.",
+    "name_too_long": "이름은 100자 이하여야 합니다.",
+    "name_invalid": "이름에는 최소 하나의 문자나 숫자가 있어야 합니다.",
+    "tags_empty": "템플릿에는 최소 하나의 태그가 있어야 합니다.",
+    "tags_over_budget": "이 템플릿은 {{chars}}자를 사용합니다 — 제한을 {{over}}자 초과.",
+    "export_btn": "템플릿 내보내기", "import_btn": "템플릿 가져오기",
+    "import_success": "{{count}}개의 템플릿을 가져왔습니다.",
+    "import_partial": "{{count}}개 가져옴, {{skipped}}개 건너뜀 (이미 존재).",
+    "import_failed": "가져오기 실패 — 잘못된 파일 형식."
+  },
+
+  "history": {
+    "title": "최근 추출",
+    "description": "브라우저에 로컬 저장됨 — 계정 불필요",
+    "clear_btn": "기록 지우기",
+    "confirm_clear": "모든 기록을 지울까요? 되돌릴 수 없습니다.",
+    "cleared_toast": "기록이 지워졌습니다.",
+    "empty": "아직 추출이 없습니다 — 위에 유튜브 URL을 붙여넣어 시작하세요.",
+    "reextract_btn": "재추출", "remove_btn": "✕",
+    "just_now": "방금", "minutes_ago": "{{n}}분 전",
+    "hours_ago": "{{n}}시간 전", "days_ago": "{{n}}일 전", "date_format": "M월 D일"
+  },
+
+  "errors": {
+    "invalid_url": "유효한 유튜브 URL 또는 동영상 ID를 입력해주세요.",
+    "not_found": "이 동영상을 찾을 수 없습니다. 삭제되거나 비공개로 변경되었을 수 있습니다.",
+    "rate_limited": "요청이 너무 많습니다. 잠시 기다려 주세요.",
+    "timeout": "요청이 시간 초과되었습니다. 유튜브가 느릴 수 있습니다 — 다시 시도하세요.",
+    "network": "서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.",
+    "offline": "오프라인 상태인 것 같습니다. 연결을 확인해주세요.",
+    "members_only": "이 동영상은 채널 멤버 전용입니다.",
+    "age_restricted": "이 동영상은 연령 제한이 있습니다.",
+    "unknown": "예상치 못한 오류가 발생했습니다. 다시 시도해주세요.",
+    "extraction_failed_title": "추출 실패",
+    "retry_btn": "다시 시도 ↻",
+    "public_video_hint": "URL이 공개 유튜브 동영상인지 확인해주세요.",
+    "retried_toast": "두 번째 시도에서 추출 성공 — 유튜브가 느렸습니다.",
+    "recovery_timeout": "요청이 시간 초과되었습니다. 유튜브가 느릴 수 있습니다.",
+    "recovery_offline": "오프라인 상태인 것 같습니다.",
+    "recovery_rate_limited": "요청이 너무 많습니다. 60초 기다려주세요.",
+    "recovery_not_found": "이 동영상은 존재하지 않거나 삭제되었거나 비공개입니다.",
+    "recovery_age_restricted": "연령 제한 동영상은 인증 없이는 분석할 수 없습니다."
+  },
+
+  "trust": { "rating": "4.9★ 만족도", "creators": "전 세계 크리에이터들이 신뢰", "free": "무료. 로그인 없음. 제한 없음." },
+
+  "share": {
+    "section_title": "이 도구 공유하기",
+    "whatsapp": "카카오톡", "facebook": "페이스북", "twitter": "트위터 / X",
+    "linkedin": "링크드인", "reddit": "레딧", "quora": "쿼라",
+    "telegram": "텔레그램", "email": "이메일", "pinterest": "핀터레스트",
+    "discord": "디스코드", "medium": "미디엄", "tiktok": "틱톡",
+    "instagram": "인스타그램", "snapchat": "스냅챗", "vimeo": "비메오",
+    "copy_link": "링크 복사", "link_copied": "링크가 복사되었습니다!"
+  },
+
+  "faq": {
+    "section_title": "자주 묻는 질문",
+    "section_sub": "유튜브 태그 추출 및 썸네일 다운로드에 대해 알아야 할 모든 것.",
+    "q1": "유튜브 태그란 무엇이며 SEO에 여전히 중요한가요?",
+    "a1": "유튜브 태그는 유튜브가 동영상의 주제를 이해하는 데 도움이 되는 키워드입니다. 예전보다 중요성이 줄었지만, 콘텐츠가 분류되는 방식에 여전히 기여합니다.",
+    "q2": "유튜브 태그의 글자 수 제한은 얼마인가요?",
+    "a2": "유튜브는 모든 태그의 총 길이에 500자 제한을 적용합니다. 이 제한을 초과하면 유튜브는 경고 없이 목록 끝의 태그를 무시합니다.",
+    "q3": "모든 유튜브 동영상에서 태그를 추출할 수 있나요?",
+    "a3": "크리에이터가 태그를 추가한 공개 유튜브 동영상에서 태그를 추출할 수 있습니다. 연령 제한, 비공개, 멤버 전용 동영상은 로그인 없이 접근할 수 없습니다.",
+    "q4": "단일어, 중간 꼬리, 긴 꼬리 태그의 차이점은 무엇인가요?",
+    "a4": "단일어는 하나의 단어 — 광범위하고 매우 경쟁적입니다. 중간 꼬리는 두 단어입니다. 긴 꼬리는 세 단어 이상 — 매우 구체적이고 경쟁이 적습니다.",
+    "q5": "최고 화질로 유튜브 썸네일을 다운로드하는 방법은?",
+    "a5": "ytspy는 5가지 해상도로 썸네일을 제공합니다: 1280×720, 640×480, 480×360, 320×180 및 WebP 형식.",
+    "q6": "태그 건강 점수는 무엇을 측정하나요?",
+    "a6": "예산 효율성, 꼬리 분포, 단어 다양성, 해시태그 정렬을 측정하는 0-100 복합 평가입니다.",
+    "q7": "일괄 추출은 어떻게 작동하나요?",
+    "a7": "최대 10개의 URL을 붙여넣습니다. ytspy는 일괄 처리하여 모든 태그, 빈도 테이블, 모든 썸네일의 ZIP을 반환합니다.",
+    "q8": "경쟁자 태그를 분석하는 방법은?",
+    "a8": "경쟁자 분석 섹션을 사용합니다. 내 URL과 경쟁자 URL을 붙여넣습니다. ytspy는 3개의 열을 표시합니다: 공통 태그, 부족한 태그, 나만의 태그.",
+    "q9": "ytspy는 유튜브 쇼츠와 호환되나요?",
+    "a9": "네. 유튜브 쇼츠 URL이 완전히 지원됩니다.",
+    "q10": "ytspy는 무료인가요? 제한이 있나요?",
+    "a10": "ytspy는 계정 없이 완전 무료입니다. 일괄 모드는 한 번에 최대 10개의 동영상을 처리합니다.",
+    "q11": "태그 템플릿 라이브러리란 무엇인가요?",
+    "a11": "라이브러리를 사용하면 향후 사용을 위해 이름이 지정된 태그 세트를 저장할 수 있습니다. 클릭 한 번으로 저장된 템플릿을 적용합니다.",
+    "q12": "썸네일 배치 미리보기가 중요한 이유는?",
+    "a12": "유튜브 썸네일은 5가지 다른 컨텍스트에 각기 다른 크기로 표시됩니다. 훌륭한 썸네일도 48×48픽셀(알림)에서는 읽기 어려울 수 있습니다."
+  },
+
+  "contact": {
+    "section_title": "문의 및 요청",
+    "section_sub": "질문이 있거나, 버그를 발견했거나, 기능을 제안하고 싶으신가요? 모든 메시지를 읽습니다.",
+    "name_label": "이름", "email_label": "이메일", "message_label": "메시지",
+    "name_placeholder": "이름", "email_placeholder": "your@email.kr",
+    "message_placeholder": "무엇이든 알려주세요...",
+    "submit_btn": "메시지 보내기",
+    "success_alert": "감사합니다! 요청이 전달되었습니다.",
+    "error_alert": "죄송합니다! 양식 제출 중 문제가 발생했습니다."
+  },
+
+  "citation": {
+    "section_title": "참고 자료",
+    "c1_text": "유튜브 고객센터 — 동영상에 태그 추가하기",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — 유튜브에서의 검색과 발견",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs 대 LinkedIn — 공개 데이터 스크래핑은 합법",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "미국 법원",
+    "c4_text": "Google 브랜드 가이드라인 — YouTube 상표의 허용된 사용",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "빠른 답변", "text": "유튜브 태그는 동영상 소스 코드에 숨겨진 키워드입니다. ytspy는 모든 공개 유튜브 동영상에서 태그를 추출하고, 누락된 경쟁자 태그를 표시하며, 전략을 평가합니다 — 모두 무료로, 가입 없이." },
+  "logic": { "label": "로직", "text": "유튜브는 모든 공개 동영상 페이지의 ytInitialData라는 자바스크립트 객체에 태그를 포함한 모든 동영상 메타데이터를 내장합니다 — API 키 불필요." },
+  "methodology": { "label": "방법론", "text": "ytspy는 자동 폴백이 있는 4계층 서버 측 추출 체인을 사용하여 브라우저에 구조화된 JSON만 반환합니다." },
+  "freshness": { "today": "오늘 업데이트됨", "last_updated": "최종 업데이트: {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "영원히 무료. 광고 없음. 데이터 수집 없음.",
+    "disclaimer": "ytspy는 독립적인 도구입니다. YouTube, Google LLC 또는 Alphabet Inc.와 제휴, 승인 또는 연결되어 있지 않습니다. YouTube는 Google LLC의 상표입니다.",
+    "privacy": "개인정보처리방침", "cookies": "쿠키 정책", "terms": "이용약관",
+    "contact": "문의", "about": "소개", "twitter_link": "트위터 / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "오프라인 — ytspy", "heading": "오프라인 상태입니다", "sub": "새로운 추출을 위해서는 인터넷 연결이 필요합니다. 저장된 기록과 템플릿은 아래에서 이용할 수 있습니다.", "retry_btn": "다시 시도", "cached_history_title": "최근 추출", "no_history": "저장된 추출이 아직 없습니다." },
+  "pwa": { "install_prompt": "빠른 접근을 위해 ytspy를 홈 화면에 추가하세요.", "install_btn": "설치", "install_dismiss": "나중에" },
+
+  "lang": {
+    "select": "언어",
+    "en": "영어", "es": "스페인어", "pt": "포르투갈어", "hi": "힌디어",
+    "id": "인도네시아어", "fr": "프랑스어", "de": "독일어", "it": "이탈리아어",
+    "tr": "터키어", "pl": "폴란드어", "nl": "네덜란드어", "ru": "러시아어",
+    "ja": "일본어", "ko": "한국어", "ar": "아랍어", "he": "히브리어",
+    "vi": "베트남어", "tl": "필리핀어", "th": "태국어", "uk": "우크라이나어"
+  }
+}
