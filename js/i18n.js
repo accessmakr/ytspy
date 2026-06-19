@@ -3,12 +3,14 @@
 // File: js/i18n.js
 // Version: 1.0.0
 //
-// SUPPORTED LANGUAGES (15):
+// SUPPORTED LANGUAGES (20):
 //   en  English (default)     es  Español           pt  Português
 //   hi  हिन्दी                  id  Indonesia          fr  Français
 //   de  Deutsch               it  Italiano           tr  Türkçe
 //   pl  Polski                nl  Nederlands         ru  Русский
-//   ja  日本語                  ko  한국어              ar  العربية (RTL)
+//   uk  Українська            ja  日本語              ko  한국어
+//   ar  العربية (RTL)         he  עברית (RTL)        vi  Tiếng Việt
+//   tl  Filipino              th  ไทย
 //
 // HOW IT WORKS:
 //   1. On init(), detects language from: URL ?lang= → localStorage → browser
@@ -45,10 +47,11 @@
 // ─── CONFIGURATION ────────────────────────────────────────────────────────────
 
 const SUPPORTED = [
-  'en','es','pt','hi','id','fr','de','it','tr','pl','nl','ru','ja','ko','ar',
+  'en','es','pt','hi','id','fr','de','it','tr','pl','nl','ru','uk','ja','ko',
+  'ar','he','vi','tl','th',
 ];
 
-const RTL_LANGS   = new Set(['ar']);
+const RTL_LANGS   = new Set(['ar', 'he']);
 const DEFAULT     = 'en';
 const STORAGE_KEY = 'ytspy_lang';
 const LOCALES_BASE = '/locales/';
@@ -57,8 +60,10 @@ const LOCALES_BASE = '/locales/';
 const SPECIAL_FONTS = {
   hi: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&display=swap',
   ar: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&display=swap',
+  he: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;500;600&display=swap',
   ja: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&display=swap',
   ko: 'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap',
+  th: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600&display=swap',
 };
 
 // ─── MODULE STATE ─────────────────────────────────────────────────────────────
@@ -212,9 +217,14 @@ export function getSupportedLanguages() {
     { code: 'pl', name: 'Polish',     native: 'Polski',     rtl: false },
     { code: 'nl', name: 'Dutch',      native: 'Nederlands', rtl: false },
     { code: 'ru', name: 'Russian',    native: 'Русский',    rtl: false },
+    { code: 'uk', name: 'Ukrainian',  native: 'Українська', rtl: false },
     { code: 'ja', name: 'Japanese',   native: '日本語',      rtl: false },
     { code: 'ko', name: 'Korean',     native: '한국어',      rtl: false },
     { code: 'ar', name: 'Arabic',     native: 'العربية',    rtl: true  },
+    { code: 'he', name: 'Hebrew',     native: 'עברית',      rtl: true  },
+    { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', rtl: false },
+    { code: 'tl', name: 'Filipino',   native: 'Filipino',   rtl: false },
+    { code: 'th', name: 'Thai',       native: 'ไทย',        rtl: false },
   ];
 }
 
