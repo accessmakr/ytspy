@@ -1,14 +1,23 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — UI CONTROLLER
 // File: js/app.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // THE ORCHESTRATOR:
 // app.js is the ONLY module that touches the DOM. Every user interaction
-// flows through here. It imports all 7 computation modules and wires their
-// outputs to the interface.
+// flows through here. It imports all 7 computation modules plus the i18n
+// engine and wires their outputs to the interface.
 //
 //   User action → app.js → computation module → app.js renders result
+//
+// i18n CONTRACT:
+//   - initI18n() is awaited BEFORE any other init function runs, so every
+//     t() call below resolves against the correct language from first paint.
+//   - translateDOM() (called inside initI18n / setLanguage) handles all
+//     static page chrome marked up with data-i18n* attributes in index.html.
+//   - Everything in THIS file is JS-generated dynamic content, which
+//     translateDOM() cannot see — so app.js calls t() directly wherever it
+//     builds strings, and re-renders dynamic sections on 'languagechange'.
 //
 // DOM CONTRACT:
 // app.js expects these IDs in index.html. All other DOM is created dynamically.
@@ -29,6 +38,9 @@
 //   #affiliate-panel     — rotating affiliate/feature panel
 //   #toast-container     — toast notification host
 //   #seasonal-badge      — seasonal edition badge
+//   #lang-selector-container — OPTIONAL. If present, the language picker
+//                              widget (globe icon + dropdown) is injected
+//                              here via i18n.js's renderLangSelector().
 //   .copyright-year      — dynamic copyright year spans
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -37,6 +49,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 1 — IMPORTS
 // ═══════════════════════════════════════════════════════════════════════════════
+
+import {
+  initI18n, t, getLanguage, translateDOM, renderLangSelector,
+} from './i18n.js';
 
 import {
   fetchVideoData, validateYouTubeInput, extractVideoIdClientSide,
@@ -92,6 +108,11 @@ let currentBulkResult = null;
 /** Most recent overlap analysis result */
 let currentOverlap    = null;
 
+/** Source video data behind the most recent overlap analysis — kept so the
+ *  overlap panel can be fully re-rendered (translated) on languagechange. */
+let currentOverlapMyData    = null;
+let currentOverlapTheirData = null;
+
 /** Whether a single extraction is in progress */
 let isExtracting      = false;
 
@@ -101,6 +122,10 @@ let isBulkExtracting  = false;
 /** Timer for CTA rotation */
 let ctaRotationTimer  = null;
 
+/** Index into the (translated) CTA variants array — module-level so
+ *  languagechange can immediately refresh the visible button text. */
+let ctaIndex           = 0;
+
 /** Timer for affiliate panel rotation */
 let affiliateTimer    = null;
 
@@ -108,8 +133,11 @@ let affiliateTimer    = null;
 let affiliateIndex    = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SECTION 3 — CONTENT DATA
-// Move to js/config.js and import when you have affiliate links.
+// SECTION 3 — CONTENT DATA (translated — built fresh from t() on every call,
+// so they always reflect the currently active language)
+// Move AFFILIATE_PRODUCTS to js/config.js and import when you have affiliate
+// links. Names/URLs/CTAs for real affiliates are usually NOT translated
+// (brand names, tracking links) — only translate the surrounding sentence.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Affiliate products — add entries when links are available */
@@ -126,40 +154,47 @@ const AFFILIATE_PRODUCTS = [
 ];
 
 /** Feature highlights shown when no affiliate products are active */
-const FEATURE_HIGHLIGHTS = [
-  { text: 'Multi-placement thumbnail preview', sub: 'See your thumbnail in 5 YouTube contexts simultaneously' },
-  { text: 'Tag health score 0–100',            sub: 'Four-component analysis of your tag strategy' },
-  { text: 'Steal competitor tags',             sub: 'One click copies every tag you\'re missing' },
-  { text: 'Bulk ZIP download',                 sub: '10 thumbnails, one click, assembled in your browser' },
-  { text: 'YouTube Shorts supported',          sub: 'youtube.com/shorts/ URLs fully extracted' },
-  { text: 'Tag template library',              sub: 'Save your research. Reuse it forever.' },
-  { text: 'Zero login required',               sub: 'No account, no limits, no tracking' },
-  { text: 'Character budget optimizer',        sub: 'See exactly which tags YouTube silently ignores' },
-];
+function getFeatureHighlights() {
+  return [
+    { text: t('affiliate.feature_placement'), sub: t('affiliate.feature_placement_sub') },
+    { text: t('affiliate.feature_health'),     sub: t('affiliate.feature_health_sub')     },
+    { text: t('affiliate.feature_steal'),      sub: t('affiliate.feature_steal_sub')      },
+    { text: t('affiliate.feature_zip'),        sub: t('affiliate.feature_zip_sub')        },
+    { text: t('affiliate.feature_shorts'),     sub: t('affiliate.feature_shorts_sub')     },
+    { text: t('affiliate.feature_templates'),  sub: t('affiliate.feature_templates_sub')  },
+    { text: t('affiliate.feature_free'),       sub: t('affiliate.feature_free_sub')       },
+    { text: t('affiliate.feature_char'),       sub: t('affiliate.feature_char_sub')       },
+  ];
+}
 
 /** CTA button text variants (cycles when idle) */
-const CTA_VARIANTS = ['Extract', 'Analyse', 'Spy on it', 'Decode it', 'Get tags'];
+function getCtaVariants() {
+  return [t('cta.v1'), t('cta.v2'), t('cta.v3'), t('cta.v4'), t('cta.v5'), t('cta.v6')];
+}
 
-/** Telemetry ticker content */
-const TICKER_ITEMS = [
-  { type: 'status',  label: 'EXTRACTION ENGINE',  value: '● OPERATIONAL'            },
-  { type: 'status',  label: 'PROXY API',           value: '● HEALTHY'                },
-  { type: 'status',  label: '4-LAYER FALLBACK',    value: '● ACTIVE'                 },
-  { type: 'status',  label: 'THUMBNAIL CDN',       value: '● ONLINE  5 FORMATS'      },
-  { type: 'status',  label: 'BULK PROCESSOR',      value: '● READY  10 URL MAX'      },
-  { type: 'status',  label: 'CDN CACHE',           value: '● 5 MIN TTL'              },
-  { type: 'status',  label: 'SERVICE WORKER',      value: '● INSTALLED'              },
-  { type: 'status',  label: 'SUPABASE CACHE',      value: '● 24 HR TTL'              },
-  { type: 'feature', label: 'MULTI-PLACEMENT PREVIEW',    value: '→ 5 YouTube rendering contexts'         },
-  { type: 'feature', label: 'TAG HEALTH SCORE',           value: '→ Rate your strategy 0–100'             },
-  { type: 'feature', label: 'STEAL COMPETITOR TAGS',      value: '→ One-click copy of gaps'               },
-  { type: 'feature', label: 'BULK ZIP DOWNLOAD',          value: '→ 10 thumbnails one click'              },
-  { type: 'feature', label: 'SHORTS SUPPORTED',           value: '→ /shorts/ URLs fully extracted'        },
-  { type: 'feature', label: 'CHARACTER OPTIMIZER',        value: '→ Truncated tags highlighted in red'    },
-  { type: 'feature', label: 'TEMPLATE LIBRARY',           value: '→ Save and reuse tag research'          },
-  { type: 'feature', label: 'ALL URL FORMATS',            value: '→ youtu.be · /shorts/ · bare ID'        },
-  { type: 'feature', label: 'ZERO LOGIN',                 value: '→ No account · No limits · No tracking' },
-];
+/** Telemetry ticker content — anchor segment + status + feature pairs */
+function getTickerItems() {
+  return [
+    { type: 'anchor', label: t('ticker.anchor_label'), value: '' },
+    { type: 'status',  label: t('ticker.engine_label'),    value: t('ticker.engine_value')    },
+    { type: 'status',  label: t('ticker.proxy_label'),     value: t('ticker.proxy_value')     },
+    { type: 'status',  label: t('ticker.fallback_label'),  value: t('ticker.fallback_value')  },
+    { type: 'status',  label: t('ticker.cdn_label'),       value: t('ticker.cdn_value')       },
+    { type: 'status',  label: t('ticker.bulk_label'),      value: t('ticker.bulk_value')      },
+    { type: 'status',  label: t('ticker.cache_label'),     value: t('ticker.cache_value')     },
+    { type: 'status',  label: t('ticker.sw_label'),        value: t('ticker.sw_value')        },
+    { type: 'status',  label: t('ticker.supabase_label'),  value: t('ticker.supabase_value')  },
+    { type: 'feature', label: t('ticker.f_placement_label'), value: t('ticker.f_placement_value') },
+    { type: 'feature', label: t('ticker.f_health_label'),    value: t('ticker.f_health_value')    },
+    { type: 'feature', label: t('ticker.f_steal_label'),     value: t('ticker.f_steal_value')     },
+    { type: 'feature', label: t('ticker.f_zip_label'),       value: t('ticker.f_zip_value')       },
+    { type: 'feature', label: t('ticker.f_shorts_label'),    value: t('ticker.f_shorts_value')    },
+    { type: 'feature', label: t('ticker.f_char_label'),      value: t('ticker.f_char_value')      },
+    { type: 'feature', label: t('ticker.f_templates_label'), value: t('ticker.f_templates_value') },
+    { type: 'feature', label: t('ticker.f_urls_label'),      value: t('ticker.f_urls_value')      },
+    { type: 'feature', label: t('ticker.f_free_label'),      value: t('ticker.f_free_value')      },
+  ];
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 4 — HEALTH SCORE RING CONSTANTS
@@ -172,8 +207,12 @@ const RING_CIRCUMFERENCE = +(2 * Math.PI * RING_RADIUS).toFixed(2);   // 339.29
 // SECTION 5 — INITIALISATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // i18n MUST be ready before anything else renders text.
+  await initI18n();
+
   initDynamicContent();
+  initLangSelector();
   initScrollProgress();
   initTicker();
   initAffiliatePanel();
@@ -189,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHistoryList();
   initClipboardCheck();
   initCtaRotation();
+  initLanguageChangeListener();
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -209,10 +249,10 @@ function initDynamicContent() {
 
 function getSeasonLabel() {
   const m = new Date().getMonth();
-  if (m >= 2 && m <= 4)  return 'Spring Edition';
-  if (m >= 5 && m <= 7)  return 'Summer Edition';
-  if (m >= 8 && m <= 10) return 'Fall Edition';
-  return 'Winter Edition';
+  if (m >= 2 && m <= 4)  return t('hero.seasonal_spring');
+  if (m >= 5 && m <= 7)  return t('hero.seasonal_summer');
+  if (m >= 8 && m <= 10) return t('hero.seasonal_fall');
+  return t('hero.seasonal_winter');
 }
 
 function updateSchemaDateModified() {
@@ -240,6 +280,17 @@ function getLastMonday() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 6B — LANGUAGE SELECTOR
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function initLangSelector() {
+  const container = qs('#lang-selector-container');
+  if (!container || container.dataset.langSelectorMounted) return;
+  renderLangSelector(container);
+  container.dataset.langSelectorMounted = 'true';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 7 — SCROLL PROGRESS BAR
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -260,12 +311,20 @@ function initScrollProgress() {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function initTicker() {
+  renderTicker();
+}
+
+function renderTicker() {
   const track = qs('#ticker-track');
   if (!track) return;
 
+  const baseItems = getTickerItems();
   // Build ticker content — doubled for seamless loop
-  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  const items = [...baseItems, ...baseItems];
   track.innerHTML = items.map(item => {
+    if (item.type === 'anchor') {
+      return `<span class="ticker-anchor">${escHtml(item.label)}</span>`;
+    }
     const cls  = item.type === 'status' ? 'ticker-status' : 'ticker-feature';
     const sep  = '<span class="ticker-sep"> ··· </span>';
     return `<span class="${cls}"><span class="ticker-label">${escHtml(item.label)}</span>`
@@ -302,7 +361,7 @@ function renderAffiliateSlide() {
     const item     = items[affiliateIndex % items.length];
     panel.innerHTML = `
       <div class="affiliate-inner">
-        <span class="affiliate-label">RECOMMENDED</span>
+        <span class="affiliate-label">${escHtml(t('affiliate.label'))}</span>
         <span class="affiliate-name">${escHtml(item.name)}</span>
         <span class="affiliate-desc">${escHtml(item.description)}</span>
         <a href="${escHtml(item.url)}" target="_blank" rel="noopener sponsored"
@@ -310,10 +369,11 @@ function renderAffiliateSlide() {
       </div>`;
   } else {
     // No affiliates yet — show feature highlight
-    const feature = FEATURE_HIGHLIGHTS[affiliateIndex % FEATURE_HIGHLIGHTS.length];
+    const highlights = getFeatureHighlights();
+    const feature     = highlights[affiliateIndex % highlights.length];
     panel.innerHTML = `
       <div class="affiliate-inner affiliate-inner--feature">
-        <span class="affiliate-label">DID YOU KNOW</span>
+        <span class="affiliate-label">${escHtml(t('affiliate.feature_label'))}</span>
         <span class="affiliate-feature-text">${escHtml(feature.text)}</span>
         <span class="affiliate-feature-sub">${escHtml(feature.sub)}</span>
       </div>`;
@@ -374,7 +434,7 @@ function initClipboardCheck() {
       const input = qs('#main-url');
       if (input && !input.value.trim()) {
         input.value = trimmed;
-        showToast('YouTube URL detected in clipboard — press Extract or Enter.', 'info', 4000);
+        showToast(t('input.clipboard_detected'), 'info', 4000);
         input.focus();
       }
     } catch { /* permission denied or unavailable — silent */ }
@@ -386,14 +446,15 @@ function initClipboardCheck() {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function initCtaRotation() {
-  let index = 0;
+  ctaIndex  = 0;
   const btn = qs('#btn-extract');
   if (!btn) return;
 
   ctaRotationTimer = setInterval(() => {
     if (isExtracting) return;
-    index = (index + 1) % CTA_VARIANTS.length;
-    btn.textContent = CTA_VARIANTS[index];
+    const variants = getCtaVariants();
+    ctaIndex = (ctaIndex + 1) % variants.length;
+    btn.textContent = variants[ctaIndex];
   }, 5000);
 }
 
@@ -449,7 +510,7 @@ async function handleExtract(urlOverride) {
   const validation = validateYouTubeInput(rawUrl);
   if (!validation.valid) {
     showInputError(input);
-    showToast('Please paste a valid YouTube URL or video ID.', 'error');
+    showToast(t('input.invalid_url_toast'), 'error');
     return;
   }
 
@@ -487,7 +548,7 @@ async function handleExtract(urlOverride) {
     advanceAffiliateSlide();
 
     if (result.retried) {
-      showToast('Extracted on second attempt — YouTube was slow.', 'info');
+      showToast(t('errors.retried_toast'), 'info');
     }
 
   } catch (err) {
@@ -504,7 +565,7 @@ function setExtracting(active) {
   if (!btn) return;
 
   btn.disabled    = active;
-  btn.textContent = active ? 'Extracting…' : CTA_VARIANTS[0];
+  btn.textContent = active ? `${t('cta.v1')}…` : getCtaVariants()[ctaIndex];
   qs('#main-input-wrapper')?.classList.toggle('loading', active);
 
   if (input) input.disabled = active;
@@ -515,7 +576,7 @@ function setExtracting(active) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function renderVideoMeta(data) {
-  setText('#meta-title',   data.title   || 'Title unavailable');
+  setText('#meta-title',   data.title   || t('meta_card.title_unavailable'));
   setText('#meta-channel', data.channel || '');
   setText('#meta-views',   data.displayViewCount || '');
   setText('#meta-date',    data.displayDate      || '');
@@ -524,13 +585,13 @@ function renderVideoMeta(data) {
   const thumb = qs('#meta-thumb-sm');
   if (thumb && data.thumbnails?.hq?.url) {
     thumb.src = data.thumbnails.hq.url;
-    thumb.alt = `Thumbnail for ${escHtml(data.title || data.videoId)}`;
+    thumb.alt = data.title || data.videoId || '';
   }
 
-  if (data.isLive)          addBadge('#video-meta-card', 'LIVE', 'badge--live');
-  if (data.isShort)         addBadge('#video-meta-card', 'SHORT', 'badge--short');
-  if (data.isAgeRestricted) addBadge('#video-meta-card', 'AGE RESTRICTED', 'badge--restricted');
-  if (data.fromCache)       addBadge('#video-meta-card', 'CACHED', 'badge--cache');
+  if (data.isLive)          addBadge('#video-meta-card', t('meta_card.badge_live'),       'badge--live');
+  if (data.isShort)         addBadge('#video-meta-card', t('meta_card.badge_short'),      'badge--short');
+  if (data.isAgeRestricted) addBadge('#video-meta-card', t('meta_card.badge_restricted'), 'badge--restricted');
+  if (data.fromCache)       addBadge('#video-meta-card', t('meta_card.badge_cached'),     'badge--cache');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -542,14 +603,16 @@ function renderTagsPanel(data, healthResult) {
 
   // ── Tag count badge ───────────────────────────────────────────────────────
   const total = stats.total;
-  setText('#tag-count-badge', `${total} tag${total !== 1 ? 's' : ''}`);
+  setText('#tag-count-badge',
+    total === 1 ? t('tags_panel.tag_count_one', { n: total }) : t('tags_panel.tag_count_many', { n: total })
+  );
 
   // ── Character counter ─────────────────────────────────────────────────────
   setText('#char-used',      stats.charUsed);
   setText('#char-remaining',
     stats.charRemaining >= 0
-      ? `${stats.charRemaining} remaining`
-      : `${Math.abs(stats.charRemaining)} OVER LIMIT`
+      ? t('tags_panel.remaining',  { n: stats.charRemaining })
+      : t('tags_panel.over_limit', { n: Math.abs(stats.charRemaining) })
   );
 
   const fill = qs('#char-bar-fill');
@@ -596,7 +659,7 @@ function renderTagPills(tags, stats, noTagsMessage) {
   if (!tags.length) {
     const msg  = document.createElement('p');
     msg.className   = 'no-tags-message';
-    msg.textContent = noTagsMessage || 'No tags found for this video.';
+    msg.textContent = noTagsMessage || t('tags_panel.no_tags_default');
     container.appendChild(msg);
     return;
   }
@@ -621,8 +684,8 @@ function renderTagPills(tags, stats, noTagsMessage) {
     pill.style.animationDelay = `${i * 18}ms`;
     pill.setAttribute('role',  'listitem');
     pill.setAttribute('title',
-      `${typeClass ? typeClass.replace('-', ' ') : 'Tag'}`
-      + (isTrunc ? ' — silently ignored by YouTube (over 500-char limit)' : '')
+      (typeClass ? typeClass.replace('-', ' ') : '')
+      + (isTrunc ? ` — ${t('tags_panel.truncated_title')}` : '')
     );
 
     // Click-to-copy individual pill
@@ -685,7 +748,7 @@ function renderHealthScore(healthResult) {
     ringContainer.innerHTML = `
       <svg class="score-ring score-ring--${modifier}"
            viewBox="0 0 120 120"
-           aria-label="Health score ${score} out of 100">
+           aria-label="${escHtml(t('health.panel_title'))} ${score} ${escHtml(t('health.out_of'))}">
         <circle class="score-ring__track"
           cx="60" cy="60" r="${RING_RADIUS}"
           fill="none" stroke-width="8" />
@@ -717,20 +780,20 @@ function renderHealthScore(healthResult) {
   // ── Component bars ────────────────────────────────────────────────────────
   const components = healthResult.components;
   renderComponentBar('#health-comp-budget',
-    components.budget, 'Budget Efficiency');
+    components.budget, t('health.comp_budget'));
   renderComponentBar('#health-comp-tail',
-    components.tailDistribution, 'Tail Distribution');
+    components.tailDistribution, t('health.comp_tail'));
   renderComponentBar('#health-comp-diversity',
-    components.diversity, 'Word Diversity');
+    components.diversity, t('health.comp_diversity'));
   renderComponentBar('#health-comp-hashtag',
-    components.hashtagAlignment, 'Hashtag Alignment');
+    components.hashtagAlignment, t('health.comp_hashtag'));
 
   // ── Suggestions ───────────────────────────────────────────────────────────
   const sugContainer = qs('#health-suggestions');
   if (sugContainer && healthResult.suggestions?.length) {
     sugContainer.innerHTML = healthResult.suggestions.slice(0, 4).map(sug => `
       <div class="health-suggestion health-suggestion--${sug.priority}">
-        <span class="sug-gain">+${sug.potentialGain} pts</span>
+        <span class="sug-gain">${escHtml(t('health.potential_gain', { n: sug.potentialGain }))}</span>
         <span class="sug-text">${escHtml(sug.text)}</span>
       </div>`).join('');
   }
@@ -770,7 +833,7 @@ function renderYouTubePreviewCard(data) {
   const thumb = qs('#yt-preview-thumb');
   if (thumb) {
     thumb.src = data.thumbnails?.hq?.url || '';
-    thumb.alt = `Thumbnail for ${escHtml(data.title || data.videoId)}`;
+    thumb.alt = data.title || data.videoId || '';
   }
   setText('#yt-preview-title',   data.title   || '');
   setText('#yt-preview-channel', data.channel || '');
@@ -796,12 +859,12 @@ function renderThumbnailDownloadGrid(data) {
     const noteHtml = thumb.note
       ? `<span class="thumb-note">${escHtml(thumb.note)}</span>` : '';
     const unavailHtml = thumb.unavailable
-      ? `<span class="thumb-unavailable">${escHtml(thumb.unavailableReason || '')}</span>` : '';
+      ? `<span class="thumb-unavailable">${escHtml(thumb.unavailableReason || t('thumbnails.unavailable_reason'))}</span>` : '';
 
     row.innerHTML = `
       <div class="thumb-preview-mini">
         <img src="${escHtml(thumb.url)}"
-             alt="${escHtml(thumb.label)} thumbnail"
+             alt="${escHtml(thumb.label)}"
              loading="lazy"
              onerror="this.closest('.thumb-download-row').classList.add('thumb-row--missing')">
       </div>
@@ -812,14 +875,14 @@ function renderThumbnailDownloadGrid(data) {
       </div>
       <button class="btn-ghost btn-download"
               ${thumb.unavailable ? 'disabled' : ''}
-              aria-label="Download ${escHtml(thumb.label)} thumbnail">
-        ↓ Download
+              aria-label="${escHtml(t('thumbnails.download_btn'))} ${escHtml(thumb.label)}">
+        ${escHtml(t('thumbnails.download_btn'))}
       </button>`;
 
     if (!thumb.unavailable) {
       const btn = row.querySelector('.btn-download');
       btn.addEventListener('click', async () => {
-        const restoreBtn = applyDownloadingState(btn);
+        const restoreBtn = applyDownloadingState(btn, t('thumbnails.downloading'));
         try {
           await downloadSingleThumbnail(
             thumb.url, data.videoId, thumb.resolution, thumb.format.toLowerCase()
@@ -886,10 +949,10 @@ function initCopyButtons() {
 
     if (result.success) {
       applySuccessFeedback(btn);
-      showToast(`Tags copied as ${COPY_FORMATS[format]?.label || format}.`);
+      showToast(t('copy_success', { format: COPY_FORMATS[format]?.label || format }));
     } else {
       applyFailureFeedback(btn);
-      showToast('Copy failed — please try again.', 'error');
+      showToast(t('copy_failed'), 'error');
     }
   });
 
@@ -901,7 +964,7 @@ function initCopyButtons() {
     const format   = btn.dataset.format;
     const baseName = `ytspy_${currentData.videoId || 'tags'}`;
     downloadTagsAsFile(currentData.tags, format, baseName);
-    showToast('Tags file downloaded.');
+    showToast(t('tags_file_downloaded'));
   });
 }
 
@@ -969,19 +1032,19 @@ function initBulkSection() {
   if (btnZip) {
     btnZip.addEventListener('click', async () => {
       if (!currentBulkResult?.bulkVideoMap) return;
-      const restore = applyDownloadingState(btnZip, 'Zipping…');
+      const restore = applyDownloadingState(btnZip, t('bulk.zipping', { done: 0, total: 0 }));
       try {
         const result = await downloadBulkZip(
           currentBulkResult.bulkVideoMap,
           'hq',
           (done, total) => {
-            btnZip.textContent = `Zipping ${done}/${total}…`;
+            btnZip.textContent = t('bulk.zipping', { done, total });
           }
         );
         if (result.success) {
-          showToast(`Downloaded ${result.count} thumbnails as ZIP.`);
+          showToast(t('bulk.zip_success', { count: result.count }));
         } else {
-          showToast(result.error || 'ZIP download failed.', 'error');
+          showToast(result.error || t('bulk.zip_failed'), 'error');
         }
       } finally {
         restore();
@@ -995,7 +1058,7 @@ function initBulkSection() {
       if (!currentBulkResult?.frequencyTable) return;
       const total = currentBulkResult.successCount;
       downloadBulkCsv(currentBulkResult.frequencyTable, total);
-      showToast('Research CSV downloaded.');
+      showToast(t('bulk.csv_downloaded'));
     });
   }
 
@@ -1009,7 +1072,7 @@ function initBulkSection() {
     const result = await copyTagsInFormat(union, 'yt');
 
     if (result.success) {
-      showToast(`${union.length} unique tags copied (YouTube-ready format).`);
+      showToast(t('bulk.union_copied', { count: union.length }));
     }
   });
 }
@@ -1024,19 +1087,19 @@ async function handleBulkExtract() {
   const parsed = parseUrlList(textarea.value);
 
   if (!parsed.isReady) {
-    showToast('Paste at least one valid YouTube URL.', 'error');
+    showToast(t('bulk.no_urls_error'), 'error');
     return;
   }
 
   isBulkExtracting = true;
   if (btnBulk) {
     btnBulk.disabled    = true;
-    btnBulk.textContent = `Extracting 0/${parsed.validCount}…`;
+    btnBulk.textContent = t('bulk.extracting', { done: 0, total: parsed.validCount });
   }
 
   try {
     const result = await bulkExtract(parsed.validUrls, (done, total) => {
-      if (btnBulk) btnBulk.textContent = `Extracting ${done}/${total}…`;
+      if (btnBulk) btnBulk.textContent = t('bulk.extracting', { done, total });
     });
 
     currentBulkResult = result;
@@ -1046,7 +1109,7 @@ async function handleBulkExtract() {
     isBulkExtracting = false;
     if (btnBulk) {
       btnBulk.disabled    = false;
-      btnBulk.textContent = 'Extract all';
+      btnBulk.textContent = t('bulk.extract_btn');
     }
   }
 }
@@ -1100,8 +1163,8 @@ function renderFrequencyTable(table, totalVideos) {
       <td>
         <button class="btn-ghost btn-sm freq-copy-btn"
                 data-tag="${escHtml(entry.tag)}"
-                aria-label="Copy tag ${escHtml(entry.tag)}">
-          Copy
+                aria-label="${escHtml(entry.tag)}">
+          ${escHtml(t('share.copy_link').replace(/\slink$/i, '') || 'Copy')}
         </button>
       </td>`;
 
@@ -1130,12 +1193,16 @@ function renderBulkAccordion(items) {
       div.innerHTML = `
         <div class="bulk-video-header">
           <span class="bulk-video-title bulk-video-title--error">
-            Video ${item.index + 1}: ${escHtml(item.errorMessage)}
+            ${escHtml(t('bulk.video_failed', { n: item.index + 1 }))} — ${escHtml(item.errorMessage)}
           </span>
         </div>`;
       container.appendChild(div);
       return;
     }
+
+    const tagCountText = item.tagCount === 1
+      ? t('tags_panel.tag_count_one',  { n: item.tagCount })
+      : t('tags_panel.tag_count_many', { n: item.tagCount });
 
     div.innerHTML = `
       <div class="bulk-video-header">
@@ -1143,13 +1210,13 @@ function renderBulkAccordion(items) {
         <div class="bulk-video-info">
           <span class="bulk-video-title">${escHtml(item.title)}</span>
           <span class="bulk-video-meta">
-            ${item.tagCount} tags ·
-            ${item.charUsed}/500 chars ·
-            Health ${item.healthScore}/100 ${item.healthLabel}
+            ${escHtml(tagCountText)} ·
+            ${item.charUsed}/500 ·
+            ${escHtml(t('health.panel_title'))} ${item.healthScore}${escHtml(t('health.out_of'))} ${escHtml(item.healthLabel)}
           </span>
         </div>
         <button class="btn-ghost btn-sm bulk-toggle-btn" aria-expanded="false">
-          Show tags ↓
+          ${escHtml(t('bulk.show_tags_btn'))}
         </button>
       </div>
       <div class="bulk-video-tags hidden" role="list"></div>`;
@@ -1161,7 +1228,7 @@ function renderBulkAccordion(items) {
 
     toggleBtn.addEventListener('click', () => {
       const isHidden = tagsDiv.classList.toggle('hidden');
-      toggleBtn.textContent = isHidden ? 'Show tags ↓' : 'Hide tags ↑';
+      toggleBtn.textContent = isHidden ? t('bulk.show_tags_btn') : t('bulk.hide_tags_btn');
       toggleBtn.setAttribute('aria-expanded', !isHidden);
 
       if (!rendered && !isHidden) {
@@ -1201,16 +1268,16 @@ async function handleOverlapAnalysis() {
   const theirUrl = qs('#overlap-their-url')?.value?.trim() || '';
 
   if (!validateYouTubeInput(myUrl).valid) {
-    showToast('Please enter your video URL.', 'error');
+    showToast(t('overlap.error_need_my'), 'error');
     return;
   }
   if (!validateYouTubeInput(theirUrl).valid) {
-    showToast('Please enter the competitor video URL.', 'error');
+    showToast(t('overlap.error_need_their'), 'error');
     return;
   }
 
   const btn = qs('#btn-overlap-analyze');
-  const restore = applyDownloadingState(btn, 'Analysing…');
+  const restore = applyDownloadingState(btn, t('overlap.analyzing'));
 
   try {
     const [myResult, theirResult] = await Promise.all([
@@ -1219,11 +1286,11 @@ async function handleOverlapAnalysis() {
     ]);
 
     if (!myResult.success) {
-      showToast(`Your video: ${myResult.error}`, 'error');
+      showToast(t('overlap.error_my_failed', { error: myResult.error }), 'error');
       return;
     }
     if (!theirResult.success) {
-      showToast(`Competitor video: ${theirResult.error}`, 'error');
+      showToast(t('overlap.error_their_failed', { error: theirResult.error }), 'error');
       return;
     }
 
@@ -1231,7 +1298,9 @@ async function handleOverlapAnalysis() {
     const theirTags = theirResult.data.tags || [];
     const myCharUsed = myResult.data.tagStats?.charUsed || 0;
 
-    currentOverlap = computeOverlap(myTags, theirTags, myCharUsed);
+    currentOverlap         = computeOverlap(myTags, theirTags, myCharUsed);
+    currentOverlapMyData    = myResult.data;
+    currentOverlapTheirData = theirResult.data;
     renderOverlapResults(currentOverlap, myResult.data, theirResult.data);
 
   } finally {
@@ -1273,7 +1342,7 @@ function renderOverlapResults(overlap, myData, theirData) {
       const result = await copyTagsInFormat(overlap.rankedMissing, 'yt');
       if (result.success) {
         applySuccessFeedback(stealBtn);
-        showToast(`${overlap.missingCount} missing tags copied (YouTube-ready).`);
+        showToast(t('overlap.steal_success', { count: overlap.missingCount }));
       }
     };
   }
@@ -1284,7 +1353,7 @@ function renderOverlapResults(overlap, myData, theirData) {
     saveBtn.classList.remove('hidden');
     saveBtn.onclick = () => openSaveTemplateModal(
       overlap.rankedMissing,
-      overlap.templatePayload?.suggestedName || 'Competitor research'
+      overlap.templatePayload?.suggestedName || t('overlap.title')
     );
   }
 }
@@ -1321,10 +1390,10 @@ function initTemplatesSection() {
   document.addEventListener('click', e => {
     if (!e.target.closest('#btn-save-template')) return;
     if (!currentData?.tags?.length) {
-      showToast('Extract a video first.', 'error');
+      showToast(t('templates.extract_first_toast'), 'error');
       return;
     }
-    openSaveTemplateModal(currentData.tags, `Tags from: ${currentData.title?.slice(0,50) || ''}`);
+    openSaveTemplateModal(currentData.tags, currentData.title?.slice(0, 50) || '');
   });
 
   // Apply template (delegated from template cards)
@@ -1333,7 +1402,7 @@ function initTemplatesSection() {
     if (!applyBtn) return;
 
     const id       = applyBtn.dataset.templateId;
-    const template = getTemplates().find(t => t.id === id);
+    const template = getTemplates().find(tpl => tpl.id === id);
     if (!template) return;
 
     const strategy = qs('#template-strategy-select')?.value || 'union';
@@ -1351,17 +1420,21 @@ function initTemplatesSection() {
   document.addEventListener('click', e => {
     const delBtn = e.target.closest('.btn-delete-template[data-template-id]');
     if (!delBtn) return;
-    if (!confirm('Delete this template? This cannot be undone.')) return;
+    if (!confirm(t('templates.confirm_delete'))) return;
 
     deleteTemplate(delBtn.dataset.templateId);
     renderTemplateLibrary();
-    showToast('Template deleted.');
+    showToast(t('templates.deleted_toast'));
   });
 }
 
 function openSaveTemplateModal(tags, suggestedName = '') {
+  const preview = tags.slice(0, 5).join(', ')
+    + (tags.length > 5 ? ` … +${tags.length - 5}` : '');
+
   const name = prompt(
-    `Name this template (${tags.length} tags):\n\n${tags.slice(0, 5).join(', ')}${tags.length > 5 ? ` … +${tags.length - 5} more` : ''}`,
+    `${t('templates.save_prompt_title', { count: tags.length })}\n\n`
+    + t('templates.save_prompt_preview', { n: Math.min(5, tags.length), preview }),
     suggestedName
   );
 
@@ -1379,7 +1452,7 @@ function openSaveTemplateModal(tags, suggestedName = '') {
   });
 
   if (result.success) {
-    showToast(`Template "${name}" saved.`);
+    showToast(t('templates.saved_toast', { name }));
     renderTemplateLibrary();
     // Expand template section if collapsed
     const body = qs('#templates-body');
@@ -1388,7 +1461,7 @@ function openSaveTemplateModal(tags, suggestedName = '') {
       saveSectionState('templates', true);
     }
   } else {
-    showToast(result.error || 'Failed to save template.', 'error');
+    showToast(result.error || t('templates.save_failed_toast'), 'error');
   }
 }
 
@@ -1399,40 +1472,36 @@ function renderTemplateLibrary() {
   const templates = getTemplates();
 
   if (!templates.length) {
-    container.innerHTML = `
-      <p class="templates-empty">
-        No templates yet. After extracting a video, click
-        "Save as template" to save that video's tags for future use.
-      </p>`;
+    container.innerHTML = `<p class="templates-empty">${t('templates.empty')}</p>`;
     return;
   }
 
-  container.innerHTML = templates.map(t => {
-    const preview = buildTemplatePreview(t.tags, 5);
+  container.innerHTML = templates.map(tpl => {
+    const preview = buildTemplatePreview(tpl.tags, 5);
     return `
       <div class="template-card">
         <div class="template-card__header">
-          <span class="template-card__name">${escHtml(t.name)}</span>
-          <span class="template-card__meta">${preview.summary}</span>
+          <span class="template-card__name">${escHtml(tpl.name)}</span>
+          <span class="template-card__meta">${escHtml(preview.summary)}</span>
         </div>
         <div class="template-card__preview">
           ${preview.visibleTags.map(tag =>
             `<span class="tag-pill tag-pill--sm">${escHtml(tag)}</span>`
           ).join('')}
           ${preview.hiddenCount > 0
-            ? `<span class="template-more">+${preview.hiddenCount} more</span>`
+            ? `<span class="template-more">+${preview.hiddenCount}</span>`
             : ''}
         </div>
         <div class="template-card__actions">
           <button class="btn-primary btn-sm btn-apply-template"
-                  data-template-id="${escHtml(t.id)}"
-                  title="Apply to current video">
-            Apply
+                  data-template-id="${escHtml(tpl.id)}"
+                  title="${escHtml(t('templates.apply_btn'))}">
+            ${escHtml(t('templates.apply_btn'))}
           </button>
           <button class="btn-ghost btn-sm btn-delete-template"
-                  data-template-id="${escHtml(t.id)}"
-                  title="Delete template">
-            Delete
+                  data-template-id="${escHtml(tpl.id)}"
+                  title="${escHtml(t('templates.delete_btn'))}">
+            ${escHtml(t('templates.delete_btn'))}
           </button>
         </div>
       </div>`;
@@ -1453,15 +1522,15 @@ function renderTemplateSuggestions(videoTags) {
 
   container.innerHTML = `
     <div class="template-suggestions-header">
-      <span>Relevant saved templates</span>
+      <span>${escHtml(t('templates.suggestions_heading'))}</span>
     </div>
-    ${suggestions.map(t => `
+    ${suggestions.map(tpl => `
       <div class="template-suggestion-chip">
-        <span class="chip-name">${escHtml(t.name)}</span>
-        <span class="chip-meta">+${t.addableCount} new tags</span>
+        <span class="chip-name">${escHtml(tpl.name)}</span>
+        <span class="chip-meta">${escHtml(t('templates.new_tags_label', { count: tpl.addableCount }))}</span>
         <button class="btn-ghost btn-xs btn-apply-template"
-                data-template-id="${escHtml(t.id)}">
-          Apply
+                data-template-id="${escHtml(tpl.id)}">
+          ${escHtml(t('templates.apply_btn'))}
         </button>
       </div>`).join('')}`;
 }
@@ -1474,10 +1543,10 @@ function initHistorySection() {
   const clearBtn = qs('#history-clear-btn');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      if (!confirm('Clear all extraction history? This cannot be undone.')) return;
+      if (!confirm(t('history.confirm_clear'))) return;
       clearHistory();
       renderHistoryList();
-      showToast('History cleared.');
+      showToast(t('history.cleared_toast'));
     });
   }
 }
@@ -1489,10 +1558,7 @@ function renderHistoryList() {
   const history = getHistory();
 
   if (!history.length) {
-    list.innerHTML = `
-      <p class="history-empty">
-        No extractions yet — paste a YouTube URL above to get started.
-      </p>`;
+    list.innerHTML = `<p class="history-empty">${t('history.empty')}</p>`;
     return;
   }
 
@@ -1502,6 +1568,10 @@ function renderHistoryList() {
     const div = document.createElement('div');
     div.className = 'history-row';
 
+    const tagCountText = entry.tagCount === 1
+      ? t('tags_panel.tag_count_one',  { n: entry.tagCount })
+      : t('tags_panel.tag_count_many', { n: entry.tagCount });
+
     div.innerHTML = `
       <img src="${escHtml(entry.thumbUrl)}"
            width="56" height="32" loading="lazy"
@@ -1509,20 +1579,20 @@ function renderHistoryList() {
       <div class="history-info">
         <span class="history-title">${escHtml(entry.title || entry.id)}</span>
         <span class="history-meta">
-          ${entry.tagCount} tags ·
+          ${escHtml(tagCountText)} ·
           ${entry.channel ? escHtml(entry.channel) + ' · ' : ''}
-          ${formatRelativeTime(entry.extractedAt)}
+          ${escHtml(formatRelativeTime(entry.extractedAt))}
         </span>
       </div>
       <button class="btn-ghost btn-sm history-reextract"
               data-url="https://youtube.com/watch?v=${escHtml(entry.id)}"
-              aria-label="Re-extract ${escHtml(entry.title || entry.id)}">
-        Re-extract
+              aria-label="${escHtml(t('history.reextract_btn'))} ${escHtml(entry.title || entry.id)}">
+        ${escHtml(t('history.reextract_btn'))}
       </button>
       <button class="btn-ghost btn-sm btn-danger history-remove"
               data-id="${escHtml(entry.id)}"
-              aria-label="Remove ${escHtml(entry.title || entry.id)} from history">
-        ✕
+              aria-label="${escHtml(t('history.remove_btn'))} ${escHtml(entry.title || entry.id)}">
+        ${escHtml(t('history.remove_btn'))}
       </button>`;
 
     div.querySelector('.history-reextract').addEventListener('click', e => {
@@ -1558,13 +1628,22 @@ function initSectionToggles() {
 
       body.classList.toggle('hidden', !nowOpen);
       btn.setAttribute('aria-expanded', nowOpen);
-      btn.textContent = nowOpen ? 'Collapse ↑' : 'Expand ↓';
+      btn.textContent = nowOpen ? t('bulk.collapse') : t('bulk.expand');
 
       saveSectionState(sectionId, nowOpen);
 
       // Lazy-render templates list when section opens
       if (sectionId === 'templates' && nowOpen) renderTemplateLibrary();
     });
+  });
+}
+
+/** Re-apply Expand/Collapse text to all section toggles WITHOUT changing
+ *  their current open/closed state — used on languagechange. */
+function refreshSectionToggleLabels() {
+  document.querySelectorAll('.expand-btn[data-section]').forEach(btn => {
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.textContent  = isExpanded ? t('bulk.collapse') : t('bulk.expand');
   });
 }
 
@@ -1582,7 +1661,7 @@ function restorePersistedState() {
     if (body) body.classList.toggle('hidden', !isExpanded);
     if (btn) {
       btn.setAttribute('aria-expanded', isExpanded);
-      btn.textContent = isExpanded ? 'Collapse ↑' : 'Expand ↓';
+      btn.textContent = isExpanded ? t('bulk.collapse') : t('bulk.expand');
     }
 
     // Render templates if section is already open
@@ -1607,12 +1686,11 @@ function renderExtractError(message, errorType, originalUrl) {
   results.innerHTML = `
     <div class="error-panel panel" role="alert">
       <div class="error-icon">⚠</div>
-      <h3 class="error-heading">Extraction failed</h3>
-      <p class="error-message">${escHtml(message || 'An unexpected error occurred.')}</p>
+      <h3 class="error-heading">${escHtml(t('errors.extraction_failed_title'))}</h3>
+      <p class="error-message">${escHtml(message || t('errors.unknown'))}</p>
       ${recoveryHtml}
       <p class="error-hint">
-        Make sure the URL is a public YouTube video.
-        Private, age-restricted, and members-only videos may not work.
+        ${escHtml(t('errors.public_video_hint'))}
       </p>
     </div>`;
 }
@@ -1622,28 +1700,27 @@ function buildRecoveryAction(errorType, originalUrl) {
     case 'timeout':
       return `<button class="btn-primary btn-sm error-retry"
                 onclick="window._ytspyRetry('${escHtml(originalUrl)}')">
-                Retry ↻
+                ${escHtml(t('errors.retry_btn'))}
               </button>`;
 
     case 'offline':
       return `<p class="error-recovery">
-                You appear to be offline. Check your connection and try again.
+                ${escHtml(t('errors.recovery_offline'))}
               </p>`;
 
     case 'rate_limited':
       return `<p class="error-recovery">
-                Too many requests. Please wait 60 seconds and try again.
+                ${escHtml(t('errors.recovery_rate_limited'))}
               </p>`;
 
     case 'not_found':
       return `<p class="error-recovery">
-                This video does not exist, was deleted, or is private.
+                ${escHtml(t('errors.recovery_not_found'))}
               </p>`;
 
     case 'age_restricted':
       return `<p class="error-recovery">
-                Age-restricted videos cannot be analysed without authentication.
-                Try a public video from the same channel.
+                ${escHtml(t('errors.recovery_age_restricted'))}
               </p>`;
 
     default:
@@ -1685,7 +1762,61 @@ function clearResultsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SECTION 27 — DOM UTILITIES
+// SECTION 27 — LANGUAGE CHANGE — RE-RENDER DYNAMIC CONTENT
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// translateDOM() (fired internally by i18n.js on setLanguage) already
+// retranslates every static data-i18n* element in index.html. Everything
+// below is JS-generated dynamic content app.js itself built with t() at an
+// earlier point in time, so it needs an explicit re-render to pick up the
+// new language.
+
+function initLanguageChangeListener() {
+  document.addEventListener('languagechange', () => {
+    // Page chrome built entirely in JS
+    getSeasonLabel() && (qs('#seasonal-badge') && (qs('#seasonal-badge').textContent = getSeasonLabel()));
+    renderTicker();
+    renderAffiliateSlide();
+    if (!isExtracting) {
+      const btn = qs('#btn-extract');
+      if (btn) btn.textContent = getCtaVariants()[ctaIndex];
+    }
+
+    // Currently loaded single-video results
+    if (currentData) {
+      const healthResult = computeHealthScore(
+        currentData.tags     || [],
+        currentData.tagStats,
+        currentData.hashtags || []
+      );
+      currentData.healthScore = healthResult;
+      renderVideoMeta(currentData);
+      renderTagsPanel(currentData, healthResult);
+      renderThumbnailsPanel(currentData);
+      renderTemplateSuggestions(currentData.tags || []);
+    }
+
+    // Currently loaded bulk results
+    if (currentBulkResult) {
+      renderBulkResults(currentBulkResult);
+    }
+
+    // Currently loaded overlap results
+    if (currentOverlap && currentOverlapMyData && currentOverlapTheirData) {
+      renderOverlapResults(currentOverlap, currentOverlapMyData, currentOverlapTheirData);
+    }
+
+    // Template library + history (always rebuildable from storage)
+    renderTemplateLibrary();
+    renderHistoryList();
+
+    // Section expand/collapse button labels
+    refreshSectionToggleLabels();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 28 — DOM UTILITIES
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Shorthand querySelector */
@@ -1726,16 +1857,27 @@ function escHtml(str) {
     .replace(/'/g,  '&#39;');
 }
 
-/** Format a Unix timestamp as a relative time string */
+/** Maps an i18n language code to a BCP-47 tag Intl can reliably resolve.
+ *  Only needed where our code ≠ the expected Intl subtag (Filipino: 'tl' → 'fil'). */
+const INTL_LOCALE_MAP = { tl: 'fil' };
+
+/** Format a Unix timestamp as a relative time string, in the active language */
 function formatRelativeTime(ts) {
   const diff = Date.now() - (ts || 0);
   const min  = Math.floor(diff / 60_000);
   const hr   = Math.floor(diff / 3_600_000);
   const day  = Math.floor(diff / 86_400_000);
 
-  if (min  < 1)  return 'Just now';
-  if (min  < 60) return `${min}m ago`;
-  if (hr   < 24) return `${hr}h ago`;
-  if (day  < 7)  return `${day}d ago`;
-  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (min  < 1)  return t('history.just_now');
+  if (min  < 60) return t('history.minutes_ago', { n: min });
+  if (hr   < 24) return t('history.hours_ago',   { n: hr  });
+  if (day  < 7)  return t('history.days_ago',    { n: day });
+
+  const lang = getLanguage();
+  const intlTag = INTL_LOCALE_MAP[lang] || lang;
+  try {
+    return new Date(ts).toLocaleDateString(intlTag, { month: 'short', day: 'numeric' });
+  } catch {
+    return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
 }
