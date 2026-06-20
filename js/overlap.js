@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — COMPETITOR TAG ANALYSIS ENGINE
 // File: js/overlap.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // overlap.js takes two extracted tag arrays — the user's video and a competitor's
@@ -25,15 +25,40 @@
 //   - Make any API calls
 //   - Touch the DOM
 //   - Read or write localStorage
-//   - Import from any other ytspy module (completely self-contained)
+//   - Import from any other ytspy module, except i18n.js for translation
 //
 // NOTE ON FORMATTING FUNCTIONS:
 // formatTagsForYouTube and other formatters are small pure functions that also
 // exist in templates.js. They are duplicated here to keep overlap.js completely
-// self-contained with zero inter-module dependencies. This is intentional.
+// self-contained with zero inter-module dependencies (besides i18n). This is
+// intentional.
+//
+// i18n CONTRACT — IMPORTANT GAP:
+//   The five-tier overlap system (OVERLAP_TIERS / getOverlapTiers()) has a
+//   short `label` per tier that IS backed by a locale key
+//   (overlap.overlap_label_very_high / _high / _moderate / _low / _very_low),
+//   translated across all 20 locale files.
+//
+//   The longer `interpretation` and `recommendation` paragraphs per tier have
+//   NO locale key at all — not even in en.json. This is a genuine content gap
+//   in the locale schema itself (distinct from the 93-key backfill-pending
+//   gap elsewhere), since these sentences were apparently never carried over
+//   when the locale files were built. They stay English-only for every
+//   language until dedicated `overlap_interpretations.*` / `overlap_
+//   recommendations.*` sections are added to en.json and backfilled across
+//   the other 19 files — a larger task than backfilling, since the content
+//   doesn't exist yet anywhere to translate from.
+//
+//   buildOverlapSummary()'s composite sentence has the same gap — only the
+//   tier label portion is translated; the connecting clauses ("X tags in
+//   common", "Y competitor tags not in your list", etc.) stay English. This
+//   is lower priority since app.js's current UI does not render `summary`
+//   anywhere — it's computed and returned for potential future use only.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
+
+import { t } from './i18n.js';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -42,58 +67,64 @@ const TAG_CHAR_LIMIT = 500;
 /**
  * Overlap score thresholds and their labels/interpretations.
  * Scores are Sørensen-Dice × 100 (0–100 range).
+ * Built fresh on every call so `label` always reflects the active language
+ * (interpretation/recommendation stay English — see file header).
+ *
+ * @returns {OverlapTier[]}
  */
-const OVERLAP_TIERS = [
-  {
-    min: 75, max: 100,
-    label:          'Very high overlap',
-    cssModifier:    'very-high',
-    interpretation: 'Nearly identical tag targeting. Both videos are competing '
-                  + 'directly for the same audience and search queries. '
-                  + 'Your unique tags are your main differentiator.',
-    recommendation: 'Focus on the tags you have that they don\'t — '
-                  + 'these are your competitive edges. Consider diversifying '
-                  + 'your strategy to reduce direct competition.',
-  },
-  {
-    min: 50, max: 74,
-    label:          'High overlap',
-    cssModifier:    'high',
-    interpretation: 'Strong topical alignment. Both videos target the same niche '
-                  + 'and share most of the core discovery tags.',
-    recommendation: 'Add the missing tags to compete more directly. '
-                  + 'The competitor\'s unique tags show angles you haven\'t covered.',
-  },
-  {
-    min: 30, max: 49,
-    label:          'Moderate overlap',
-    cssModifier:    'moderate',
-    interpretation: 'Related content with partial tag strategy overlap. '
-                  + 'You\'re in the same niche but targeting different segments of it.',
-    recommendation: 'The missing tags represent an opportunity to expand your '
-                  + 'audience reach into the segments this competitor is capturing.',
-  },
-  {
-    min: 10, max: 29,
-    label:          'Low overlap',
-    cssModifier:    'low',
-    interpretation: 'Minimal shared targeting despite being in the same content space. '
-                  + 'Either very different sub-niches or very different tag strategies.',
-    recommendation: 'Study the competitor\'s complete tag set carefully. '
-                  + 'The large gap suggests they may be targeting search terms '
-                  + 'you haven\'t discovered yet.',
-  },
-  {
-    min: 0, max: 9,
-    label:          'Very low overlap',
-    cssModifier:    'very-low',
-    interpretation: 'Almost no shared tag strategy. These videos are in very '
-                  + 'different territory despite appearing similar on the surface.',
-    recommendation: 'Consider whether this is truly a direct competitor, or '
-                  + 'whether their tag strategy could be adopted wholesale '
-                  + 'to access a different audience segment.',
-  },
-];
+function getOverlapTiers() {
+  return [
+    {
+      min: 75, max: 100,
+      label:          t('overlap.overlap_label_very_high'),
+      cssModifier:    'very-high',
+      interpretation: 'Nearly identical tag targeting. Both videos are competing '
+                    + 'directly for the same audience and search queries. '
+                    + 'Your unique tags are your main differentiator.',
+      recommendation: 'Focus on the tags you have that they don\'t — '
+                    + 'these are your competitive edges. Consider diversifying '
+                    + 'your strategy to reduce direct competition.',
+    },
+    {
+      min: 50, max: 74,
+      label:          t('overlap.overlap_label_high'),
+      cssModifier:    'high',
+      interpretation: 'Strong topical alignment. Both videos target the same niche '
+                    + 'and share most of the core discovery tags.',
+      recommendation: 'Add the missing tags to compete more directly. '
+                    + 'The competitor\'s unique tags show angles you haven\'t covered.',
+    },
+    {
+      min: 30, max: 49,
+      label:          t('overlap.overlap_label_moderate'),
+      cssModifier:    'moderate',
+      interpretation: 'Related content with partial tag strategy overlap. '
+                    + 'You\'re in the same niche but targeting different segments of it.',
+      recommendation: 'The missing tags represent an opportunity to expand your '
+                    + 'audience reach into the segments this competitor is capturing.',
+    },
+    {
+      min: 10, max: 29,
+      label:          t('overlap.overlap_label_low'),
+      cssModifier:    'low',
+      interpretation: 'Minimal shared targeting despite being in the same content space. '
+                    + 'Either very different sub-niches or very different tag strategies.',
+      recommendation: 'Study the competitor\'s complete tag set carefully. '
+                    + 'The large gap suggests they may be targeting search terms '
+                    + 'you haven\'t discovered yet.',
+    },
+    {
+      min: 0, max: 9,
+      label:          t('overlap.overlap_label_very_low'),
+      cssModifier:    'very-low',
+      interpretation: 'Almost no shared tag strategy. These videos are in very '
+                    + 'different territory despite appearing similar on the surface.',
+      recommendation: 'Consider whether this is truly a direct competitor, or '
+                    + 'whether their tag strategy could be adopted wholesale '
+                    + 'to access a different audience segment.',
+    },
+  ];
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PRIMARY EXPORT — FULL OVERLAP ANALYSIS
@@ -129,13 +160,13 @@ export function computeOverlap(myTags, theirTags, myCharUsed = null) {
 
   // ── Three-column split ────────────────────────────────────────────────────
   // Shared: competitor's tags that appear in my set (use competitor casing)
-  const shared  = theirArr.filter(t => myNormSet.has(normalizeTag(t)));
+  const shared  = theirArr.filter(tg => myNormSet.has(normalizeTag(tg)));
 
   // Missing: competitor has these — I don't (highest strategic value)
-  const missing = theirArr.filter(t => !myNormSet.has(normalizeTag(t)));
+  const missing = theirArr.filter(tg => !myNormSet.has(normalizeTag(tg)));
 
   // Unique: I have these — competitor doesn't
-  const unique  = myArr.filter(t => !theirNormSet.has(normalizeTag(t)));
+  const unique  = myArr.filter(tg => !theirNormSet.has(normalizeTag(tg)));
 
   // ── Overlap score (Sørensen-Dice coefficient × 100) ───────────────────────
   // Dice = (2 × |intersection|) / (|A| + |B|)
@@ -152,8 +183,8 @@ export function computeOverlap(myTags, theirTags, myCharUsed = null) {
 
   // ── Ranked and classified missing tags ───────────────────────────────────
   const rankedMissing   = rankMissingByValue(missing);
-  const quickWins       = rankedMissing.filter(t => countWords(t) <= 2).slice(0, 5);
-  const highValueTargets = rankedMissing.filter(t => countWords(t) >= 3).slice(0, 8);
+  const quickWins       = rankedMissing.filter(tg => countWords(tg) <= 2).slice(0, 5);
+  const highValueTargets = rankedMissing.filter(tg => countWords(tg) >= 3).slice(0, 8);
 
   // ── Budget-aware steal list ───────────────────────────────────────────────
   const effectiveCharUsed = myCharUsed !== null
@@ -239,10 +270,11 @@ export function computeOverlap(myTags, theirTags, myCharUsed = null) {
  * @returns {OverlapTier}
  */
 export function getOverlapTier(score) {
-  for (const tier of OVERLAP_TIERS) {
+  const tiers = getOverlapTiers();
+  for (const tier of tiers) {
     if (score >= tier.min && score <= tier.max) return tier;
   }
-  return OVERLAP_TIERS[OVERLAP_TIERS.length - 1]; // fallback to lowest tier
+  return tiers[tiers.length - 1]; // fallback to lowest tier
 }
 
 /**
@@ -339,7 +371,7 @@ export function computeStealBudgetImpact(tagsToSteal, currentUsed) {
   }
 
   // Characters added by the steal tags: each costs length + 2 (separator)
-  const addedChars = tagsToSteal.reduce((sum, t) => sum + t.length + 2, 0);
+  const addedChars = tagsToSteal.reduce((sum, tg) => sum + tg.length + 2, 0);
   const newTotal   = currentUsed + addedChars;
 
   return {
@@ -367,8 +399,8 @@ export function formatTagsForYouTube(tags) {
   if (!tags.length) return '';
   return tags
     .map(tag => {
-      const t = tag.trim();
-      return t.includes(' ') ? `"${t.replace(/"/g, '\\"')}"` : t;
+      const tg = tag.trim();
+      return tg.includes(' ') ? `"${tg.replace(/"/g, '\\"')}"` : tg;
     })
     .join(' ');
 }
@@ -380,7 +412,7 @@ export function formatTagsForYouTube(tags) {
  * @returns {string}
  */
 export function formatTagsPlain(tags) {
-  return tags.map(t => t.trim()).join(', ');
+  return tags.map(tg => tg.trim()).join(', ');
 }
 
 /**
@@ -390,7 +422,7 @@ export function formatTagsPlain(tags) {
  * @returns {string}
  */
 export function formatTagsJson(tags) {
-  return JSON.stringify(tags.map(t => t.trim()), null, 2);
+  return JSON.stringify(tags.map(tg => tg.trim()), null, 2);
 }
 
 /**
@@ -402,10 +434,10 @@ export function formatTagsJson(tags) {
 export function formatTagsCsv(tags) {
   return tags
     .map(tag => {
-      const t = tag.trim();
-      return (t.includes(',') || t.includes('"') || t.includes('\n'))
-        ? `"${t.replace(/"/g, '""')}"`
-        : t;
+      const tg = tag.trim();
+      return (tg.includes(',') || tg.includes('"') || tg.includes('\n'))
+        ? `"${tg.replace(/"/g, '""')}"`
+        : tg;
     })
     .join(', ');
 }
@@ -444,7 +476,7 @@ export function formatMissingTags(tags, format) {
  */
 export function buildTemplatePayload(rankedMissing, theirAllTags) {
   return {
-    suggestedName: 'Competitor research',
+    suggestedName: t('overlap.title'),
     tags:          rankedMissing,
     description:   `${rankedMissing.length} tags from competitor analysis. `
                  + `${theirAllTags.length} total competitor tags analysed.`,
@@ -455,6 +487,9 @@ export function buildTemplatePayload(rankedMissing, theirAllTags) {
 /**
  * Build the payload for saving ONLY the competitor's complete tag set.
  * Useful when the user wants to save the entire competitor strategy as a template.
+ * NOTE: not currently called from app.js — exported for future use. The
+ * "Tags from: {title}" / "Competitor full tag set" strings have no locale
+ * key and stay English-only.
  *
  * @param {string[]} theirTags
  * @param {string}   [competitorTitle] — the competitor video title if known
@@ -492,19 +527,21 @@ export function getColumnEmptyMessage(column, context) {
 
   switch (column) {
     case 'shared':
-      if (!myHasTags)    return 'Your video has no tags to compare.';
-      if (!theirHasTags) return 'The competitor video has no tags to compare.';
-      return 'No tags in common. These videos are targeting completely different searches.';
+      if (!myHasTags)    return t('overlap.col_empty_mine');
+      if (!theirHasTags) return t('overlap.col_empty_theirs');
+      return t('overlap.col_empty_shared_none');
 
     case 'missing':
-      if (!theirHasTags) return 'The competitor video has no tags — nothing to steal.';
-      return 'You already use all of the competitor\'s tags. No gaps to fill.';
+      if (!theirHasTags) return t('overlap.col_empty_theirs');
+      return t('overlap.col_empty_missing_none');
 
     case 'unique':
-      if (!myHasTags)    return 'Your video has no tags.';
-      return 'All your tags are also used by the competitor. No unique tags.';
+      if (!myHasTags)    return t('overlap.col_empty_mine');
+      return t('overlap.col_empty_unique_none');
 
     default:
+      // Unreachable in practice — app.js only ever passes the three columns
+      // above. No dedicated locale key for this catch-all; low priority.
       return 'No data available.';
   }
 }
@@ -524,7 +561,7 @@ export function getColumnEmptyMessage(column, context) {
  */
 export function isTagAlreadyMine(tag, myTags) {
   const norm = normalizeTag(tag);
-  return myTags.some(t => normalizeTag(t) === norm);
+  return myTags.some(tg => normalizeTag(tg) === norm);
 }
 
 /**
@@ -566,9 +603,9 @@ export function classifyTag(tag, myTags, theirTags, perspective) {
  */
 function buildEmptyOverlapResult(reason, theirTags = [], myTags = []) {
   const emptyMessages = {
-    both_empty:   'Neither video has tags. Add tags to both videos to compare them.',
-    mine_empty:   'Your video has no tags. Extract a video with tags to run comparison.',
-    theirs_empty: 'The competitor video has no tags. Nothing to compare against.',
+    both_empty:   t('overlap.col_empty_both'),
+    mine_empty:   t('overlap.col_empty_mine'),
+    theirs_empty: t('overlap.col_empty_theirs'),
   };
 
   return {
@@ -576,7 +613,7 @@ function buildEmptyOverlapResult(reason, theirTags = [], myTags = []) {
     sharedCount: 0, missingCount: 0, uniqueCount: myTags.length,
     myTotal: myTags.length, theirTotal: theirTags.length,
     overlapScore: 0, coveragePct: 0,
-    overlapLabel:       'No data',
+    overlapLabel:       t('overlap.overlap_label_no_data'),
     overlapCssModifier: 'none',
     interpretation:     emptyMessages[reason],
     recommendation:     '',
@@ -594,6 +631,9 @@ function buildEmptyOverlapResult(reason, theirTags = [], myTags = []) {
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SUMMARY BUILDER
+// NOTE: not currently rendered anywhere in app.js's UI — computed and returned
+// for potential future use. Only the tier label is translated; see file
+// header i18n CONTRACT gap note for why the connecting clauses stay English.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -679,6 +719,6 @@ function computeCharCount(tags) {
 function sanitizeTagArray(tags) {
   if (!Array.isArray(tags)) return [];
   return tags
-    .map(t => String(t).trim())
-    .filter(t => t.length > 0);
+    .map(tg => String(tg).trim())
+    .filter(tg => tg.length > 0);
 }
