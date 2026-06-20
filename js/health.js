@@ -1,15 +1,15 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — TAG HEALTH SCORE ENGINE
 // File: js/health.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // health.js is a pure computation module. It accepts tag data and pre-computed
 // statistics from parser.js, then produces a structured score object that app.js
 // renders in the health score panel.
 //
-// It has zero dependencies on any other ytspy module.
-// It makes no network calls, touches no DOM, writes nothing to storage.
+// Its only dependency on another ytspy module is i18n.js (for t()) — it makes
+// no network calls, touches no DOM, writes nothing to storage.
 //
 // SCORING OVERVIEW — 100 points total across 4 components:
 //
@@ -42,9 +42,29 @@
 //   computeHealthScore(tags, tagStats, hashtags)  — main entry point
 //   getScoreLabel(score)                          — 'Excellent' | 'Good' | etc.
 //   getScoreGrade(score)                          — 'A+' | 'A' | 'B' | etc.
+//   getScoreModifier(score)                       — 'excellent' | 'good' | etc.
+//
+// i18n CONTRACT:
+//   Every insight/summary/suggestion sentence and every label routes through
+//   t() at call time, mapped against the `health_insights.*`, `health_summaries.*`,
+//   and `health_suggestions.*` locale keys. These three sections are part of
+//   the 93-key gap flagged during the locale audit — they exist in en.json but
+//   are still pending backfill across the other 19 locale files. Until that
+//   backfill lands, non-English users will see correctly-structured sentences
+//   that fall back to English text for just these specific insights — t()'s
+//   built-in fallback handles this gracefully, nothing breaks.
+//
+//   KNOWN GAP — two rare edge-case strings have no dedicated locale key and
+//   stay English-only everywhere (flagged inline at point of use):
+//     1. "{count} hashtags found but no tags to align with" — only reachable
+//        when a video has hashtags but zero tags.
+//     2. "the flagged issues" — fallback noun phrase only reachable if the
+//        average-tier gaps array is somehow empty.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
+
+import { t } from './i18n.js';
 
 // ─── SCORING CONSTANTS ────────────────────────────────────────────────────────
 
@@ -156,21 +176,21 @@ function scoreBudget(tagStats) {
       score:    0,
       maxScore: MAX_COMPONENT,
       pct:      0,
-      label:    'Over limit',
-      insight:  `Tag budget exceeded by ${Math.abs(charRemaining)} characters. `
-               + `YouTube silently truncates tags from the end of your list. `
-               + `Remove the highlighted tags to fix this.`,
+      label:    t('budget_labels.over_limit'),
+      insight:  t('health_insights.budget_over', { over: Math.abs(charRemaining) }),
       charUsed,
       charPct,
       overLimit,
     };
   }
 
-  // ── Zero tags ─────────────────────────────────────────────────────────────
+  // ── Zero tags (defensive — unreachable in practice since computeHealthScore
+  //    already short-circuits to buildZeroScore() before tagStats is built
+  //    from an empty array) ───────────────────────────────────────────────────
   if (total === 0 || charPct === 0) {
     return {
       score: 0, maxScore: MAX_COMPONENT, pct: 0,
-      label: 'No tags', insight: 'No tags to evaluate.',
+      label: t('budget_labels.no_tags'), insight: t('tags_panel.no_tags_default'),
       charUsed: 0, charPct: 0, overLimit: false,
     };
   }
@@ -206,19 +226,15 @@ function scoreBudget(tagStats) {
   // ── Build insight text ────────────────────────────────────────────────────
   let insight;
   if (charPct >= BUDGET_SWEET_SPOT_LOW && charPct <= BUDGET_SWEET_SPOT_HIGH) {
-    insight = `Excellent use of the tag budget — ${charUsed} of 500 characters (${Math.round(charPct * 100)}%). `
-            + `This is the optimal range.`;
+    insight = t('health_insights.budget_optimal', { used: charUsed, pct: Math.round(charPct * 100) });
   } else if (charPct > BUDGET_SWEET_SPOT_HIGH) {
-    insight = `Tag budget is very full at ${Math.round(charPct * 100)}%. `
-            + `${charRemaining} characters remain — consider whether all tags add value.`;
+    insight = t('health_insights.budget_over_packed', { pct: Math.round(charPct * 100), remaining: charRemaining });
   } else if (charPct >= 0.60) {
-    insight = `${charRemaining} characters remaining. Good usage — consider adding 1–2 more descriptive long-tail tags.`;
+    insight = t('health_insights.budget_good', { remaining: charRemaining });
   } else if (charPct >= 0.30) {
-    insight = `Only ${Math.round(charPct * 100)}% of the 500-character budget is used. `
-            + `Adding more specific long-tail tags would improve discoverability.`;
+    insight = t('health_insights.budget_under', { pct: Math.round(charPct * 100) });
   } else {
-    insight = `Significantly under-tagged — only ${charUsed} of 500 characters used. `
-            + `More tags create more potential discovery pathways.`;
+    insight = t('health_insights.budget_severe', { used: charUsed });
   }
 
   return {
@@ -235,11 +251,11 @@ function scoreBudget(tagStats) {
 }
 
 function getBudgetLabel(charPct, overLimit) {
-  if (overLimit)                       return 'Over limit';
-  if (charPct >= 0.80)                 return 'Optimal';
-  if (charPct >= 0.60)                 return 'Good';
-  if (charPct >= 0.30)                 return 'Under-used';
-  return 'Severely under-used';
+  if (overLimit)        return t('budget_labels.over_limit');
+  if (charPct >= 0.80)  return t('budget_labels.optimal');
+  if (charPct >= 0.60)  return t('budget_labels.good');
+  if (charPct >= 0.30)  return t('budget_labels.under_used');
+  return t('budget_labels.severely_under');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -262,8 +278,8 @@ function scoreTailDistribution(tagStats) {
   if (total === 0) {
     return {
       score: 0, maxScore: MAX_COMPONENT, pct: 0,
-      label: 'No data',
-      insight: 'No tags to evaluate.',
+      label: t('distribution_labels.no_data'),
+      insight: t('tags_panel.no_tags_default'),
       actual: { short: 0, mid: 0, long: 0 },
       ideal: IDEAL_DISTRIBUTION,
     };
@@ -313,34 +329,28 @@ function scoreTailDistribution(tagStats) {
 }
 
 function getDistributionLabel(score) {
-  if (score >= 20) return 'Well balanced';
-  if (score >= 14) return 'Fairly balanced';
-  if (score >= 8)  return 'Uneven';
-  return 'Heavily skewed';
+  if (score >= 20) return t('distribution_labels.well_balanced');
+  if (score >= 14) return t('distribution_labels.fairly_balanced');
+  if (score >= 8)  return t('distribution_labels.uneven');
+  return t('distribution_labels.heavily_skewed');
 }
 
 function buildDistributionInsight(sc, mc, lc, sp, mp, lp, total) {
   // Detect the dominant skew
   if (sp > 0.50) {
-    return `${Math.round(sp * 100)}% of tags are single-word (short-tail). `
-          + `These are highly competitive. Adding more mid and long-tail tags `
-          + `(2+ words) targets more specific searches with less competition.`;
+    return t('health_insights.tail_too_short', { pct: Math.round(sp * 100) });
   }
   if (lp > 0.70) {
-    return `${Math.round(lp * 100)}% of tags are long-tail (3+ words). `
-          + `While specific, adding some shorter 1–2 word tags improves broad discoverability.`;
+    return t('health_insights.tail_too_long', { pct: Math.round(lp * 100) });
   }
   if (mp > 0.70) {
-    return `${Math.round(mp * 100)}% of tags are mid-tail (2 words). `
-          + `Consider adding a few single-word broad tags and some 3+ word specific tags.`;
+    return t('health_insights.tail_too_mid', { pct: Math.round(mp * 100) });
   }
   if (total < 5) {
-    return `Only ${total} tags — too few to analyse distribution meaningfully. `
-          + `Aim for at least 8–12 tags across all three types.`;
+    return t('health_insights.tail_few', { count: total });
   }
   // Balanced
-  return `${sc} short-tail, ${mc} mid-tail, ${lc} long-tail tags. `
-        + `Distribution is ${sp >= 0.15 && lp >= 0.30 ? 'well' : 'reasonably'} balanced.`;
+  return t('health_insights.tail_balanced', { short: sc, mid: mc, long: lc });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -362,7 +372,7 @@ function scoreDiversity(tags, tagStats) {
   if (total === 0 || totalWordCount === 0) {
     return {
       score: 0, maxScore: MAX_COMPONENT, pct: 0,
-      label: 'No data', insight: 'No tags to evaluate.',
+      label: t('diversity_labels.no_data'), insight: t('tags_panel.no_tags_default'),
       diversityRatio: 0, concentration: 0, uniqueWordCount: 0,
     };
   }
@@ -441,18 +451,17 @@ function computeKeywordConcentration(tags) {
 }
 
 function getDiversityLabel(score) {
-  if (score >= 20) return 'Excellent variety';
-  if (score >= 14) return 'Good variety';
-  if (score >= 8)  return 'Repetitive';
-  return 'Very repetitive';
+  if (score >= 20) return t('diversity_labels.excellent');
+  if (score >= 14) return t('diversity_labels.good');
+  if (score >= 8)  return t('diversity_labels.repetitive');
+  return t('diversity_labels.very_repetitive');
 }
 
 function buildDiversityInsight(uniqueWords, totalWords, ratio, concentration, tags) {
   const pct = Math.round(ratio * 100);
 
   if (uniqueWords < 5) {
-    return `Only ${uniqueWords} unique words across all tags — very repetitive. `
-          + `Each tag should introduce new vocabulary to cover different search queries.`;
+    return t('health_insights.diversity_low_unique', { n: uniqueWords });
   }
 
   if (concentration > 0.50) {
@@ -464,22 +473,24 @@ function buildDiversityInsight(uniqueWords, totalWords, ratio, concentration, ta
       }
     }
     const dominant = [...freq.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '';
-    return `The word "${dominant}" appears in over ${Math.round(concentration * 100)}% of all tag words. `
-          + `Diversify by adding tags that don't rely on this keyword.`;
+    return t('health_insights.diversity_concentrated', {
+      word: dominant,
+      pct:  Math.round(concentration * 100),
+    });
   }
 
   if (concentration > CONCENTRATION_PENALTY_THRESHOLD) {
-    return `${uniqueWords} unique words across ${totalWords} total (${pct}% diversity ratio). `
-          + `A few keywords repeat heavily — try adding tags with different vocabulary.`;
+    return t('health_insights.diversity_moderate', { unique: uniqueWords, total: totalWords, pct });
   }
 
   if (ratio >= 0.80) {
-    return `Strong vocabulary variety — ${uniqueWords} unique words out of ${totalWords} total (${pct}%). `
-          + `Each tag is introducing new search territory.`;
+    return t('health_insights.diversity_strong', { unique: uniqueWords, total: totalWords, pct });
   }
 
-  return `${uniqueWords} unique words out of ${totalWords} total (${pct}% diversity). `
-        + `Moderate variety — adding tags with different vocabulary would improve coverage.`;
+  // Moderate variety, below the "strong" threshold — reuses the same
+  // sentence shape as diversity_moderate (the two scenarios read near-
+  // identically to a user: "some repetition, try varying vocabulary").
+  return t('health_insights.diversity_moderate', { unique: uniqueWords, total: totalWords, pct });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -503,10 +514,8 @@ function scoreHashtagAlignment(tags, hashtags) {
       score:          12,   // neutral — not using hashtags is a valid choice
       maxScore:       MAX_COMPONENT,
       pct:            0.48,
-      label:          'No hashtags',
-      insight:        'This video has no hashtags in the description. '
-                    + 'Adding 2–3 relevant hashtags that also appear in your tags '
-                    + 'can strengthen topical signals.',
+      label:          t('hashtag_labels.no_hashtags'),
+      insight:        t('health_insights.hashtag_no_hashtags'),
       alignedCount:   0,
       totalHashtags:  0,
       alignmentRatio: 0,
@@ -516,12 +525,13 @@ function scoreHashtagAlignment(tags, hashtags) {
   }
 
   // ── No tags, has hashtags ─────────────────────────────────────────────────
+  // NOTE: rare edge case with no dedicated locale key yet — see file header.
   if (tags.length === 0) {
     return {
       score:          0,
       maxScore:       MAX_COMPONENT,
       pct:            0,
-      label:          'No alignment',
+      label:          t('hashtag_labels.none'),
       insight:        `${hashtags.length} hashtag${hashtags.length !== 1 ? 's' : ''} found `
                     + `but no tags to align with.`,
       alignedCount:   0,
@@ -538,7 +548,7 @@ function scoreHashtagAlignment(tags, hashtags) {
 
   // A hashtag is considered "aligned" if its word appears anywhere in any tag
   // e.g. hashtag #cooking aligns with tag "cooking tips" or "best cooking channel"
-  const tagText = tags.map(t => t.toLowerCase()).join(' ');
+  const tagText = tags.map(tg => tg.toLowerCase()).join(' ');
 
   const aligned = hashtagWords.filter(hw => tagText.includes(hw));
   const missing = hashtagWords.filter(hw => !tagText.includes(hw));
@@ -556,18 +566,23 @@ function scoreHashtagAlignment(tags, hashtags) {
   // ── Build insight ─────────────────────────────────────────────────────────
   let insight;
   if (alignmentRatio === 1) {
-    insight = `All ${hashtagWords.length} hashtag${hashtagWords.length !== 1 ? 's' : ''} `
-            + `appear in the tag list — perfect alignment.`;
+    insight = t('health_insights.hashtag_perfect', { count: hashtagWords.length });
   } else if (alignmentRatio >= 0.5) {
-    insight = `${aligned.length} of ${hashtagWords.length} hashtags appear in the tags. `
-            + `Consider adding: ${missing.slice(0, 3).map(w => `"${w}"`).join(', ')}.`;
+    insight = t('health_insights.hashtag_partial', {
+      aligned: aligned.length,
+      total:   hashtagWords.length,
+      missing: missing.slice(0, 3).map(w => `"${w}"`).join(', '),
+    });
   } else if (alignmentRatio > 0) {
-    insight = `Only ${aligned.length} of ${hashtagWords.length} hashtags appear in the tags. `
-            + `Adding the missing hashtag words as tags would strengthen topical consistency.`;
+    insight = t('health_insights.hashtag_weak', {
+      aligned: aligned.length,
+      total:   hashtagWords.length,
+    });
   } else {
-    insight = `None of the ${hashtagWords.length} hashtag${hashtagWords.length !== 1 ? 's' : ''} `
-            + `appear in the tag list. These are a missed opportunity: `
-            + `${hashtagWords.slice(0, 3).map(w => `"${w}"`).join(', ')}.`;
+    insight = t('health_insights.hashtag_none_aligned', {
+      total:   hashtagWords.length,
+      missing: hashtagWords.slice(0, 3).map(w => `"${w}"`).join(', '),
+    });
   }
 
   return {
@@ -585,11 +600,11 @@ function scoreHashtagAlignment(tags, hashtags) {
 }
 
 function getHashtagLabel(ratio) {
-  if (ratio === 1)   return 'Perfect alignment';
-  if (ratio >= 0.75) return 'Strong alignment';
-  if (ratio >= 0.50) return 'Partial alignment';
-  if (ratio > 0)     return 'Weak alignment';
-  return 'No alignment';
+  if (ratio === 1)   return t('hashtag_labels.perfect');
+  if (ratio >= 0.75) return t('hashtag_labels.strong');
+  if (ratio >= 0.50) return t('hashtag_labels.partial');
+  if (ratio > 0)     return t('hashtag_labels.weak');
+  return t('hashtag_labels.none');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -616,8 +631,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
       component:    'budget',
       priority:     'critical',
       potentialGain: potentialBudget,
-      text: `Remove or shorten tags to get below the 500-character limit. `
-           + `${tagStats.truncatedTags?.length || 0} tags are currently being ignored by YouTube.`,
+      text: t('health_suggestions.over_budget', { count: tagStats.truncatedTags?.length || 0 }),
       actionLabel: 'View truncated tags',
       data: tagStats.truncatedTags || [],
     });
@@ -626,8 +640,10 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
       component:    'budget',
       priority:     'high',
       potentialGain: Math.round(potentialBudget * 0.7),
-      text: `Only ${Math.round(budget.charPct * 100)}% of the 500-character tag budget is used. `
-           + `Add more specific long-tail tags (3+ words) to fill the remaining ${budget.charRemaining} characters.`,
+      text: t('health_suggestions.under_budget_severe', {
+        pct:       Math.round(budget.charPct * 100),
+        remaining: budget.charRemaining,
+      }),
       actionLabel: 'Add more tags',
       data: null,
     });
@@ -636,8 +652,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
       component:    'budget',
       priority:     'medium',
       potentialGain: Math.round(potentialBudget * 0.5),
-      text: `${budget.charRemaining} characters remain in the tag budget. `
-           + `There is room for 1–3 more descriptive tags.`,
+      text: t('health_suggestions.under_budget_moderate', { remaining: budget.charRemaining }),
       actionLabel: 'Expand tag list',
       data: null,
     });
@@ -652,8 +667,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
         component:    'tailDistribution',
         priority:     'high',
         potentialGain: Math.round(potentialTail * 0.8),
-        text: `${Math.round(actual.short * 100)}% of tags are single-word — highly competitive. `
-             + `Add 2-word and 3+-word tags to target less competitive, more specific searches.`,
+        text: t('health_suggestions.too_many_short', { pct: Math.round(actual.short * 100) }),
         actionLabel: 'Improve tail balance',
         data: { actual: tail.actual, ideal: IDEAL_DISTRIBUTION },
       });
@@ -662,8 +676,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
         component:    'tailDistribution',
         priority:     'medium',
         potentialGain: Math.round(potentialTail * 0.6),
-        text: `Only ${Math.round(actual.long * 100)}% of tags are long-tail (3+ words). `
-             + `Long-tail tags have less competition and convert better. Aim for ~40%.`,
+        text: t('health_suggestions.not_enough_long', { pct: Math.round(actual.long * 100) }),
         actionLabel: 'Add long-tail tags',
         data: null,
       });
@@ -672,8 +685,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
         component:    'tailDistribution',
         priority:     'low',
         potentialGain: Math.round(potentialTail * 0.4),
-        text: `Tag distribution could be more balanced. `
-             + `Ideal: ~20% single-word, ~40% two-word, ~40% three-or-more-word tags.`,
+        text: t('health_suggestions.balance_distribution'),
         actionLabel: 'Balance tag types',
         data: { actual: tail.actual, ideal: IDEAL_DISTRIBUTION },
       });
@@ -687,8 +699,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
         component:    'diversity',
         priority:     'high',
         potentialGain: Math.round(potentialDiversity * 0.7),
-        text: `One keyword dominates ${Math.round(diversity.concentration * 100)}% of all tag words. `
-             + `Add tags that introduce completely different vocabulary to cover more search queries.`,
+        text: t('health_suggestions.high_concentration', { pct: Math.round(diversity.concentration * 100) }),
         actionLabel: 'Diversify vocabulary',
         data: null,
       });
@@ -697,8 +708,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
         component:    'diversity',
         priority:     'medium',
         potentialGain: Math.round(potentialDiversity * 0.5),
-        text: `Word diversity is below average (${Math.round(diversity.diversityRatio * 100)}% unique). `
-             + `Tags are repeating vocabulary. Try adding tags that cover adjacent topics.`,
+        text: t('health_suggestions.low_diversity', { pct: Math.round(diversity.diversityRatio * 100) }),
         actionLabel: 'Add varied tags',
         data: null,
       });
@@ -712,9 +722,10 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
       component:    'hashtagAlignment',
       priority:     hashtag.alignmentRatio < 0.5 ? 'high' : 'medium',
       potentialGain: Math.round(potentialHashtag * 0.9),
-      text: `${hashtag.missingHashtags.length} hashtag${hashtag.missingHashtags.length !== 1 ? 's' : ''} `
-           + `from the description don't appear in the tags: `
-           + `${missing.map(w => `"${w}"`).join(', ')}.`,
+      text: t('health_suggestions.missing_hashtags', {
+        count:   hashtag.missingHashtags.length,
+        missing: missing.map(w => `"${w}"`).join(', '),
+      }),
       actionLabel:  'Add missing hashtag words as tags',
       data:         missing,
     });
@@ -723,8 +734,7 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
       component:    'hashtagAlignment',
       priority:     'low',
       potentialGain: 13,   // max gain from adding hashtags + aligning them
-      text: 'No hashtags found in the description. Adding 2–3 relevant hashtags that also '
-           + 'appear in your tag list can strengthen your video\'s topical signals.',
+      text: t('health_suggestions.no_hashtags'),
       actionLabel: 'Learn about hashtag alignment',
       data: null,
     });
@@ -741,36 +751,38 @@ function buildSuggestions(budget, tail, diversity, hashtag, tagStats, hashtags) 
 
 function buildSummary(overall, budget, tail, diversity, hashtag) {
   if (overall >= 86) {
-    return 'Excellent tag strategy. This video is well optimised for discovery across all four dimensions.';
+    return t('health_summaries.excellent');
   }
 
   if (overall >= 66) {
     // Find the weakest component to highlight
     const weakest = [
-      { name: 'budget efficiency',  score: budget.score    },
-      { name: 'tag distribution',   score: tail.score      },
-      { name: 'vocabulary variety', score: diversity.score },
-      { name: 'hashtag alignment',  score: hashtag.score   },
+      { name: t('health.comp_budget'),    score: budget.score    },
+      { name: t('health.comp_tail'),      score: tail.score      },
+      { name: t('health.comp_diversity'), score: diversity.score },
+      { name: t('health.comp_hashtag'),   score: hashtag.score   },
     ].sort((a, b) => a.score - b.score)[0];
 
-    return `Good overall tag strategy. The main area to improve is ${weakest.name}, `
-          + `which would push this video into excellent territory.`;
+    return t('health_summaries.good', { weakest: weakest.name });
   }
 
   if (overall >= 41) {
     const gaps = [
-      budget.score    < 15 ? 'tag budget usage' : null,
-      tail.score      < 12 ? 'tail distribution' : null,
-      diversity.score < 12 ? 'vocabulary variety' : null,
-      hashtag.score   < 10 && !hashtag.neutralScore ? 'hashtag alignment' : null,
+      budget.score    < 15 ? t('health.comp_budget')    : null,
+      tail.score      < 12 ? t('health.comp_tail')      : null,
+      diversity.score < 12 ? t('health.comp_diversity') : null,
+      hashtag.score   < 10 && !hashtag.neutralScore ? t('health.comp_hashtag') : null,
     ].filter(Boolean);
 
-    return `Average tag strategy. Addressing ${gaps.length > 1 ? gaps.slice(0, -1).join(', ') + ' and ' + gaps[gaps.length - 1] : gaps[0] || 'the flagged issues'} `
-          + `would meaningfully improve this video's discoverability.`;
+    // NOTE: joined with a plain comma rather than an English-style "X, Y and Z"
+    // construction — conjunction grammar varies too much across 20 languages
+    // to hardcode safely without a dedicated locale-aware list-join helper.
+    const gapsText = gaps.length > 0 ? gaps.join(', ') : 'the flagged issues';
+
+    return t('health_summaries.average', { gaps: gapsText });
   }
 
-  return 'Weak tag strategy with significant gaps across multiple dimensions. '
-        + 'Review the suggestions below to identify the highest-impact improvements.';
+  return t('health_summaries.weak');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -780,20 +792,19 @@ function buildSummary(overall, budget, tail, diversity, hashtag) {
 function buildZeroScore() {
   const emptyComponent = (label) => ({
     score: 0, maxScore: MAX_COMPONENT, pct: 0,
-    label, insight: 'No tags to evaluate.',
+    label, insight: t('tags_panel.no_tags_default'),
   });
 
   return {
     overall:  0,
-    label:    'No tags',
-    grade:    'N/A',
-    summary:  'No tags were found for this video. The creator may not have added tags, '
-            + 'or they may be unavailable for this video type.',
+    label:    t('health.label_no_tags'),
+    grade:    t('health.grade_na'),
+    summary:  t('health.no_tags_summary'),
     components: {
-      budget:           emptyComponent('No data'),
-      tailDistribution: emptyComponent('No data'),
-      diversity:        emptyComponent('No data'),
-      hashtagAlignment: emptyComponent('No data'),
+      budget:           emptyComponent(t('distribution_labels.no_data')),
+      tailDistribution: emptyComponent(t('distribution_labels.no_data')),
+      diversity:        emptyComponent(t('diversity_labels.no_data')),
+      hashtagAlignment: emptyComponent(t('distribution_labels.no_data')),
     },
     suggestions: [],
   };
@@ -808,37 +819,40 @@ function buildZeroScore() {
  * Return a human-readable label for a given overall score.
  *
  * @param {number} score — 0–100
- * @returns {'Excellent'|'Good'|'Average'|'Weak'|'No tags'}
+ * @returns {string} translated label
  */
 export function getScoreLabel(score) {
-  if (score >= 86) return 'Excellent';
-  if (score >= 66) return 'Good';
-  if (score >= 41) return 'Average';
-  if (score >   0) return 'Weak';
-  return 'No tags';
+  if (score >= 86) return t('health.label_excellent');
+  if (score >= 66) return t('health.label_good');
+  if (score >= 41) return t('health.label_average');
+  if (score >   0) return t('health.label_weak');
+  return t('health.label_no_tags');
 }
 
 /**
  * Return a letter grade for a given overall score.
  *
  * @param {number} score — 0–100
- * @returns {'A+'|'A'|'B'|'C'|'D'|'F'|'N/A'}
+ * @returns {string} 'A+'|'A'|'B+'|'B'|'C+'|'C'|'D'|'F'|'N/A' (digit/letter grades
+ *   are visually identical across locales by design — routed through t() anyway
+ *   for architectural consistency and in case a locale ever needs to override).
  */
 export function getScoreGrade(score) {
-  if (score >= 93) return 'A+';
-  if (score >= 86) return 'A';
-  if (score >= 76) return 'B+';
-  if (score >= 66) return 'B';
-  if (score >= 56) return 'C+';
-  if (score >= 41) return 'C';
-  if (score >= 25) return 'D';
-  if (score >   0) return 'F';
-  return 'N/A';
+  if (score >= 93) return t('health.grade_a_plus');
+  if (score >= 86) return t('health.grade_a');
+  if (score >= 76) return t('health.grade_b_plus');
+  if (score >= 66) return t('health.grade_b');
+  if (score >= 56) return t('health.grade_c_plus');
+  if (score >= 41) return t('health.grade_c');
+  if (score >= 25) return t('health.grade_d');
+  if (score >   0) return t('health.grade_f');
+  return t('health.grade_na');
 }
 
 /**
  * Return the CSS modifier class suffix for a given score.
  * Used by app.js to apply colour coding: .score-ring--excellent, etc.
+ * NOT translated — these are CSS class identifiers, not display text.
  *
  * @param {number} score — 0–100
  * @returns {'excellent'|'good'|'average'|'weak'|'none'}
