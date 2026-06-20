@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — BULK EXTRACTION ENGINE
 // File: js/bulk.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // bulk.js orchestrates multi-URL extraction — the feature that processes up to
@@ -10,6 +10,7 @@
 // It is the only module (besides app.js) that imports from other ytspy modules:
 //   - parser.js   → fetchVideoData, extractVideoIdClientSide, computeTagStats
 //   - health.js   → computeHealthScore
+//   - i18n.js     → t (translation)
 //
 // KEY RESPONSIBILITIES:
 //   1. Parse and validate a multi-line URL textarea input
@@ -31,6 +32,29 @@
 //   - Write to localStorage (storage.js handles persistence)
 //   - Download ZIPs (export.js handles file operations)
 //   - Render frequency table rows (app.js handles rendering)
+//
+// i18n CONTRACT — STRUCTURAL NOTE:
+//   The locale's `bulk.hint_*` keys (hint_base, hint_invalid, hint_duplicates,
+//   hint_over_limit) are each a complete, standalone hint sentence for ONE
+//   condition — unlike the original v1.0.0 logic, which concatenated multiple
+//   condition suffixes onto a base string (e.g. "invalid AND duplicates AND
+//   over-limit" all in one line). buildDisplayHint() below picks the single
+//   highest-priority condition instead of concatenating, to match what was
+//   actually translated across the 20 locale files. Priority order: over-limit
+//   (data will be silently dropped) > invalid lines (input being ignored) >
+//   duplicates removed (informational) > plain count.
+//
+//   KNOWN GAP — buildSummaryText() is simplified to match the single
+//   `bulk.summary` locale key ("Analysed {{success}} videos. Found {{tags}}
+//   unique tags."), dropping the richer English-only stats the v1.0.0 version
+//   composed (failed count, universal-tag count, avg tags/video, avg health
+//   score) since no locale keys exist for those clauses yet. Re-add them in
+//   a future locale-backfill pass if desired.
+//
+//   KNOWN GAP — two rare, effectively-unreachable edge cases stay English-only
+//   (flagged inline): the all-failed summary sentence, and the empty-bulk-run
+//   summary (`bulkExtract([])` is never actually called with an empty array in
+//   normal use — app.js's handleBulkExtract() intercepts that case earlier).
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
@@ -42,6 +66,7 @@ import {
 } from './parser.js';
 
 import { computeHealthScore } from './health.js';
+import { t } from './i18n.js';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -141,7 +166,7 @@ export function parseUrlList(rawText) {
  */
 export function getUrlListStats(rawText) {
   if (!rawText || typeof rawText !== 'string') {
-    return { validCount: 0, invalidCount: 0, displayHint: '0 / 10 URLs', atLimit: false };
+    return { validCount: 0, invalidCount: 0, displayHint: t('bulk.hint_base', { count: 0 }), atLimit: false };
   }
 
   let valid   = 0;
@@ -297,6 +322,13 @@ async function extractOneVideo(url) {
 //   4. Sort by count descending, then alphabetically as tiebreaker
 //   5. Compute heat-map intensity: most frequent = 1.0, least frequent = 0.0
 //   6. Classify each tag as short / mid / long-tail
+//
+// NOTE: tagType values ('short-tail'|'mid-tail'|'long-tail') are CSS class /
+// data identifiers, not display text — app.js's <td class="freq-type"> cell
+// currently renders this raw. Translating that cell's visible text is a
+// future enhancement (would need tags_panel.short_tail_label etc, which
+// already exist — just not yet wired into bulk.js's table-cell output since
+// that rendering happens in app.js, not here).
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -316,7 +348,7 @@ export function buildFrequencyTable(successResults) {
   for (const video of successResults) {
     // Use a Set to ensure each tag is counted once per video
     const normTagsThisVideo = new Set(
-      (video.tags || []).map(t => t.toLowerCase().trim()).filter(Boolean)
+      (video.tags || []).map(tg => tg.toLowerCase().trim()).filter(Boolean)
     );
 
     for (const normTag of normTagsThisVideo) {
@@ -334,7 +366,7 @@ export function buildFrequencyTable(successResults) {
 
       // Track casing frequency to pick the most-common original casing
       const originalCasings = (video.tags || [])
-        .filter(t => t.toLowerCase().trim() === normTag);
+        .filter(tg => tg.toLowerCase().trim() === normTag);
 
       for (const casing of originalCasings) {
         const trimmed = casing.trim();
@@ -443,6 +475,8 @@ export function buildExtractionSummary(successes, failures, frequencyTable) {
       total, successCount, failureCount: failures.length,
       totalUniqueTags: 0, avgTagCount: 0, avgHealthScore: 0,
       avgCharUsed: 0, universalTags: [], highFrequencyTags: [],
+      // NOTE: rare edge case (100% of submitted URLs failed) — no dedicated
+      // locale key yet, stays English-only. See file header KNOWN GAP.
       summaryText: 'No videos were successfully extracted.',
     };
   }
@@ -463,10 +497,7 @@ export function buildExtractionSummary(successes, failures, frequencyTable) {
     successes.reduce((sum, v) => sum + (v.tagStats?.charUsed || 0), 0) / successCount
   );
 
-  const summaryText = buildSummaryText(
-    successCount, failures.length, totalUniqueTags,
-    universalTags.length, avgTagCount, avgHealthScore
-  );
+  const summaryText = buildSummaryText(successCount, totalUniqueTags);
 
   return {
     total,
@@ -503,8 +534,11 @@ export function buildAccordionItem(videoResult, index) {
       success:     false,
       url:         videoResult.url || '',
       videoId:     videoResult.videoId || '',
+      // NOTE: bare "Video N" fallback (no dedicated locale key — distinct
+      // from the combined "Video N: <error>" sentence used by app.js's
+      // bulk.video_failed rendering). Stays English-only; rare edge case.
       title:       videoResult.url || `Video ${index + 1}`,
-      errorMessage: videoResult.error || 'Extraction failed',
+      errorMessage: videoResult.error || t('errors.extraction_failed_title'),
       errorType:    videoResult.errorType || 'unknown',
     };
   }
@@ -524,8 +558,8 @@ export function buildAccordionItem(videoResult, index) {
     charUsed:      tagStats?.charUsed   || 0,
     overLimit:     tagStats?.overLimit  || false,
     healthScore:   healthScore?.overall || 0,
-    healthLabel:   healthScore?.label   || 'No tags',
-    healthGrade:   healthScore?.grade   || 'N/A',
+    healthLabel:   healthScore?.label   || t('health.label_no_tags'),
+    healthGrade:   healthScore?.grade   || t('health.grade_na'),
     duration:      videoResult.duration || '',
     isShort:       videoResult.isShort  || false,
     fromCache:     videoResult.fromCache || false,
@@ -590,7 +624,7 @@ function buildFailedVideoResult(url, errorType, errorMessage) {
     success:   false,
     url:       url || '',
     videoId,
-    error:     errorMessage || 'Extraction failed',
+    error:     errorMessage || t('errors.extraction_failed_title'),
     errorType: errorType    || 'unknown',
   };
 }
@@ -631,6 +665,7 @@ function countWords(tag) {
 
 /**
  * Map heat intensity (0–1) to a categorical heat level label.
+ * Internal identifier, not display text — no translation needed.
  *
  * @param {number} intensity — 0.0 to 1.0
  * @returns {'hot'|'warm'|'cool'|'cold'}
@@ -644,6 +679,8 @@ function getHeatLevel(intensity) {
 
 /**
  * Build the display hint text for the textarea character counter.
+ * Picks the single highest-priority condition rather than concatenating —
+ * see file header i18n CONTRACT note for why.
  *
  * @param {number}  validCount
  * @param {number}  invalidCount
@@ -652,48 +689,29 @@ function getHeatLevel(intensity) {
  * @returns {string}
  */
 function buildDisplayHint(validCount, invalidCount, exceedsMax, duplicates) {
-  let hint = `${validCount} / ${MAX_URLS} URLs`;
-
+  if (exceedsMax) {
+    return t('bulk.hint_over_limit', { count: validCount });
+  }
   if (invalidCount > 0) {
-    hint += ` · ${invalidCount} invalid — will be skipped`;
+    return t('bulk.hint_invalid', { count: validCount, invalid: invalidCount });
   }
   if (duplicates > 0) {
-    hint += ` · ${duplicates} duplicate${duplicates !== 1 ? 's' : ''} removed`;
+    return t('bulk.hint_duplicates', { count: validCount, dupes: duplicates });
   }
-  if (exceedsMax) {
-    hint += ` · Only first ${MAX_URLS} will be processed`;
-  }
-
-  return hint;
+  return t('bulk.hint_base', { count: validCount });
 }
 
 /**
- * Build a one-paragraph summary of the bulk extraction run.
+ * Build a one-sentence summary of the bulk extraction run.
+ * Matches the single `bulk.summary` locale key exactly — see file header
+ * KNOWN GAP note for the richer stats this simplifies away from v1.0.0.
  *
- * @param {number} success
- * @param {number} failed
- * @param {number} uniqueTags
- * @param {number} universalCount
- * @param {number} avgTagCount
- * @param {number} avgHealth
+ * @param {number} successCount
+ * @param {number} uniqueTagCount
  * @returns {string}
  */
-function buildSummaryText(success, failed, uniqueTags, universalCount, avgTagCount, avgHealth) {
-  let text = `Analysed ${success} video${success !== 1 ? 's' : ''}`;
-
-  if (failed > 0) {
-    text += ` (${failed} failed)`;
-  }
-
-  text += `. Found ${uniqueTags} unique tag${uniqueTags !== 1 ? 's' : ''} across all videos`;
-
-  if (universalCount > 0) {
-    text += `, with ${universalCount} tag${universalCount !== 1 ? 's' : ''} appearing in every video`;
-  }
-
-  text += `. Average: ${avgTagCount} tags per video · Health score ${avgHealth}/100.`;
-
-  return text;
+function buildSummaryText(successCount, uniqueTagCount) {
+  return t('bulk.summary', { success: successCount, tags: uniqueTagCount });
 }
 
 /**
@@ -706,12 +724,15 @@ function buildEmptyParseResult() {
     validUrls: [], allValidUrls: [], invalidLines: [],
     validCount: 0, invalidCount: 0, emptyLines: 0,
     totalLines: 0, duplicatesRemoved: 0, exceedsMax: false,
-    overLimitCount: 0, displayHint: `0 / ${MAX_URLS} URLs`, isReady: false,
+    overLimitCount: 0, displayHint: t('bulk.hint_base', { count: 0 }), isReady: false,
   };
 }
 
 /**
  * Build a zero-value BulkExtractionResult for empty input.
+ * NOTE: in normal use this is unreachable — app.js's handleBulkExtract()
+ * intercepts an empty/unready parse result before ever calling bulkExtract().
+ * The English-only summaryText below is a defensive fallback only.
  *
  * @returns {BulkExtractionResult}
  */
