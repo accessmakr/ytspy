@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — FRONTEND DATA LAYER
 // File: js/parser.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // parser.js is the single point of contact between the UI (app.js) and the
@@ -21,6 +21,25 @@
 //   - Store anything (that is storage.js's responsibility)
 //   - Calculate health scores (that is health.js's responsibility)
 //   - Handle bulk or overlap logic (that is bulk.js and overlap.js)
+//
+// i18n CONTRACT:
+//   All user-facing strings call t() at the point of use (not at module load),
+//   so they always reflect whatever language is active when the function
+//   runs. NO_TAGS_MESSAGES / ERROR_MESSAGES / PLACEMENT_CONTEXTS are exposed
+//   as get*() functions rather than static objects for this reason.
+//
+//   KNOWN GAP — backend-supplied strings are NOT translated here:
+//   `envelope.error` (raw backend error text) and thumbnail `label`/`note`
+//   fields (e.g. "Max Resolution") originate from the Netlify function and
+//   are passed through unchanged. Localising those requires updating
+//   netlify/functions/fetch-yt.js to accept a lang param — out of scope for
+//   this frontend-only pass.
+//
+//   KNOWN GAP — formatViewCount() keeps the English "views"/"view" suffix.
+//   No `views` key exists yet in the locale files; numeric compact notation
+//   (847, 42.3K, 1.2M, 3.4B) is left as-is to avoid locale-dependent numbering
+//   systems (e.g. Eastern Arabic digits) appearing unexpectedly. Add a
+//   dedicated key in a future locale-backfill pass to finish this.
 //
 // ⚠️  SIGNING CONFIGURATION — READ BEFORE DEPLOYING:
 // The backend verifies requests using REQUEST_SIGN_SECRET (a Netlify env var).
@@ -44,6 +63,8 @@
 
 'use strict';
 
+import { t, getLanguage } from './i18n.js';
+
 // ─── MODULE CONFIGURATION ────────────────────────────────────────────────────
 
 /** Must match REQUEST_SIGN_SECRET Netlify env var. Leave '' to disable signing. */
@@ -64,80 +85,104 @@ const TAG_CHAR_LIMIT = 500;
 /** Thumbnail CDN base */
 const THUMB_CDN = 'https://i.ytimg.com/vi';
 
+/** Maps an i18n language code to a BCP-47 tag Intl can reliably resolve. */
+const INTL_LOCALE_MAP = { tl: 'fil' };
+
+function resolveIntlTag() {
+  const lang = getLanguage();
+  return INTL_LOCALE_MAP[lang] || lang;
+}
+
 /**
  * Human-readable messages for each noTagsReason value the backend may return.
  * Shown in the tags panel when a video has no extractable tags.
+ * Built fresh on every call so it always reflects the active language.
+ *
+ * @returns {Record<string,string>}
  */
-const NO_TAGS_MESSAGES = {
-  creator_set_no_tags: 'This creator did not add tags to this video. Thumbnails and metadata are still available below.',
-  age_restricted:      'This video is age-restricted. Tag data is not accessible without login. Thumbnails are still available.',
-  private:             'This video is private or unlisted. Thumbnail URLs are still generated from the video ID.',
-  live_stream:         'Live streams use a different metadata structure. Tags may become available after the stream ends.',
-  members_only:        'This is a members-only video. Tag data requires channel membership to access.',
-  all_layers_failed:   'Tag extraction was unsuccessful for this video. This occasionally happens with older or restricted videos. Thumbnails are still available.',
-};
+function getNoTagsMessages() {
+  return {
+    creator_set_no_tags: t('no_tags.creator_set_no_tags'),
+    age_restricted:      t('no_tags.age_restricted'),
+    private:             t('no_tags.private'),
+    live_stream:         t('no_tags.live_stream'),
+    members_only:        t('no_tags.members_only'),
+    all_layers_failed:   t('no_tags.all_layers_failed'),
+  };
+}
 
 /**
  * Error type → user-facing message map.
  * Returned by fetchVideoData when the API call fails.
+ * Built fresh on every call so it always reflects the active language.
+ *
+ * @returns {Record<string,string>}
  */
-const ERROR_MESSAGES = {
-  invalid_url:   'Please enter a valid YouTube URL or video ID.',
-  not_found:     'This video was not found. It may have been deleted or made private.',
-  rate_limited:  'You have made too many requests. Please wait a moment before trying again.',
-  timeout:       'The request timed out. YouTube may be slow right now — please try again.',
-  network:       'Could not connect to the server. Check your internet connection and try again.',
-  members_only:  'This video is for channel members only and cannot be analyzed.',
-  age_restricted:'This video is age-restricted and cannot be analyzed without a login.',
-  unknown:       'An unexpected error occurred. Please try again.',
-};
+function getErrorMessages() {
+  return {
+    invalid_url:    t('errors.invalid_url'),
+    not_found:      t('errors.not_found'),
+    rate_limited:   t('errors.rate_limited'),
+    timeout:        t('errors.timeout'),
+    network:        t('errors.network'),
+    offline:        t('errors.offline'),
+    members_only:   t('errors.members_only'),
+    age_restricted: t('errors.age_restricted'),
+    unknown:        t('errors.unknown'),
+  };
+}
 
 /**
  * The 5 YouTube placement contexts where thumbnails are displayed.
+ * Built fresh on every call so labels/descriptions reflect the active language.
  * Populated by buildPlacementPreviews() and consumed by app.js for rendering.
+ *
+ * @returns {Array<object>}
  */
-const PLACEMENT_CONTEXTS = [
-  {
-    id:          'desktop_home',
-    label:       'Desktop Homepage',
-    width:       320,
-    height:      180,
-    description: 'Primary discovery surface — how most subscribers first see your video',
-    isCropped:   false,
-  },
-  {
-    id:          'desktop_search',
-    label:       'Desktop Search',
-    width:       246,
-    height:      138,
-    description: 'Search results page — critical for non-subscriber discovery',
-    isCropped:   false,
-  },
-  {
-    id:          'mobile_search',
-    label:       'Mobile Search',
-    width:       168,
-    height:      94,
-    description: 'Mobile search — where over 70% of YouTube traffic originates',
-    isCropped:   false,
-  },
-  {
-    id:          'suggested',
-    label:       'Suggested Videos',
-    width:       168,
-    height:      94,
-    description: 'Suggested sidebar — drives a significant share of total views',
-    isCropped:   false,
-  },
-  {
-    id:          'notification',
-    label:       'Bell Notification',
-    width:       48,
-    height:      48,
-    description: 'Subscriber notification icon — must be readable at 48 × 48px',
-    isCropped:   true,   // Center-cropped to square — text-heavy thumbnails fail here
-  },
-];
+function getPlacementContexts() {
+  return [
+    {
+      id:          'desktop_home',
+      label:       t('thumbnails.placement_desktop_home'),
+      width:       320,
+      height:      180,
+      description: t('thumbnails.placement_desc_desktop_home'),
+      isCropped:   false,
+    },
+    {
+      id:          'desktop_search',
+      label:       t('thumbnails.placement_desktop_search'),
+      width:       246,
+      height:      138,
+      description: t('thumbnails.placement_desc_desktop_search'),
+      isCropped:   false,
+    },
+    {
+      id:          'mobile_search',
+      label:       t('thumbnails.placement_mobile_search'),
+      width:       168,
+      height:      94,
+      description: t('thumbnails.placement_desc_mobile_search'),
+      isCropped:   false,
+    },
+    {
+      id:          'suggested',
+      label:       t('thumbnails.placement_suggested'),
+      width:       168,
+      height:      94,
+      description: t('thumbnails.placement_desc_suggested'),
+      isCropped:   false,
+    },
+    {
+      id:          'notification',
+      label:       t('thumbnails.placement_notification'),
+      width:       48,
+      height:      48,
+      description: t('thumbnails.placement_desc_notification'),
+      isCropped:   true,   // Center-cropped to square — text-heavy thumbnails fail here
+    },
+  ];
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PRIMARY EXPORT — MAIN API CALL
@@ -164,7 +209,7 @@ export async function fetchVideoData(rawInput) {
   if (!validation.valid) {
     return {
       success:   false,
-      error:     ERROR_MESSAGES.invalid_url,
+      error:     getErrorMessages().invalid_url,
       errorType: 'invalid_url',
     };
   }
@@ -200,7 +245,7 @@ export async function fetchVideoData(rawInput) {
   if (!envelope.success) {
     return {
       success:   false,
-      error:     envelope.error || ERROR_MESSAGES.unknown,
+      error:     envelope.error || getErrorMessages().unknown,
       errorType: resolveErrorTypeFromMessage(envelope.error),
       retried,
     };
@@ -212,8 +257,9 @@ export async function fetchVideoData(rawInput) {
   const tagStats         = computeTagStats(raw.tags || []);
   const displayViewCount = formatViewCount(raw.viewCount);
   const displayDate      = formatPublishDate(raw.publishDate);
+  const noTagsMessages   = getNoTagsMessages();
   const noTagsMessage    = raw.noTagsReason
-    ? (NO_TAGS_MESSAGES[raw.noTagsReason] || NO_TAGS_MESSAGES.all_layers_failed)
+    ? (noTagsMessages[raw.noTagsReason] || noTagsMessages.all_layers_failed)
     : null;
 
   const placementPreviews = buildPlacementPreviews(
@@ -492,12 +538,13 @@ async function callApi(url, timeoutMs) {
  * @returns {string}
  */
 function resolveErrorMessage(result) {
-  if (result.timedOut)                    return ERROR_MESSAGES.timeout;
-  if (result.errorType === 'offline')     return 'You appear to be offline. Check your connection and try again.';
-  if (result.errorType === 'network')     return ERROR_MESSAGES.network;
-  if (result.errorType === 'rate_limited')return ERROR_MESSAGES.rate_limited;
-  if (result.errorType === 'not_found')   return ERROR_MESSAGES.not_found;
-  return ERROR_MESSAGES.unknown;
+  const messages = getErrorMessages();
+  if (result.timedOut)                     return messages.timeout;
+  if (result.errorType === 'offline')      return messages.offline;
+  if (result.errorType === 'network')      return messages.network;
+  if (result.errorType === 'rate_limited')  return messages.rate_limited;
+  if (result.errorType === 'not_found')    return messages.not_found;
+  return messages.unknown;
 }
 
 /**
@@ -568,7 +615,7 @@ export function computeTagStats(tags) {
   const total = tags.length;
 
   // ── Word-level diversity metrics (for health.js scoring) ─────────────────
-  const allWords    = tags.flatMap(t => t.toLowerCase().split(/\s+/).filter(Boolean));
+  const allWords    = tags.flatMap(tg => tg.toLowerCase().split(/\s+/).filter(Boolean));
   const uniqueWords = new Set(allWords);
   const totalWords  = allWords.length;
 
@@ -578,7 +625,7 @@ export function computeTagStats(tags) {
     : 0;
 
   // ── Per-tag character lengths ─────────────────────────────────────────────
-  const tagLengths    = tags.map(t => t.length);
+  const tagLengths    = tags.map(tg => tg.length);
   const avgCharPerTag = tagLengths.reduce((a, b) => a + b, 0) / total;
 
   // ── Longest and shortest tags ─────────────────────────────────────────────
@@ -596,7 +643,7 @@ export function computeTagStats(tags) {
                      : 'low';
 
   // ── Budget hint text (displayed below the character bar) ─────────────────
-  const budgetHint = buildBudgetHint(charUsed, charRemaining, overLimit, truncatedTags);
+  const budgetHint = buildBudgetHint(charUsed, charRemaining, charPct, overLimit, truncatedTags);
 
   return {
     // ── Core budget ───────────────────────────────────────────────────────
@@ -641,7 +688,7 @@ function buildEmptyTagStats() {
   return {
     total: 0, charUsed: 0, charLimit: TAG_CHAR_LIMIT,
     charRemaining: TAG_CHAR_LIMIT, charPct: 0, overLimit: false,
-    budgetStatus: 'low', budgetHint: 'No tags found for this video.',
+    budgetStatus: 'low', budgetHint: t('tags_panel.no_tags_default'),
     truncatedTags: [],
     shortTail: [], midTail: [], longTail: [],
     shortTailCount: 0, midTailCount: 0, longTailCount: 0,
@@ -698,46 +745,56 @@ function countWords(tag) {
  */
 function buildTypeMap(shortTail, midTail, longTail) {
   const map = new Map();
-  shortTail.forEach(t => map.set(t.toLowerCase(), 'short-tail'));
-  midTail.forEach(t =>   map.set(t.toLowerCase(), 'mid-tail'));
-  longTail.forEach(t =>  map.set(t.toLowerCase(), 'long-tail'));
+  shortTail.forEach(tg => map.set(tg.toLowerCase(), 'short-tail'));
+  midTail.forEach(tg =>   map.set(tg.toLowerCase(), 'mid-tail'));
+  longTail.forEach(tg =>  map.set(tg.toLowerCase(), 'long-tail'));
   return map;
 }
 
 /**
  * Generate the hint text shown below the character budget bar.
  * Varies based on budget consumption level and truncation state.
+ * Routes through the six `char_hints.*` locale keys, ordered from most to
+ * least urgent.
  *
  * @param {number}   charUsed
  * @param {number}   charRemaining
+ * @param {number}   charPct
  * @param {boolean}  overLimit
  * @param {string[]} truncatedTags
  * @returns {string}
  */
-function buildBudgetHint(charUsed, charRemaining, overLimit, truncatedTags) {
+function buildBudgetHint(charUsed, charRemaining, charPct, overLimit, truncatedTags) {
   if (overLimit) {
-    const count = truncatedTags.length;
-    return `⚠ ${Math.abs(charRemaining)} characters over limit — `
-         + `${count} tag${count !== 1 ? 's' : ''} at the end of the list `
-         + `are silently ignored by YouTube. Highlighted in red below.`;
+    return t('char_hints.over_limit', {
+      over:  Math.abs(charRemaining),
+      count: truncatedTags.length,
+    });
   }
 
   if (charRemaining <= 50) {
-    return `${charRemaining} characters remaining — nearly at the limit. `
-         + `Consider removing the shortest tags to make room for longer ones.`;
+    return t('char_hints.near_limit', { remaining: charRemaining });
   }
 
   if (charRemaining <= 150) {
-    return `${charRemaining} characters remaining. Getting close — `
-         + `good opportunity to add 1–2 more long-tail tags.`;
+    return t('char_hints.getting_close', { remaining: charRemaining });
   }
 
-  if (charUsed < 100) {
-    return `Only ${charUsed} of 500 characters used. `
-         + `This video is significantly under-tagged. More tags = more discovery surfaces.`;
+  // Severely under-tagged: less than 30% of the budget used
+  if (charPct < 0.30) {
+    return t('char_hints.under_tagged_severe', { pct: Math.round(charPct * 100) });
   }
 
-  return `${charRemaining} characters remaining of the 500-character budget.`;
+  // Moderately under-tagged: 30–65% of the budget used
+  if (charPct < 0.65) {
+    const estimatedRoom = Math.max(1, Math.floor(charRemaining / 25));
+    return t('char_hints.under_tagged_moderate', {
+      remaining: charRemaining,
+      n:         estimatedRoom,
+    });
+  }
+
+  return t('char_hints.optimal', { remaining: charRemaining });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -816,30 +873,30 @@ export function buildPlacementPreviews(thumbnails, isShort) {
     return [
       {
         id:          'shorts_feed',
-        label:       'Shorts Feed',
+        label:       t('thumbnails.placement_shorts_feed'),
         width:       180,
         height:      320,
-        description: 'Vertical Shorts feed — the primary discovery surface for Shorts',
+        description: t('thumbnails.placement_desc_shorts_feed'),
         isCropped:   false,
         isVertical:  true,
         thumbUrl:    thumbnails?.shorts_vertical?.url || previewUrl,
       },
       {
         id:          'mobile_search',
-        label:       'Mobile Search',
+        label:       t('thumbnails.placement_mobile_search'),
         width:       168,
         height:      94,
-        description: 'Shorts also appear in mobile search results',
+        description: t('thumbnails.placement_desc_mobile_search'),
         isCropped:   false,
         isVertical:  false,
         thumbUrl:    previewUrl,
       },
       {
         id:          'notification',
-        label:       'Bell Notification',
+        label:       t('thumbnails.placement_notification'),
         width:       48,
         height:      48,
-        description: 'Subscriber notification — must read at 48 × 48px',
+        description: t('thumbnails.placement_desc_notification'),
         isCropped:   true,
         isVertical:  false,
         thumbUrl:    previewUrl,
@@ -848,7 +905,7 @@ export function buildPlacementPreviews(thumbnails, isShort) {
   }
 
   // Standard video — all 5 placement contexts
-  return PLACEMENT_CONTEXTS.map(ctx => ({
+  return getPlacementContexts().map(ctx => ({
     ...ctx,
     thumbUrl: previewUrl,
   }));
@@ -869,6 +926,11 @@ export function buildPlacementPreviews(thumbnails, isShort) {
  *   1_240_000  → "1.2M views"
  *   3_400_000_000 → "3.4B views"
  *   0 or null  → "" (empty — not shown in UI when unavailable)
+ *
+ * NOTE: the "views"/"view" word is currently English-only in every language
+ * — see the file-header KNOWN GAP note. The numeric compact notation itself
+ * is intentionally kept locale-independent (always Western digits + K/M/B)
+ * to avoid unexpected numbering systems in some locales.
  *
  * @param {number|null} count
  * @returns {string}
@@ -900,7 +962,8 @@ export function formatViewCount(count) {
  *   Relative:    "3 years ago" (from initialData, already human-readable)
  *
  * Strategy: if the string already looks human-readable, return it directly.
- * If it's ISO format, convert to "Month D, YYYY".
+ * If it's ISO format, convert to a long localized date using the active
+ * language (falls back to en-US if Intl rejects the locale tag).
  *
  * @param {string|null} dateStr
  * @returns {string}
@@ -918,11 +981,19 @@ export function formatPublishDate(dateStr) {
     try {
       const d = new Date(dateStr);
       if (isNaN(d.getTime())) return dateStr;
-      return d.toLocaleDateString('en-US', {
-        year:  'numeric',
-        month: 'long',
-        day:   'numeric',
-      });
+      try {
+        return d.toLocaleDateString(resolveIntlTag(), {
+          year:  'numeric',
+          month: 'long',
+          day:   'numeric',
+        });
+      } catch {
+        return d.toLocaleDateString('en-US', {
+          year:  'numeric',
+          month: 'long',
+          day:   'numeric',
+        });
+      }
     } catch {
       return dateStr;
     }
@@ -935,6 +1006,7 @@ export function formatPublishDate(dateStr) {
 /**
  * Format a duration string or seconds count for the YouTube preview mockup.
  * The preview displays duration exactly as YouTube does: M:SS or H:MM:SS.
+ * Digits-only — no localization needed (universal notation).
  *
  * @param {string} durationStr — already-formatted string from backend (e.g. "4:32")
  * @param {number} [durationSeconds] — raw seconds, used as fallback
@@ -997,7 +1069,7 @@ export function normalizeHashtags(hashtags) {
  * @returns {{ url: string, resolution: string, label: string }}
  */
 export function getBestThumbnail(thumbnails, maxresExists = true) {
-  if (!thumbnails) return { url: '', resolution: 'none', label: 'Unavailable' };
+  if (!thumbnails) return { url: '', resolution: 'none', label: t('thumbnails.unavailable') };
 
   if (maxresExists && thumbnails.maxres?.url) return thumbnails.maxres;
   if (thumbnails.sd?.url)                     return thumbnails.sd;
@@ -1005,7 +1077,7 @@ export function getBestThumbnail(thumbnails, maxresExists = true) {
   if (thumbnails.mq?.url)                     return thumbnails.mq;
   if (thumbnails.default?.url)                return thumbnails.default;
 
-  return { url: '', resolution: 'none', label: 'Unavailable' };
+  return { url: '', resolution: 'none', label: t('thumbnails.unavailable') };
 }
 
 /**
@@ -1034,7 +1106,7 @@ export function getThumbnailList(thumbnails, isShort, maxresExists) {
         return {
           ...entry,
           unavailable:  true,
-          unavailableReason: 'This video does not have a 1280×720 thumbnail. Use SD or HQ instead.',
+          unavailableReason: t('thumbnails.unavailable_reason'),
         };
       }
 
