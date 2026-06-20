@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — TEMPLATE LIBRARY LOGIC
 // File: js/templates.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // templates.js is the computation layer for the tag template library feature.
@@ -21,8 +21,8 @@
 //   - Read or write localStorage (that is storage.js exclusively)
 //   - Touch the DOM (that is app.js exclusively)
 //   - Make any API calls
-//   - Import from parser.js, health.js, or any other ytspy module
-//     (it is self-contained — all inputs are passed as arguments)
+//   - Import from parser.js, health.js, or any other ytspy module besides i18n.js
+//     (it is otherwise self-contained — all other inputs are passed as arguments)
 //
 // MERGE STRATEGIES:
 //   union    — combine current + template, deduplicate, respect budget
@@ -35,9 +35,33 @@
 //              Template tags take priority positions in the tag order
 //
 // YOUTUBE TAG CHARACTER LIMIT: 500 characters (tags joined with ", ")
+//
+// i18n CONTRACT:
+//   getMergeStrategies() and buildMergeSummary() map almost 1:1 onto the
+//   `templates.*` locale keys already used by app.js's prompt dialogs and
+//   toasts. Two simplifications were made to fit the available keys exactly
+//   (both flagged inline at point of use):
+//     1. buildMergeSummary()'s 'replace' branch always uses `merge_replaced`
+//        (even when removedCount is 0) rather than the v1.0.0 distinct
+//        "Template applied — tag list replaced" message, since no locale
+//        key exists for that exact phrasing.
+//     2. prepend/append's positional nuance ("added to the beginning/end")
+//        is lost — both now share the generic `merge_added` sentence with
+//        union, since no position-specific "added" key exists.
+//   Both trade a little English-only precision for full translation coverage
+//   across all 20 locales — consistent with this build's general principle.
+//
+//   KNOWN GAP — three rare, low-traffic strings have no locale key and stay
+//   English-only (flagged inline): the "tag(s) too long" warning in
+//   validateTemplateTags(), the non-array-input "Empty template" guard in
+//   buildTemplatePreview(), and validateTemplateTags()'s "all tags were
+//   empty after trimming" message (which reuses `tags_empty` instead, a
+//   close-enough semantic match rather than a true gap).
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
+
+import { t } from './i18n.js';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -117,13 +141,12 @@ export function applyTemplate(templateTags, currentTags, strategy = 'union') {
   const budgetResult = computeBudget(merged);
 
   // ── Diff: what was added and what was removed ─────────────────────────────
-  const currentSet  = new Set(cTags.map(t => t.toLowerCase()));
-  const templateSet = new Set(tTags.map(t => t.toLowerCase()));
-  const mergedSet   = new Set(merged.map(t => t.toLowerCase()));
+  const currentSet  = new Set(cTags.map(tg => tg.toLowerCase()));
+  const templateSet = new Set(tTags.map(tg => tg.toLowerCase()));
 
-  const addedTags   = merged.filter(t => !currentSet.has(t.toLowerCase()));
+  const addedTags   = merged.filter(tg => !currentSet.has(tg.toLowerCase()));
   const removedTags = strategy === 'replace'
-    ? cTags.filter(t => !templateSet.has(t.toLowerCase()))
+    ? cTags.filter(tg => !templateSet.has(tg.toLowerCase()))
     : [];
 
   return {
@@ -192,8 +215,8 @@ export function previewMerge(templateTags, currentTags, strategy = 'union') {
 export function computeTemplateRelevance(tagsA, tagsB) {
   if (!tagsA.length || !tagsB.length) return 0;
 
-  const setA = new Set(tagsA.map(t => t.toLowerCase().trim()));
-  const setB = new Set(tagsB.map(t => t.toLowerCase().trim()));
+  const setA = new Set(tagsA.map(tg => tg.toLowerCase().trim()));
+  const setB = new Set(tagsB.map(tg => tg.toLowerCase().trim()));
 
   // Intersection: tags in both sets
   let intersectionSize = 0;
@@ -220,10 +243,10 @@ export function computeTemplateRelevance(tagsA, tagsB) {
  */
 function computeWordLevelOverlap(tagsA, tagsB) {
   const wordsA = new Set(
-    tagsA.flatMap(t => t.toLowerCase().split(/\s+/).filter(w => w.length > 2))
+    tagsA.flatMap(tg => tg.toLowerCase().split(/\s+/).filter(w => w.length > 2))
   );
   const wordsB = new Set(
-    tagsB.flatMap(t => t.toLowerCase().split(/\s+/).filter(w => w.length > 2))
+    tagsB.flatMap(tg => tg.toLowerCase().split(/\s+/).filter(w => w.length > 2))
   );
 
   if (wordsA.size === 0 || wordsB.size === 0) return 0;
@@ -271,7 +294,7 @@ export function getRelevantTemplates(videoTags, templates) {
       exactMatches:  countExactMatches(template.tags, videoTags),
       addableCount:  countAddableTags(template.tags, videoTags),
     }))
-    .filter(t => t.relevance >= RELEVANCE_THRESHOLD || t.addableCount > 0)
+    .filter(tpl => tpl.relevance >= RELEVANCE_THRESHOLD || tpl.addableCount > 0)
     .sort((a, b) => {
       // Primary sort: relevance score
       if (b.relevance !== a.relevance) return b.relevance - a.relevance;
@@ -291,8 +314,8 @@ export function getRelevantTemplates(videoTags, templates) {
  * @returns {number}
  */
 export function countExactMatches(templateTags, videoTags) {
-  const videoSet = new Set(videoTags.map(t => t.toLowerCase()));
-  return templateTags.filter(t => videoSet.has(t.toLowerCase())).length;
+  const videoSet = new Set(videoTags.map(tg => tg.toLowerCase()));
+  return templateTags.filter(tg => videoSet.has(tg.toLowerCase())).length;
 }
 
 /**
@@ -304,8 +327,8 @@ export function countExactMatches(templateTags, videoTags) {
  * @returns {number}
  */
 export function countAddableTags(templateTags, videoTags) {
-  const videoSet = new Set(videoTags.map(t => t.toLowerCase()));
-  return templateTags.filter(t => !videoSet.has(t.toLowerCase())).length;
+  const videoSet = new Set(videoTags.map(tg => tg.toLowerCase()));
+  return templateTags.filter(tg => !videoSet.has(tg.toLowerCase())).length;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -383,7 +406,7 @@ export function formatTagsForYouTube(tags) {
  * @returns {string}
  */
 export function formatTagsPlain(tags) {
-  return tags.map(t => t.trim()).join(', ');
+  return tags.map(tg => tg.trim()).join(', ');
 }
 
 /**
@@ -394,7 +417,7 @@ export function formatTagsPlain(tags) {
  * @returns {string}
  */
 export function formatTagsJson(tags) {
-  return JSON.stringify(tags.map(t => t.trim()), null, 2);
+  return JSON.stringify(tags.map(tg => tg.trim()), null, 2);
 }
 
 /**
@@ -408,12 +431,12 @@ export function formatTagsJson(tags) {
 export function formatTagsCsv(tags) {
   return tags
     .map(tag => {
-      const t = tag.trim();
+      const tg = tag.trim();
       // RFC 4180: quote if contains comma, double-quote, or newline
-      if (t.includes(',') || t.includes('"') || t.includes('\n')) {
-        return `"${t.replace(/"/g, '""')}"`;
+      if (tg.includes(',') || tg.includes('"') || tg.includes('\n')) {
+        return `"${tg.replace(/"/g, '""')}"`;
       }
-      return t;
+      return tg;
     })
     .join(', ');
 }
@@ -504,25 +527,25 @@ function findTruncatedTags(tags) {
  */
 export function validateTemplateName(name) {
   if (!name || typeof name !== 'string') {
-    return { valid: false, error: 'Template name is required.' };
+    return { valid: false, error: t('templates.name_required') };
   }
 
   const trimmed = name.trim();
 
   if (trimmed.length < TEMPLATE_NAME_MIN) {
-    return { valid: false, error: 'Template name cannot be empty.' };
+    // Reuses name_required — "cannot be empty" and "is required" are the
+    // same actionable problem from the user's point of view, and only the
+    // latter has a dedicated locale key.
+    return { valid: false, error: t('templates.name_required') };
   }
 
   if (trimmed.length > TEMPLATE_NAME_MAX) {
-    return {
-      valid: false,
-      error: `Template name must be ${TEMPLATE_NAME_MAX} characters or fewer.`,
-    };
+    return { valid: false, error: t('templates.name_too_long') };
   }
 
   // Block names that are pure punctuation or whitespace
   if (/^[^a-zA-Z0-9\u0080-\uFFFF]+$/.test(trimmed)) {
-    return { valid: false, error: 'Template name must contain at least one letter or number.' };
+    return { valid: false, error: t('templates.name_invalid') };
   }
 
   return { valid: true };
@@ -536,18 +559,20 @@ export function validateTemplateName(name) {
  */
 export function validateTemplateTags(tags) {
   if (!Array.isArray(tags) || tags.length === 0) {
-    return { valid: false, error: 'A template must contain at least one tag.' };
+    return { valid: false, error: t('templates.tags_empty') };
   }
 
   const cleaned  = sanitizeTagArray(tags);
   const warnings = [];
 
   if (cleaned.length === 0) {
-    return { valid: false, error: 'All tags were empty after removing whitespace.' };
+    // Reuses tags_empty — "ended up with zero usable tags" either way.
+    return { valid: false, error: t('templates.tags_empty') };
   }
 
   // Warn if any individual tag is unusually long
-  const longTags = cleaned.filter(t => t.length > MAX_TAG_LENGTH);
+  // NOTE: no dedicated locale key for this warning — stays English-only.
+  const longTags = cleaned.filter(tg => tg.length > MAX_TAG_LENGTH);
   if (longTags.length > 0) {
     warnings.push(
       `${longTags.length} tag${longTags.length !== 1 ? 's are' : ' is'} very long and may not work well in YouTube.`
@@ -558,7 +583,7 @@ export function validateTemplateTags(tags) {
   const budget = computeBudget(cleaned);
   if (budget.overLimit) {
     warnings.push(
-      `This template uses ${budget.charUsed} characters — ${Math.abs(budget.charRemaining)} over the 500-character limit.`
+      t('templates.tags_over_budget', { chars: budget.charUsed, over: Math.abs(budget.charRemaining) })
     );
   }
 
@@ -581,6 +606,8 @@ export function validateTemplateTags(tags) {
  */
 export function buildTemplatePreview(tags, limit = 6) {
   if (!Array.isArray(tags)) {
+    // NOTE: no dedicated locale key for this guard — stays English-only.
+    // Unreachable in practice; app.js always passes a real tags array.
     return { visibleTags: [], hiddenCount: 0, summary: 'Empty template' };
   }
 
@@ -588,21 +615,25 @@ export function buildTemplatePreview(tags, limit = 6) {
   const hiddenCount = Math.max(0, tags.length - limit);
   const budget      = computeBudget(tags);
 
-  const summary = `${tags.length} tag${tags.length !== 1 ? 's' : ''} · `
-                + `${budget.charUsed} / 500 chars`
-                + (budget.overLimit ? ' ⚠ over limit' : '');
+  const tagCountText = tags.length === 1
+    ? t('tags_panel.tag_count_one',  { n: tags.length })
+    : t('tags_panel.tag_count_many', { n: tags.length });
+
+  const summary = `${tagCountText} · ${budget.charUsed}/500`
+                + (budget.overLimit ? ` ⚠ ${t('budget_labels.over_limit')}` : '');
 
   return { visibleTags, hiddenCount, summary };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MERGE STRATEGY METADATA
-// Static descriptions of each strategy for the UI selection dropdown/buttons.
+// Translated descriptions of each strategy for the UI selection dropdown/buttons.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Return UI metadata for all merge strategies.
  * app.js uses this to render the strategy selector without hardcoding labels.
+ * Built fresh on every call so labels/descriptions reflect the active language.
  *
  * @returns {StrategyMeta[]}
  */
@@ -610,29 +641,29 @@ export function getMergeStrategies() {
   return [
     {
       id:          'union',
-      label:       'Add new tags',
-      description: 'Keep all current tags and add any new ones from the template. Duplicates are removed.',
+      label:       t('templates.strategy_union'),
+      description: t('templates.strategy_union_desc'),
       icon:        '+',
       recommended: true,
     },
     {
       id:          'replace',
-      label:       'Replace all tags',
-      description: 'Discard current tags and use only the template. Useful for starting fresh.',
+      label:       t('templates.strategy_replace'),
+      description: t('templates.strategy_replace_desc'),
       icon:        '↻',
       recommended: false,
     },
     {
       id:          'prepend',
-      label:       'Prioritise template',
-      description: 'Template tags appear first, current tags follow. Tag order matters for YouTube.',
+      label:       t('templates.strategy_prepend'),
+      description: t('templates.strategy_prepend_desc'),
       icon:        '↑',
       recommended: false,
     },
     {
       id:          'append',
-      label:       'Add at end',
-      description: 'Keep current tags in position, add template tags at the end.',
+      label:       t('templates.strategy_append'),
+      description: t('templates.strategy_append_desc'),
       icon:        '↓',
       recommended: false,
     },
@@ -652,14 +683,19 @@ export function getMergeStrategies() {
 function sanitizeTagArray(tags) {
   if (!Array.isArray(tags)) return [];
   return tags
-    .map(t => String(t).trim())
-    .filter(t => t.length > 0)
-    .map(t => t.slice(0, MAX_TAG_LENGTH));
+    .map(tg => String(tg).trim())
+    .filter(tg => tg.length > 0)
+    .map(tg => tg.slice(0, MAX_TAG_LENGTH));
 }
 
 /**
  * Build a one-sentence summary of what a merge operation did.
  * Shown as a confirmation message in the UI after applying a template.
+ *
+ * Restructured from v1.0.0 to map directly onto the available `templates.*`
+ * locale sentences — see file header i18n CONTRACT note for the two
+ * simplifications this involves (replace-with-zero-removed, and prepend/
+ * append sharing the generic "added" sentence with union).
  *
  * @param {string}  strategy
  * @param {number}  addedCount
@@ -669,37 +705,17 @@ function sanitizeTagArray(tags) {
  * @returns {string}
  */
 function buildMergeSummary(strategy, addedCount, removedCount, overLimit, charUsed) {
-  let base;
-
-  switch (strategy) {
-    case 'replace':
-      base = removedCount > 0
-        ? `Replaced ${removedCount} tag${removedCount !== 1 ? 's' : ''} with the template.`
-        : 'Template applied — tag list replaced.';
-      break;
-    case 'prepend':
-      base = addedCount > 0
-        ? `${addedCount} template tag${addedCount !== 1 ? 's' : ''} added to the beginning of your list.`
-        : 'No new tags to add — all template tags already present.';
-      break;
-    case 'append':
-      base = addedCount > 0
-        ? `${addedCount} template tag${addedCount !== 1 ? 's' : ''} added to the end of your list.`
-        : 'No new tags to add — all template tags already present.';
-      break;
-    case 'union':
-    default:
-      base = addedCount > 0
-        ? `${addedCount} new tag${addedCount !== 1 ? 's' : ''} added from template.`
-        : 'No new tags to add — all template tags are already in your list.';
-      break;
-  }
-
   if (overLimit) {
-    base += ` ⚠ Result exceeds the 500-character limit (${charUsed} chars) — some tags will be truncated by YouTube.`;
-  } else {
-    base += ` ${charUsed} / 500 characters used.`;
+    return t('templates.merge_over_limit', { chars: charUsed });
   }
 
-  return base;
+  if (strategy === 'replace') {
+    return t('templates.merge_replaced', { count: removedCount, chars: charUsed });
+  }
+
+  if (addedCount > 0) {
+    return t('templates.merge_added', { count: addedCount, chars: charUsed });
+  }
+
+  return t('templates.merge_no_new');
 }
