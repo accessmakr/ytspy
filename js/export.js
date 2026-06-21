@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — EXPORT AND DOWNLOAD LAYER
 // File: js/export.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // export.js handles every operation that moves data OUT of the tool:
@@ -33,9 +33,23 @@
 //   - Merge templates (templates.js)
 //   - Handle overlap analysis (overlap.js)
 //   - Read or write localStorage (storage.js)
+//
+// i18n CONTRACT — THIS FILE WAS ORIGINALLY MARKED "NO CHANGES NEEDED" IN THE
+// PROJECT MANIFEST. THAT WAS WRONG. The Phase 3 audit found this file has
+// some of the HIGHEST-FREQUENCY user-facing strings in the entire app:
+//   - COPY_FORMATS.label (shown in every copy-format dropdown/button)
+//   - "✓ Copied" / "✕ Failed" button feedback (fires on every single copy
+//     click across the whole tool — tags panel, bulk table, overlap columns)
+//   - CSV column headers (every bulk research export)
+//   - 7 distinct download/ZIP error messages
+// All of these ALREADY had locale keys waiting in en.json's `buttons`,
+// `csv_export`, and `export_errors` sections — they just weren't wired up
+// because this file was never given an i18n pass. They are now.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
+
+import { t } from './i18n.js';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -55,6 +69,12 @@ const MAX_FILENAME_LENGTH = 80;
 // The four formats available in the tags panel copy buttons.
 // Each entry defines the label, transformation function, MIME type, and
 // file extension (used if the user chooses to download rather than copy).
+//
+// `label` is now a getter so every read reflects the active language —
+// COPY_FORMATS itself must stay a plain object (not a function) since
+// app.js does `COPY_FORMATS[formatId]` lookups and `.fn(...)` calls on it,
+// but object property getters re-evaluate on every access, which gives us
+// translation-on-read without changing the call-site shape anywhere.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const COPY_FORMATS = Object.freeze({
@@ -65,11 +85,11 @@ export const COPY_FORMATS = Object.freeze({
    * Example: gaming, gaming tips, how to win at chess
    */
   plain: {
-    id:    'plain',
-    label: 'Plain text',
-    fn:    (tags) => tags.map(t => t.trim()).join(', '),
-    mime:  'text/plain',
-    ext:   'txt',
+    id:   'plain',
+    get label() { return t('copy_formats.plain'); },
+    fn:   (tags) => tags.map(tg => tg.trim()).join(', '),
+    mime: 'text/plain',
+    ext:  'txt',
   },
 
   /**
@@ -78,14 +98,14 @@ export const COPY_FORMATS = Object.freeze({
    * Example: gaming,"gaming, tips",how to win at chess
    */
   csv: {
-    id:    'csv',
-    label: 'CSV',
-    fn:    (tags) => tags
+    id:   'csv',
+    get label() { return t('copy_formats.csv'); },
+    fn:   (tags) => tags
       .map(tag => {
-        const t = tag.trim();
-        return (t.includes(',') || t.includes('"') || t.includes('\n'))
-          ? `"${t.replace(/"/g, '""')}"`
-          : t;
+        const tg = tag.trim();
+        return (tg.includes(',') || tg.includes('"') || tg.includes('\n'))
+          ? `"${tg.replace(/"/g, '""')}"`
+          : tg;
       })
       .join(', '),
     mime: 'text/csv',
@@ -98,11 +118,11 @@ export const COPY_FORMATS = Object.freeze({
    * Example: ["gaming", "gaming tips", "how to win at chess"]
    */
   json: {
-    id:    'json',
-    label: 'JSON',
-    fn:    (tags) => JSON.stringify(tags.map(t => t.trim()), null, 2),
-    mime:  'application/json',
-    ext:   'json',
+    id:   'json',
+    get label() { return t('copy_formats.json'); },
+    fn:   (tags) => JSON.stringify(tags.map(tg => tg.trim()), null, 2),
+    mime: 'application/json',
+    ext:  'json',
   },
 
   /**
@@ -112,16 +132,16 @@ export const COPY_FORMATS = Object.freeze({
    * Example: gaming "gaming tips" "how to win at chess" chess
    */
   yt: {
-    id:    'yt',
-    label: 'YouTube-ready',
-    fn:    (tags) => tags
+    id:   'yt',
+    get label() { return t('copy_formats.yt'); },
+    fn:   (tags) => tags
       .map(tag => {
-        const t = tag.trim();
-        return t.includes(' ') ? `"${t.replace(/"/g, '\\"')}"` : t;
+        const tg = tag.trim();
+        return tg.includes(' ') ? `"${tg.replace(/"/g, '\\"')}"` : tg;
       })
       .join(' '),
-    mime:  'text/plain',
-    ext:   'txt',
+    mime: 'text/plain',
+    ext:  'txt',
   },
 });
 
@@ -245,11 +265,11 @@ export function downloadTagsAsFile(tags, formatId, filenameBase = 'ytspy_tags') 
  * @param {string} videoId      — 11-character video ID (used in filename)
  * @param {string} resolution   — 'maxres'|'sd'|'hq'|'mq'|'default'|'webp'
  * @param {string} [format]     — 'jpg' or 'webp' (inferred from URL if not provided)
- * @returns {Promise<{ success: boolean, fallback?: boolean, error?: string }>}
+ * @returns {Promise<{ success: boolean, fallback?: boolean, error?: string, message?: string }>}
  */
 export async function downloadSingleThumbnail(url, videoId, resolution, format) {
   if (!url || !videoId) {
-    return { success: false, error: 'Missing URL or video ID' };
+    return { success: false, error: t('export_errors.missing_url_or_id') };
   }
 
   // Infer format from URL if not specified
@@ -281,10 +301,10 @@ export async function downloadSingleThumbnail(url, videoId, resolution, format) 
       return {
         success:  false,
         fallback: true,
-        message:  'Opened in new tab — right-click the image and choose Save Image.',
+        message:  t('export_errors.save_image_fallback'),
       };
     } catch {
-      return { success: false, error: 'Download failed and could not open in new tab.' };
+      return { success: false, error: t('export_errors.download_failed_no_tab') };
     }
   }
 }
@@ -318,7 +338,7 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
   const entries = Object.entries(videoMap || {});
 
   if (entries.length === 0) {
-    return { success: false, count: 0, skipped: 0, error: 'No videos to download.' };
+    return { success: false, count: 0, skipped: 0, error: t('export_errors.no_videos_to_download') };
   }
 
   // ── Load JSZip from CDN (once only) ──────────────────────────────────────
@@ -327,7 +347,7 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
   } catch {
     return {
       success: false, count: 0, skipped: 0,
-      error:   'Could not load ZIP library. Check your internet connection and try again.',
+      error:   t('export_errors.zip_library_load_failed'),
     };
   }
 
@@ -382,7 +402,7 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
   if (successCount === 0) {
     return {
       success: false, count: 0, skipped,
-      error:   'Could not download any thumbnails. They may have failed to load.',
+      error:   t('export_errors.zip_all_failed'),
     };
   }
 
@@ -405,7 +425,7 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
   } catch (err) {
     return {
       success: false, count: 0, skipped,
-      error:   'Failed to create ZIP file. Try downloading thumbnails individually.',
+      error:   t('export_errors.zip_create_failed'),
     };
   }
 }
@@ -416,7 +436,16 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
 // One row per tag, with frequency counts and video appearances.
 //
 // Column structure:
-//   Tag | Appears In (count) | Frequency (%) | Videos | Tag Length | Word Count | Type
+//   Tag | Appears In (count) | Frequency (%) | Tag Length | Word Count | Type | Source Videos
+//
+// NOTE: CSV column headers and Long-tail/Mid-tail/Short-tail type values are
+// now translated via `csv_export.*` and `tags_panel.*_tail_label` keys.
+// Unlike most UI text, this is a judgment call worth flagging: translating
+// column headers means a CSV opened in, say, Japanese will have Japanese
+// headers, which is correct for the end user but means the literal header
+// string is no longer a stable machine-readable key if anyone scripts
+// against this export. Accepted trade-off — this is a human research
+// deliverable, not an API contract.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -430,18 +459,22 @@ export async function downloadBulkZip(videoMap, resolution = 'hq', onProgress) {
  */
 export function buildBulkCsv(frequencyTable, totalVideos) {
   if (!frequencyTable || !frequencyTable.length) {
-    return 'No data available.\n';
+    return `${t('csv_export.no_data')}\n`;
   }
 
   const header = [
-    'Tag',
-    `Appears In (of ${totalVideos})`,
-    'Frequency (%)',
-    'Tag Length (chars)',
-    'Word Count',
-    'Type',
-    'Source Videos',
-  ].join(',');
+    t('csv_export.col_tag'),
+    t('csv_export.col_appears_in', { total: totalVideos }),
+    t('csv_export.col_frequency'),
+    t('csv_export.col_tag_length'),
+    t('csv_export.col_word_count'),
+    t('csv_export.col_type'),
+    t('csv_export.col_source_videos'),
+  ].map(csvCell).join(',');
+
+  const longTailLabel  = t('tags_panel.long_tail_label');
+  const midTailLabel   = t('tags_panel.mid_tail_label');
+  const shortTailLabel = t('tags_panel.short_tail_label');
 
   const rows = frequencyTable.map(entry => {
     const tag       = entry.tag || '';
@@ -449,7 +482,7 @@ export function buildBulkCsv(frequencyTable, totalVideos) {
     const pct       = Math.round((entry.pct || 0) * 100);
     const charLen   = tag.length;
     const wordCount = tag.trim().split(/\s+/).filter(Boolean).length;
-    const type      = wordCount >= 3 ? 'Long-tail' : wordCount === 2 ? 'Mid-tail' : 'Short-tail';
+    const type      = wordCount >= 3 ? longTailLabel : wordCount === 2 ? midTailLabel : shortTailLabel;
 
     // Truncate source video titles for CSV readability
     const sources = (entry.videoTitles || [])
@@ -463,7 +496,7 @@ export function buildBulkCsv(frequencyTable, totalVideos) {
       `${pct}%`,
       charLen,
       wordCount,
-      type,
+      csvCell(type),
       csvCell(sources),
     ].join(',');
   });
@@ -493,7 +526,8 @@ export function downloadBulkCsv(frequencyTable, totalVideos, filenameBase = 'yts
 
 /**
  * Apply "copied" visual feedback to a button element.
- * Stores original text, changes to "✓ Copied", reverts after delay.
+ * Stores original text, changes to the translated "✓ Copied" label, reverts
+ * after delay.
  *
  * @param {HTMLElement} buttonEl
  * @param {number}      [durationMs=1200]
@@ -504,7 +538,7 @@ export function applySuccessFeedback(buttonEl, durationMs = 1200) {
   const originalText  = buttonEl.textContent;
   const originalColor = buttonEl.style.color;
 
-  buttonEl.textContent = '✓ Copied';
+  buttonEl.textContent = t('buttons.copied');
   buttonEl.style.color = 'var(--accent-green)';
   buttonEl.setAttribute('disabled', 'true');
 
@@ -528,7 +562,7 @@ export function applyFailureFeedback(buttonEl, durationMs = 2000) {
   const originalText  = buttonEl.textContent;
   const originalColor = buttonEl.style.color;
 
-  buttonEl.textContent = '✕ Failed';
+  buttonEl.textContent = t('buttons.failed');
   buttonEl.style.color = 'var(--accent-red)';
 
   setTimeout(() => {
@@ -542,16 +576,18 @@ export function applyFailureFeedback(buttonEl, durationMs = 2000) {
  * Returns a function to call when the download completes (restores original state).
  *
  * @param {HTMLElement} buttonEl
- * @param {string}      [loadingText='Downloading...']
+ * @param {string}      [loadingText] — defaults to the translated buttons.downloading
  * @returns {function}  — call to restore original state
  */
-export function applyDownloadingState(buttonEl, loadingText = 'Downloading...') {
+export function applyDownloadingState(buttonEl, loadingText) {
   if (!buttonEl) return () => {};
+
+  const text = loadingText ?? t('buttons.downloading');
 
   const originalText     = buttonEl.textContent;
   const originalDisabled = buttonEl.disabled;
 
-  buttonEl.textContent = loadingText;
+  buttonEl.textContent = text;
   buttonEl.disabled    = true;
 
   return () => {
@@ -593,6 +629,8 @@ async function loadJSZip() {
     return _JSZip;
 
   } catch (err) {
+    // Internal/developer-facing error (caught and replaced with a translated
+    // message by downloadBulkZip's caller) — intentionally not translated.
     _JSZip = null;
     throw new Error(`Failed to load JSZip from CDN: ${err.message}`);
   }
@@ -646,6 +684,10 @@ function downloadTextFile(content, filename, mimeType = 'text/plain') {
  * Sanitise a string for use as a filename.
  * Replaces characters that are illegal on Windows/macOS/Linux with underscores.
  * Trims to MAX_FILENAME_LENGTH.
+ *
+ * NOT translated — filenames stay in Latin-safe form regardless of UI
+ * language deliberately, to avoid filesystem encoding issues on older
+ * Windows filesystems and ZIP archive compatibility edge cases.
  *
  * @param {string} name
  * @returns {string}
