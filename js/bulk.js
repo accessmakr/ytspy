@@ -475,9 +475,7 @@ export function buildExtractionSummary(successes, failures, frequencyTable) {
       total, successCount, failureCount: failures.length,
       totalUniqueTags: 0, avgTagCount: 0, avgHealthScore: 0,
       avgCharUsed: 0, universalTags: [], highFrequencyTags: [],
-      // NOTE: rare edge case (100% of submitted URLs failed) — no dedicated
-      // locale key yet, stays English-only. See file header KNOWN GAP.
-      summaryText: 'No videos were successfully extracted.',
+      summaryText: t('bulk.all_failed'),
     };
   }
 
