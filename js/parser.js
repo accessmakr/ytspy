@@ -35,12 +35,6 @@
 //   netlify/functions/fetch-yt.js to accept a lang param — out of scope for
 //   this frontend-only pass.
 //
-//   KNOWN GAP — formatViewCount() keeps the English "views"/"view" suffix.
-//   No `views` key exists yet in the locale files; numeric compact notation
-//   (847, 42.3K, 1.2M, 3.4B) is left as-is to avoid locale-dependent numbering
-//   systems (e.g. Eastern Arabic digits) appearing unexpectedly. Add a
-//   dedicated key in a future locale-backfill pass to finish this.
-//
 // ⚠️  SIGNING CONFIGURATION — READ BEFORE DEPLOYING:
 // The backend verifies requests using REQUEST_SIGN_SECRET (a Netlify env var).
 // The frontend must generate a matching signature using the same value.
@@ -927,10 +921,11 @@ export function buildPlacementPreviews(thumbnails, isShort) {
  *   3_400_000_000 → "3.4B views"
  *   0 or null  → "" (empty — not shown in UI when unavailable)
  *
- * NOTE: the "views"/"view" word is currently English-only in every language
- * — see the file-header KNOWN GAP note. The numeric compact notation itself
- * is intentionally kept locale-independent (always Western digits + K/M/B)
- * to avoid unexpected numbering systems in some locales.
+ * The "views"/"view" word now routes through meta_card.views / meta_card.view
+ * (added during the Phase 3 audit — net-new keys, still pending translation
+ * into the 19 non-English locale files). The numeric compact notation itself
+ * stays locale-independent (always Western digits + K/M/B) to avoid
+ * unexpected numbering systems in some locales.
  *
  * @param {number|null} count
  * @returns {string}
@@ -938,19 +933,22 @@ export function buildPlacementPreviews(thumbnails, isShort) {
 export function formatViewCount(count) {
   if (!count || count <= 0) return '';
 
+  const viewsWord = t('meta_card.views');
+  const viewWord  = t('meta_card.view');
+
   if (count >= 1_000_000_000) {
-    return `${(count / 1_000_000_000).toFixed(1).replace(/\.0$/, '')}B views`;
+    return `${(count / 1_000_000_000).toFixed(1).replace(/\.0$/, '')}B ${viewsWord}`;
   }
   if (count >= 1_000_000) {
-    return `${(count / 1_000_000).toFixed(1).replace(/\.0$/, '')}M views`;
+    return `${(count / 1_000_000).toFixed(1).replace(/\.0$/, '')}M ${viewsWord}`;
   }
   if (count >= 10_000) {
-    return `${(count / 1_000).toFixed(1).replace(/\.0$/, '')}K views`;
+    return `${(count / 1_000).toFixed(1).replace(/\.0$/, '')}K ${viewsWord}`;
   }
   if (count >= 1_000) {
-    return `${count.toLocaleString()} views`;
+    return `${count.toLocaleString()} ${viewsWord}`;
   }
-  return `${count} view${count !== 1 ? 's' : ''}`;
+  return `${count} ${count !== 1 ? viewsWord : viewWord}`;
 }
 
 /**
