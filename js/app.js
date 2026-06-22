@@ -1164,7 +1164,7 @@ function renderFrequencyTable(table, totalVideos) {
         <button class="btn-ghost btn-sm freq-copy-btn"
                 data-tag="${escHtml(entry.tag)}"
                 aria-label="${escHtml(entry.tag)}">
-          ${escHtml(t('share.copy_link').replace(/\slink$/i, '') || 'Copy')}
+          ${escHtml(t('tags_panel.copy_action'))}
         </button>
       </td>`;
 
