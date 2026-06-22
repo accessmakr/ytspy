@@ -571,12 +571,9 @@ export function validateTemplateTags(tags) {
   }
 
   // Warn if any individual tag is unusually long
-  // NOTE: no dedicated locale key for this warning — stays English-only.
   const longTags = cleaned.filter(tg => tg.length > MAX_TAG_LENGTH);
   if (longTags.length > 0) {
-    warnings.push(
-      `${longTags.length} tag${longTags.length !== 1 ? 's are' : ' is'} very long and may not work well in YouTube.`
-    );
+    warnings.push(t('templates.tag_too_long', { count: longTags.length }));
   }
 
   // Warn if saving this template would immediately exceed the budget
