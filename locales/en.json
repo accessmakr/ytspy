@@ -1,13 +1,11 @@
 {
   "_comment": "ytspy master locale — English (en). All other locales must map every key defined here. Keys missing in a locale fall back to this file. Do not remove or rename keys — add new ones only.",
   "_version": "1.0.0",
-
   "meta": {
     "title": "ytspy — YouTube Tag Extractor + Thumbnail Downloader",
     "description": "Extract hidden YouTube tags, download thumbnails in 5 resolutions, analyze competitor tags, and score your tag strategy. Free, instant, no login required.",
     "keywords": "youtube tag extractor, youtube thumbnail downloader, bulk youtube tags, youtube tag analyzer, free youtube seo tool, competitor tag analysis"
   },
-
   "nav": {
     "search": "Search",
     "language": "Language",
@@ -18,7 +16,6 @@
     "about": "About",
     "contact": "Contact"
   },
-
   "hero": {
     "h1_line1": "Extract YouTube tags.",
     "h1_line2": "Download thumbnails.",
@@ -31,7 +28,6 @@
     "seasonal_fall": "Fall Edition",
     "seasonal_winter": "Winter Edition"
   },
-
   "input": {
     "placeholder": "Paste YouTube URL here — youtube.com/watch?v=... or youtu.be/...",
     "paste_btn": "Paste",
@@ -39,7 +35,6 @@
     "clipboard_detected": "YouTube URL detected in clipboard — press Extract or Enter.",
     "invalid_url_toast": "Please paste a valid YouTube URL or video ID."
   },
-
   "cta": {
     "v1": "Extract",
     "v2": "Analyse",
@@ -48,22 +43,21 @@
     "v5": "Get tags",
     "v6": "Reveal tags"
   },
-
   "mode": {
     "both": "Both",
     "tags_only": "Tags only",
     "thumbnails_only": "Thumbnails only"
   },
-
   "meta_card": {
     "load_metadata": "Load full metadata",
     "badge_live": "LIVE",
     "badge_short": "SHORT",
     "badge_restricted": "AGE RESTRICTED",
     "badge_cached": "CACHED",
-    "title_unavailable": "Title unavailable"
+    "title_unavailable": "Title unavailable",
+    "views": "views",
+    "view": "view"
   },
-
   "tags_panel": {
     "title": "Extracted tags",
     "char_limit_label": "/ 500 characters",
@@ -81,9 +75,9 @@
     "tag_count_one": "{{n}} tag",
     "tag_count_many": "{{n}} tags",
     "hashtags_title": "Hashtags in description",
-    "truncated_title": "silently ignored by YouTube (over 500-char limit)"
+    "truncated_title": "silently ignored by YouTube (over 500-char limit)",
+    "copy_action": "Copy"
   },
-
   "char_hints": {
     "optimal": "{{remaining}} characters remaining — tag budget is well used.",
     "getting_close": "{{remaining}} characters remaining — getting close to the limit. Consider trimming shorter tags to make room.",
@@ -92,7 +86,6 @@
     "under_tagged_moderate": "{{remaining}} characters available. There is room for {{n}} more long-tail tags.",
     "over_limit": "⚠ {{over}} characters over limit — {{count}} tag(s) at the end of the list are silently ignored by YouTube. Highlighted in red below."
   },
-
   "no_tags": {
     "creator_set_no_tags": "This creator did not add tags to this video. Thumbnails and metadata are still available below.",
     "age_restricted": "This video is age-restricted. Tag data is not accessible without login. Thumbnails are still available.",
@@ -101,19 +94,16 @@
     "members_only": "This is a members-only video. Tag data requires channel membership to access.",
     "all_layers_failed": "Tag extraction was unsuccessful for this video. This can happen with some restricted videos. Thumbnails are still available."
   },
-
   "copy_formats": {
     "plain": "Plain text",
     "csv": "CSV",
     "json": "JSON",
     "yt": "YouTube-ready"
   },
-
   "copy_success": "Tags copied as {{format}}.",
   "copy_failed": "Copy failed — please try again.",
   "single_tag_copied": "Tag copied.",
   "tags_file_downloaded": "Tags file downloaded.",
-
   "health": {
     "panel_title": "Tag Health Score",
     "out_of": "/ 100",
@@ -139,7 +129,6 @@
     "potential_gain": "+{{n}} pts",
     "no_tags_summary": "No tags were found for this video. The creator may not have added tags, or they may be unavailable for this video type."
   },
-
   "budget_labels": {
     "optimal": "Optimal",
     "good": "Good",
@@ -148,7 +137,6 @@
     "over_limit": "Over limit",
     "no_tags": "No tags"
   },
-
   "distribution_labels": {
     "well_balanced": "Well balanced",
     "fairly_balanced": "Fairly balanced",
@@ -156,7 +144,6 @@
     "heavily_skewed": "Heavily skewed",
     "no_data": "No data"
   },
-
   "diversity_labels": {
     "excellent": "Excellent variety",
     "good": "Good variety",
@@ -164,7 +151,6 @@
     "very_repetitive": "Very repetitive",
     "no_data": "No data"
   },
-
   "hashtag_labels": {
     "perfect": "Perfect alignment",
     "strong": "Strong alignment",
@@ -173,7 +159,6 @@
     "none": "No alignment",
     "no_hashtags": "No hashtags"
   },
-
   "health_insights": {
     "budget_optimal": "Excellent use of the tag budget — {{used}} of 500 characters ({{pct}}%). This is the optimal range.",
     "budget_over_packed": "Tag budget is very full at {{pct}}%. {{remaining}} characters remain — consider whether all tags add value.",
@@ -196,14 +181,12 @@
     "hashtag_none_aligned": "None of the {{total}} hashtag(s) appear in the tag list. These are a missed opportunity: {{missing}}.",
     "hashtag_no_hashtags": "This video has no hashtags in the description. Adding 2–3 relevant hashtags that also appear in your tags can strengthen topical signals."
   },
-
   "health_summaries": {
     "excellent": "Excellent tag strategy. This video is well optimised for discovery across all four dimensions.",
     "good": "Good overall tag strategy. The main area to improve is {{weakest}}, which would push this video into excellent territory.",
     "average": "Average tag strategy. Addressing {{gaps}} would meaningfully improve this video's discoverability.",
     "weak": "Weak tag strategy with significant gaps across multiple dimensions. Review the suggestions below to identify the highest-impact improvements."
   },
-
   "health_suggestions": {
     "over_budget": "Remove or shorten tags to get below the 500-character limit. {{count}} tag(s) are currently being ignored by YouTube.",
     "under_budget_severe": "Only {{pct}}% of the 500-character tag budget is used. Add more specific long-tail tags to fill the remaining {{remaining}} characters.",
@@ -216,7 +199,6 @@
     "missing_hashtags": "{{count}} hashtag(s) from the description don't appear in the tags: {{missing}}.",
     "no_hashtags": "No hashtags found in the description. Adding 2–3 relevant hashtags that also appear in your tag list can strengthen topical signals."
   },
-
   "thumbnails": {
     "panel_title": "Thumbnails",
     "preview_label": "How it looks on YouTube search",
@@ -242,7 +224,6 @@
     "placement_shorts_feed": "Shorts Feed",
     "placement_desc_shorts_feed": "Vertical Shorts feed — the primary discovery surface for Shorts"
   },
-
   "affiliate": {
     "label": "RECOMMENDED",
     "feature_label": "DID YOU KNOW",
@@ -263,7 +244,6 @@
     "feature_char": "Character budget optimizer",
     "feature_char_sub": "See exactly which tags YouTube silently ignores"
   },
-
   "ticker": {
     "anchor_label": "● YTSPY SYSTEMS",
     "engine_label": "EXTRACTION ENGINE",
@@ -301,7 +281,6 @@
     "f_free_label": "ZERO LOGIN",
     "f_free_value": "→ No account · No limits · No tracking"
   },
-
   "bulk": {
     "title": "Bulk extract",
     "badge_new": "NEW",
@@ -334,9 +313,9 @@
     "csv_downloaded": "Research CSV downloaded.",
     "union_copied": "{{count}} unique tags copied (YouTube-ready format).",
     "no_urls_error": "Paste at least one valid YouTube URL.",
-    "summary": "Analysed {{success}} video(s){{failed}}. Found {{tags}} unique tags across all videos{{universal}}. Average: {{avg_tags}} tags per video · Health score {{avg_health}}/100."
+    "summary": "Analysed {{success}} video(s){{failed}}. Found {{tags}} unique tags across all videos{{universal}}. Average: {{avg_tags}} tags per video · Health score {{avg_health}}/100.",
+    "all_failed": "No videos were successfully extracted."
   },
-
   "overlap": {
     "title": "Competitor tag analysis",
     "description": "Paste your video + a competitor's video — see exactly which tags they use that you don't",
@@ -370,9 +349,18 @@
     "col_empty_theirs": "The competitor video has no tags — nothing to compare against.",
     "col_empty_shared_none": "No tags in common. These videos are targeting completely different searches.",
     "col_empty_missing_none": "You already use all of the competitor's tags. No gaps to fill.",
-    "col_empty_unique_none": "All your tags are also used by the competitor. No unique tags."
+    "col_empty_unique_none": "All your tags are also used by the competitor. No unique tags.",
+    "interpretation_very_high": "Nearly identical tag targeting. Both videos are competing directly for the same audience and search queries. Your unique tags are your main differentiator.",
+    "interpretation_high": "Strong topical alignment. Both videos target the same niche and share most of the core discovery tags.",
+    "interpretation_moderate": "Related content with partial tag strategy overlap. You're in the same niche but targeting different segments of it.",
+    "interpretation_low": "Minimal shared targeting despite being in the same content space. Either very different sub-niches or very different tag strategies.",
+    "interpretation_very_low": "Almost no shared tag strategy. These videos are in very different territory despite appearing similar on the surface.",
+    "recommendation_very_high": "Focus on the tags you have that they don't — these are your competitive edges. Consider diversifying your strategy to reduce direct competition.",
+    "recommendation_high": "Add the missing tags to compete more directly. The competitor's unique tags show angles you haven't covered.",
+    "recommendation_moderate": "The missing tags represent an opportunity to expand your audience reach into the segments this competitor is capturing.",
+    "recommendation_low": "Study the competitor's complete tag set carefully. The large gap suggests they may be targeting search terms you haven't discovered yet.",
+    "recommendation_very_low": "Consider whether this is truly a direct competitor, or whether their tag strategy could be adopted wholesale to access a different audience segment."
   },
-
   "templates": {
     "title": "Tag templates",
     "description": "Save tag sets you reuse across videos",
@@ -409,9 +397,9 @@
     "import_btn": "Import templates",
     "import_success": "Imported {{count}} template(s).",
     "import_partial": "Imported {{count}}, skipped {{skipped}} (already exist).",
-    "import_failed": "Import failed — invalid file format."
+    "import_failed": "Import failed — invalid file format.",
+    "tag_too_long": "{{count}} tag(s) are very long and may not display well on YouTube."
   },
-
   "history": {
     "title": "Recent extractions",
     "description": "Saved locally in your browser — no account needed",
@@ -427,7 +415,6 @@
     "days_ago": "{{n}}d ago",
     "date_format": "MMM D"
   },
-
   "errors": {
     "invalid_url": "Please enter a valid YouTube URL or video ID.",
     "not_found": "This video was not found. It may have been deleted or made private.",
@@ -448,13 +435,11 @@
     "recovery_not_found": "This video does not exist, was deleted, or is private.",
     "recovery_age_restricted": "Age-restricted videos cannot be analysed without authentication. Try a public video from the same channel."
   },
-
   "trust": {
     "rating": "4.9★ satisfaction",
     "creators": "Trusted by creators worldwide",
     "free": "Free. No login. No limits."
   },
-
   "share": {
     "section_title": "Share this tool",
     "whatsapp": "WhatsApp",
@@ -475,7 +460,6 @@
     "copy_link": "Copy link",
     "link_copied": "Link copied!"
   },
-
   "faq": {
     "section_title": "Frequently asked questions",
     "section_sub": "Everything you need to know about YouTube tag extraction, thumbnail downloading, and creator SEO.",
@@ -504,7 +488,6 @@
     "q12": "Why does the multi-placement thumbnail preview matter?",
     "a12": "YouTube thumbnails appear in five distinct contexts — desktop homepage, desktop search, mobile search, suggested video sidebar, and bell notification — each rendering at a different size. A thumbnail that looks excellent at full resolution can be unreadable at 48×48 pixels, which is the size of a notification icon. Text-heavy thumbnails in particular often fail at small sizes. ytspy shows all five contexts simultaneously so you can evaluate whether your thumbnail communicates clearly at every scale before uploading."
   },
-
   "contact": {
     "section_title": "Request & contact",
     "section_sub": "Have a question, found a bug, or want to suggest a feature? Every message is read.",
@@ -518,7 +501,6 @@
     "success_alert": "Thank you! Your request has been transmitted.",
     "error_alert": "Oops! There was a problem submitting your form."
   },
-
   "citation": {
     "section_title": "References & sources",
     "c1_text": "YouTube Help — Add tags to your video",
@@ -534,27 +516,22 @@
     "c4_url": "https://about.youtube/brand-resources/",
     "c4_label": "Google"
   },
-
   "quick_answer": {
     "label": "QUICK ANSWER",
     "text": "YouTube tags are hidden keywords embedded in a video's source code. ytspy extracts them from any public YouTube video, shows you competitor tags you're missing, and scores your tag strategy — all free, with no login required."
   },
-
   "logic": {
     "label": "LOGIC",
     "text": "YouTube embeds all video metadata including tags inside a JavaScript object called ytInitialData in every public video page — no API key required."
   },
-
   "methodology": {
     "label": "METHODOLOGY",
     "text": "ytspy uses a 4-layer server-side extraction chain with automatic fallback, returning only structured JSON — never raw HTML — to the browser."
   },
-
   "freshness": {
     "today": "Updated today",
     "last_updated": "Last updated {{date}}"
   },
-
   "footer": {
     "brand": "ytspy",
     "tagline": "Free forever. No ads. No data collected.",
@@ -567,7 +544,6 @@
     "twitter_link": "Twitter / X",
     "github_link": "GitHub"
   },
-
   "seo_content": {
     "h2_how_works": "How YouTube tag extraction works",
     "p_how_works": "Every public YouTube video embeds its tags in the page source code. ytspy fetches that page server-side, extracts all metadata from the ytInitialData JavaScript object, and returns clean structured data — no API key required, no rate limits for end users.",
@@ -578,7 +554,6 @@
     "h2_competitor": "YouTube tag gap analysis — free competitor research",
     "p_competitor": "Understanding which tags your competitors use that you don't is one of the highest-leverage actions in YouTube SEO. ytspy shows the exact tag gap between your video and any competitor video, highlighting the tags most likely to help your discovery."
   },
-
   "offline": {
     "page_title": "You're offline — ytspy",
     "heading": "You're offline",
@@ -587,13 +562,11 @@
     "cached_history_title": "Your recent extractions",
     "no_history": "No saved extractions yet."
   },
-
   "pwa": {
     "install_prompt": "Add ytspy to your home screen for instant access.",
     "install_btn": "Install",
     "install_dismiss": "Not now"
   },
-
   "lang": {
     "select": "Language",
     "en": "English",
@@ -616,5 +589,34 @@
     "tl": "Filipino",
     "th": "Thai",
     "uk": "Ukrainian"
+  },
+  "buttons": {
+    "copied": "✓ Copied",
+    "failed": "✕ Failed",
+    "downloading": "Downloading..."
+  },
+  "csv_export": {
+    "col_tag": "Tag",
+    "col_appears_in": "Appears In (of {{total}})",
+    "col_frequency": "Frequency (%)",
+    "col_tag_length": "Tag Length (chars)",
+    "col_word_count": "Word Count",
+    "col_type": "Type",
+    "col_source_videos": "Source Videos",
+    "no_data": "No data available."
+  },
+  "export_errors": {
+    "missing_url_or_id": "Missing URL or video ID.",
+    "save_image_fallback": "Opened in new tab — right-click the image and choose Save Image.",
+    "download_failed_no_tab": "Download failed and could not open in new tab.",
+    "no_videos_to_download": "No videos to download.",
+    "zip_library_load_failed": "Could not load ZIP library. Check your internet connection and try again.",
+    "zip_all_failed": "Could not download any thumbnails. They may have failed to load.",
+    "zip_create_failed": "Failed to create ZIP file. Try downloading thumbnails individually."
+  },
+  "storage_errors": {
+    "write_failed": "Storage write failed. Your browser storage may be full.",
+    "no_template_data": "No template data found in file.",
+    "imported_template_default_name": "Imported Template"
   }
 }
