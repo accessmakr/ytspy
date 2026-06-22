@@ -33,27 +33,20 @@
 // self-contained with zero inter-module dependencies (besides i18n). This is
 // intentional.
 //
-// i18n CONTRACT — IMPORTANT GAP:
-//   The five-tier overlap system (OVERLAP_TIERS / getOverlapTiers()) has a
-//   short `label` per tier that IS backed by a locale key
-//   (overlap.overlap_label_very_high / _high / _moderate / _low / _very_low),
-//   translated across all 20 locale files.
+// i18n CONTRACT:
+//   The five-tier overlap system (getOverlapTiers()) is fully translated —
+//   `label`, `interpretation`, and `recommendation` all route through
+//   `overlap.overlap_label_*` / `overlap.interpretation_*` /
+//   `overlap.recommendation_*` locale keys (added during the Phase 3 audit;
+//   these 10 interpretation/recommendation keys are net-new to the schema
+//   and still need translating into the 19 non-English locale files).
 //
-//   The longer `interpretation` and `recommendation` paragraphs per tier have
-//   NO locale key at all — not even in en.json. This is a genuine content gap
-//   in the locale schema itself (distinct from the 93-key backfill-pending
-//   gap elsewhere), since these sentences were apparently never carried over
-//   when the locale files were built. They stay English-only for every
-//   language until dedicated `overlap_interpretations.*` / `overlap_
-//   recommendations.*` sections are added to en.json and backfilled across
-//   the other 19 files — a larger task than backfilling, since the content
-//   doesn't exist yet anywhere to translate from.
-//
-//   buildOverlapSummary()'s composite sentence has the same gap — only the
-//   tier label portion is translated; the connecting clauses ("X tags in
-//   common", "Y competitor tags not in your list", etc.) stay English. This
-//   is lower priority since app.js's current UI does not render `summary`
-//   anywhere — it's computed and returned for potential future use only.
+//   buildOverlapSummary()'s composite sentence still has a partial gap —
+//   only the tier label portion is translated; the connecting clauses ("X
+//   tags in common", "Y competitor tags not in your list", etc.) stay
+//   English pending a dedicated `overlap.summary_*` key set. Lower priority
+//   since app.js's current UI does not render `summary` anywhere — it's
+//   computed and returned for potential future use only.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
@@ -78,50 +71,36 @@ function getOverlapTiers() {
       min: 75, max: 100,
       label:          t('overlap.overlap_label_very_high'),
       cssModifier:    'very-high',
-      interpretation: 'Nearly identical tag targeting. Both videos are competing '
-                    + 'directly for the same audience and search queries. '
-                    + 'Your unique tags are your main differentiator.',
-      recommendation: 'Focus on the tags you have that they don\'t — '
-                    + 'these are your competitive edges. Consider diversifying '
-                    + 'your strategy to reduce direct competition.',
+      interpretation: t('overlap.interpretation_very_high'),
+      recommendation: t('overlap.recommendation_very_high'),
     },
     {
       min: 50, max: 74,
       label:          t('overlap.overlap_label_high'),
       cssModifier:    'high',
-      interpretation: 'Strong topical alignment. Both videos target the same niche '
-                    + 'and share most of the core discovery tags.',
-      recommendation: 'Add the missing tags to compete more directly. '
-                    + 'The competitor\'s unique tags show angles you haven\'t covered.',
+      interpretation: t('overlap.interpretation_high'),
+      recommendation: t('overlap.recommendation_high'),
     },
     {
       min: 30, max: 49,
       label:          t('overlap.overlap_label_moderate'),
       cssModifier:    'moderate',
-      interpretation: 'Related content with partial tag strategy overlap. '
-                    + 'You\'re in the same niche but targeting different segments of it.',
-      recommendation: 'The missing tags represent an opportunity to expand your '
-                    + 'audience reach into the segments this competitor is capturing.',
+      interpretation: t('overlap.interpretation_moderate'),
+      recommendation: t('overlap.recommendation_moderate'),
     },
     {
       min: 10, max: 29,
       label:          t('overlap.overlap_label_low'),
       cssModifier:    'low',
-      interpretation: 'Minimal shared targeting despite being in the same content space. '
-                    + 'Either very different sub-niches or very different tag strategies.',
-      recommendation: 'Study the competitor\'s complete tag set carefully. '
-                    + 'The large gap suggests they may be targeting search terms '
-                    + 'you haven\'t discovered yet.',
+      interpretation: t('overlap.interpretation_low'),
+      recommendation: t('overlap.recommendation_low'),
     },
     {
       min: 0, max: 9,
       label:          t('overlap.overlap_label_very_low'),
       cssModifier:    'very-low',
-      interpretation: 'Almost no shared tag strategy. These videos are in very '
-                    + 'different territory despite appearing similar on the surface.',
-      recommendation: 'Consider whether this is truly a direct competitor, or '
-                    + 'whether their tag strategy could be adopted wholesale '
-                    + 'to access a different audience segment.',
+      interpretation: t('overlap.interpretation_very_low'),
+      recommendation: t('overlap.recommendation_very_low'),
     },
   ];
 }
