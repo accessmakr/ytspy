@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // YTSPY — PERSISTENT LOCAL STORAGE LAYER
 // File: js/storage.js
-// Version: 1.0.0
+// Version: 2.0.0  (i18n-aware)
 //
 // ROLE IN THE SYSTEM:
 // storage.js is the single module that reads from and writes to localStorage.
@@ -22,9 +22,23 @@
 // SCHEMA VERSION: 1
 // If storage format ever changes, increment SCHEMA_VERSION and add a migration
 // case inside migrateIfNeeded(). Called once on first import by any module.
+//
+// i18n CONTRACT — THIS FILE WAS ORIGINALLY MARKED "NO CHANGES NEEDED" IN THE
+// PROJECT MANIFEST. THAT WAS WRONG, AND IT WAS A REAL BUG, NOT JUST A MISSING
+// TRANSLATION: app.js's openSaveTemplateModal() does
+//   showToast(result.error || t('templates.save_failed_toast'), 'error')
+// Since saveTemplate()/importTemplates() ALWAYS returned a truthy English
+// string on failure, that string ALWAYS won over the `||` fallback — meaning
+// every storage-failure toast in the entire app was unconditionally English,
+// in every language, regardless of which locale was active. Now fixed: every
+// .error field below returns an already-translated string via t(), so the
+// `||` fallback in app.js only ever triggers in the (now-unreachable) case
+// where storage.js returns no error text at all.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
+
+import { t } from './i18n.js';
 
 // ─── STORAGE KEYS ─────────────────────────────────────────────────────────────
 
@@ -177,10 +191,10 @@ export function clearHistory() {
  */
 export function saveTemplate(name, tags, options = {}) {
   if (!name || typeof name !== 'string' || !name.trim()) {
-    return { success: false, error: 'Template name is required.' };
+    return { success: false, error: t('templates.name_required') };
   }
   if (!Array.isArray(tags) || tags.length === 0) {
-    return { success: false, error: 'Cannot save an empty template.' };
+    return { success: false, error: t('templates.tags_empty') };
   }
 
   const templates = getTemplates();
@@ -194,7 +208,7 @@ export function saveTemplate(name, tags, options = {}) {
     id,
     name:          name.trim().slice(0, 100),
     description:   (options.description || '').slice(0, 500),
-    tags:          tags.map(t => String(t).trim()).filter(Boolean),
+    tags:          tags.map(tg => String(tg).trim()).filter(Boolean),
     createdAt:     now,
     updatedAt:     now,
     usageCount:    0,
@@ -207,7 +221,7 @@ export function saveTemplate(name, tags, options = {}) {
 
   return ok
     ? { success: true, id }
-    : { success: false, error: 'Storage write failed. Your browser storage may be full.' };
+    : { success: false, error: t('storage_errors.write_failed') };
 }
 
 /**
@@ -228,7 +242,7 @@ export function getTemplates() {
  * @returns {Template|null}
  */
 export function getTemplate(id) {
-  return getTemplates().find(t => t.id === id) || null;
+  return getTemplates().find(tpl => tpl.id === id) || null;
 }
 
 /**
@@ -243,7 +257,7 @@ export function getTemplate(id) {
  */
 export function updateTemplate(id, updates) {
   const templates = getTemplates();
-  const index     = templates.findIndex(t => t.id === id);
+  const index     = templates.findIndex(tpl => tpl.id === id);
 
   if (index === -1) return false;
 
@@ -260,7 +274,7 @@ export function updateTemplate(id, updates) {
     updated.description = String(updates.description).slice(0, 500);
   }
   if (Array.isArray(updates.tags)) {
-    updated.tags = updates.tags.map(t => String(t).trim()).filter(Boolean);
+    updated.tags = updates.tags.map(tg => String(tg).trim()).filter(Boolean);
   }
 
   templates[index] = updated;
@@ -276,7 +290,7 @@ export function updateTemplate(id, updates) {
  */
 export function incrementTemplateUsage(id) {
   const templates = getTemplates();
-  const index     = templates.findIndex(t => t.id === id);
+  const index     = templates.findIndex(tpl => tpl.id === id);
 
   if (index === -1) return false;
 
@@ -296,7 +310,7 @@ export function incrementTemplateUsage(id) {
  * @returns {boolean}
  */
 export function deleteTemplate(id) {
-  const updated = getTemplates().filter(t => t.id !== id);
+  const updated = getTemplates().filter(tpl => tpl.id !== id);
   return writeJson(KEYS.TEMPLATES, updated);
 }
 
@@ -346,7 +360,7 @@ export function importTemplates(jsonStr) {
   try {
     parsed = JSON.parse(jsonStr);
   } catch {
-    return { success: false, imported: 0, skipped: 0, error: 'Invalid JSON format.' };
+    return { success: false, imported: 0, skipped: 0, error: t('templates.import_failed') };
   }
 
   // Accept both the envelope format and a raw array
@@ -357,11 +371,11 @@ export function importTemplates(jsonStr) {
     : null;
 
   if (!incoming) {
-    return { success: false, imported: 0, skipped: 0, error: 'No template data found in file.' };
+    return { success: false, imported: 0, skipped: 0, error: t('storage_errors.no_template_data') };
   }
 
   const existing    = getTemplates();
-  const existingIds = new Set(existing.map(t => t.id));
+  const existingIds = new Set(existing.map(tpl => tpl.id));
 
   let imported = 0;
   let skipped  = 0;
@@ -380,9 +394,9 @@ export function importTemplates(jsonStr) {
     // Sanitise imported data
     toAdd.push({
       id:            String(tpl.id),
-      name:          String(tpl.name || 'Imported Template').slice(0, 100),
+      name:          String(tpl.name || t('storage_errors.imported_template_default_name')).slice(0, 100),
       description:   String(tpl.description || '').slice(0, 500),
-      tags:          tpl.tags.map(t => String(t).trim()).filter(Boolean),
+      tags:          tpl.tags.map(tg => String(tg).trim()).filter(Boolean),
       createdAt:     Number(tpl.createdAt) || Date.now(),
       updatedAt:     Date.now(),
       usageCount:    Number(tpl.usageCount) || 0,
@@ -396,7 +410,7 @@ export function importTemplates(jsonStr) {
     const updated = [...existing, ...toAdd];
     const ok      = writeJson(KEYS.TEMPLATES, updated);
     if (!ok) {
-      return { success: false, imported: 0, skipped, error: 'Storage write failed.' };
+      return { success: false, imported: 0, skipped, error: t('storage_errors.write_failed') };
     }
   }
 
@@ -531,6 +545,9 @@ export function isStorageAvailable() {
 /**
  * Estimate total localStorage space consumed by ytspy keys.
  * localStorage uses UTF-16 internally (~2 bytes per character).
+ *
+ * NOT translated — "B"/"KB"/"MB" are universally-recognised unit
+ * abbreviations and this is a debug/diagnostic utility, not primary UI.
  *
  * @returns {{ bytes: number, kb: number, formattedString: string }}
  */
