@@ -1,0 +1,387 @@
+{
+  "_language": "Tiếng Việt (Vietnamese)",
+  "_code": "vi",
+
+  "meta": {
+    "title": "ytspy — Công Cụ Trích Xuất Tag YouTube + Tải Hình Thu Nhỏ",
+    "description": "Trích xuất tag YouTube ẩn, tải hình thu nhỏ ở 5 độ phân giải, phân tích tag đối thủ và đánh giá chiến lược của bạn. Hoàn toàn miễn phí, không cần đăng ký.",
+    "keywords": "trích xuất tag youtube, tải hình thu nhỏ youtube, phân tích tag youtube, công cụ seo youtube miễn phí"
+  },
+
+  "nav": {
+    "search": "Tìm kiếm",
+    "language": "Ngôn ngữ",
+    "menu_open": "Mở menu",
+    "menu_close": "Đóng menu",
+    "home": "Trang chủ",
+    "guides": "Hướng dẫn",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ"
+  },
+
+  "hero": {
+    "h1_line1": "Trích xuất tag YouTube.",
+    "h1_line2": "Tải hình thu nhỏ.",
+    "h1_line3": "Vượt trội mọi đối thủ.",
+    "sub": "Dán bất kỳ URL YouTube nào. Nhận tag ẩn, hình thu nhỏ, phân tích đối thủ — miễn phí, không cần tài khoản.",
+    "tagline1": "Trí Tuệ YouTube. Đã Giải Mã.",
+    "tagline2": "Trích xuất. Phân tích. Vượt trội.",
+    "seasonal_spring": "Phiên Bản Xuân",
+    "seasonal_summer": "Phiên Bản Hè",
+    "seasonal_fall": "Phiên Bản Thu",
+    "seasonal_winter": "Phiên Bản Đông"
+  },
+
+  "input": {
+    "placeholder": "Dán URL YouTube vào đây — youtube.com/watch?v=... hoặc youtu.be/...",
+    "paste_btn": "Dán",
+    "extract_btn": "Trích xuất",
+    "clipboard_detected": "Đã phát hiện URL YouTube trong clipboard — nhấn Trích xuất hoặc Enter.",
+    "invalid_url_toast": "Vui lòng nhập URL YouTube hợp lệ hoặc ID video."
+  },
+
+  "cta": {
+    "v1": "Trích xuất",
+    "v2": "Phân tích",
+    "v3": "Theo dõi",
+    "v4": "Giải mã",
+    "v5": "Lấy tag",
+    "v6": "Khám phá tag"
+  },
+
+  "mode": {
+    "both": "Cả hai",
+    "tags_only": "Chỉ tag",
+    "thumbnails_only": "Chỉ hình thu nhỏ"
+  },
+
+  "meta_card": {
+    "load_metadata": "Tải metadata đầy đủ",
+    "badge_live": "TRỰC TIẾP",
+    "badge_short": "SHORT",
+    "badge_restricted": "GIỚI HẠN TUỔI",
+    "badge_cached": "TỪ CACHE",
+    "title_unavailable": "Tiêu đề không có sẵn"
+  },
+
+  "tags_panel": {
+    "title": "Tag đã trích xuất",
+    "char_limit_label": "/ 500 ký tự",
+    "remaining": "còn {{n}}",
+    "over_limit": "{{n}} VƯỢT GIỚI HẠN",
+    "short_tail_label": "Đuôi ngắn",
+    "mid_tail_label": "Đuôi trung",
+    "long_tail_label": "Đuôi dài",
+    "one_word": "1 từ",
+    "two_words": "2 từ",
+    "three_plus": "3+ từ",
+    "no_tags_default": "Không tìm thấy tag nào cho video này.",
+    "copy_as_label": "Sao chép dưới dạng:",
+    "save_template_btn": "Lưu thành mẫu",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tag",
+    "hashtags_title": "Hashtag trong mô tả",
+    "truncated_title": "bị YouTube âm thầm bỏ qua (vượt giới hạn 500 ký tự)"
+  },
+
+  "char_hints": {
+    "optimal": "Còn {{remaining}} ký tự — ngân sách tag được sử dụng tốt.",
+    "getting_close": "Còn {{remaining}} ký tự — đang gần đến giới hạn.",
+    "near_limit": "Chỉ còn {{remaining}} ký tự — gần đạt giới hạn.",
+    "under_tagged_severe": "Chỉ sử dụng {{pct}}% ngân sách 500 ký tự. Nhiều tag hơn tạo ra nhiều đường dẫn khám phá hơn.",
+    "under_tagged_moderate": "Còn {{remaining}} ký tự khả dụng. Có chỗ cho {{n}} tag đuôi dài nữa.",
+    "over_limit": "⚠ {{over}} ký tự vượt giới hạn — {{count}} tag ở cuối danh sách bị YouTube âm thầm bỏ qua. Được đánh dấu đỏ dưới đây."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Nhà sáng tạo này không thêm tag. Hình thu nhỏ và metadata vẫn có sẵn.",
+    "age_restricted": "Video này bị giới hạn tuổi. Dữ liệu tag không thể truy cập khi không đăng nhập.",
+    "private": "Video này là riêng tư hoặc không công khai.",
+    "live_stream": "Phát trực tiếp sử dụng cấu trúc metadata khác.",
+    "members_only": "Đây là video chỉ dành cho thành viên.",
+    "all_layers_failed": "Trích xuất tag không thành công cho video này. Hình thu nhỏ vẫn có sẵn."
+  },
+
+  "copy_formats": {
+    "plain": "Văn bản thô",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "Sẵn sàng cho YouTube"
+  },
+
+  "copy_success": "Đã sao chép tag dưới dạng {{format}}.",
+  "copy_failed": "Sao chép thất bại — vui lòng thử lại.",
+  "single_tag_copied": "Đã sao chép tag.",
+  "tags_file_downloaded": "Đã tải file tag.",
+
+  "health": {
+    "panel_title": "Điểm Sức Khỏe Tag",
+    "out_of": "/ 100",
+    "label_excellent": "Xuất sắc",
+    "label_good": "Tốt",
+    "label_average": "Trung bình",
+    "label_weak": "Yếu",
+    "label_no_tags": "Không có tag",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "N/A",
+    "comp_budget": "Hiệu Quả Ngân Sách",
+    "comp_tail": "Phân Bố Đuôi",
+    "comp_diversity": "Đa Dạng Từ Vựng",
+    "comp_hashtag": "Đồng Bộ Hashtag",
+    "suggestions_label": "Cải Thiện",
+    "potential_gain": "+{{n}} điểm",
+    "no_tags_summary": "Không tìm thấy tag nào cho video này."
+  },
+
+  "budget_labels": { "optimal": "Tối ưu", "good": "Tốt", "under_used": "Sử dụng ít", "severely_under": "Sử dụng rất ít", "over_limit": "Vượt giới hạn", "no_tags": "Không có tag" },
+  "distribution_labels": { "well_balanced": "Cân bằng tốt", "fairly_balanced": "Khá cân bằng", "uneven": "Không đồng đều", "heavily_skewed": "Lệch nặng", "no_data": "Không có dữ liệu" },
+  "diversity_labels": { "excellent": "Đa dạng xuất sắc", "good": "Đa dạng tốt", "repetitive": "Lặp lại", "very_repetitive": "Rất lặp lại", "no_data": "Không có dữ liệu" },
+  "hashtag_labels": { "perfect": "Đồng bộ hoàn hảo", "strong": "Đồng bộ mạnh", "partial": "Đồng bộ một phần", "weak": "Đồng bộ yếu", "none": "Không đồng bộ", "no_hashtags": "Không có hashtag" },
+
+  "thumbnails": {
+    "panel_title": "Hình Thu Nhỏ",
+    "preview_label": "Hiển thị trong tìm kiếm YouTube",
+    "placement_heading": "Xem trước vị trí hình thu nhỏ",
+    "placement_sub": "Hình thu nhỏ của bạn hiển thị thế nào trong 5 ngữ cảnh YouTube",
+    "canva_text": "Muốn thiết kế lại hình thu nhỏ này?",
+    "canva_cta": "Chỉnh sửa trên Canva →",
+    "download_btn": "↓ Tải xuống",
+    "downloading": "Đang tải…",
+    "webp_note": "Định dạng mới hơn — có thể không mở được trong mọi trình chỉnh sửa ảnh",
+    "unavailable": "Không có sẵn cho video này",
+    "unavailable_reason": "Video này không có hình thu nhỏ 1280×720. Sử dụng SD hoặc HQ.",
+    "placement_desktop_home": "Trang Chủ Desktop",
+    "placement_desktop_search": "Tìm Kiếm Desktop",
+    "placement_mobile_search": "Tìm Kiếm Di Động",
+    "placement_suggested": "Video Được Đề Xuất",
+    "placement_notification": "Thông Báo",
+    "placement_shorts_feed": "Bảng Tin Shorts"
+  },
+
+  "bulk": {
+    "title": "Trích xuất hàng loạt",
+    "badge_new": "MỚI",
+    "description": "Dán tối đa 10 URL — nhận tag của tất cả video + bảng tần suất kết hợp",
+    "expand": "Mở rộng ↓",
+    "collapse": "Thu gọn ↑",
+    "textarea_placeholder": "Dán mỗi URL YouTube trên một dòng (tối đa 10)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Trích xuất tất cả",
+    "extracting": "Đang trích xuất {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL",
+    "hint_invalid": "{{count}} / 10 URL · {{invalid}} không hợp lệ — sẽ bị bỏ qua",
+    "hint_duplicates": "{{count}} / 10 URL · đã xóa {{dupes}} trùng lặp",
+    "hint_over_limit": "{{count}} / 10 URL · Chỉ 10 URL đầu tiên được xử lý",
+    "zip_btn": "Tải tất cả hình thu nhỏ dưới dạng ZIP",
+    "zipping": "Đang nén {{done}}/{{total}}…",
+    "csv_btn": "Tải CSV nghiên cứu",
+    "copy_union_btn": "Sao chép tất cả tag duy nhất",
+    "freq_table_title": "Tần suất tag trên tất cả video",
+    "freq_table_desc": "Tag được sắp xếp theo số video chia sẻ chúng.",
+    "freq_th_tag": "Tag", "freq_th_appears": "Xuất hiện trong", "freq_th_frequency": "Tần suất", "freq_th_type": "Loại",
+    "show_tags_btn": "Hiện tag ↓",
+    "hide_tags_btn": "Ẩn tag ↑",
+    "video_failed": "Video {{n}}: Trích xuất thất bại",
+    "zip_success": "Đã tải {{count}} hình thu nhỏ dưới dạng ZIP.",
+    "zip_skipped": "({{skipped}} không thể tải.)",
+    "zip_failed": "Tải ZIP thất bại.",
+    "csv_downloaded": "Đã tải CSV nghiên cứu.",
+    "union_copied": "Đã sao chép {{count}} tag duy nhất (định dạng sẵn sàng cho YouTube).",
+    "no_urls_error": "Dán ít nhất một URL YouTube hợp lệ.",
+    "summary": "Đã phân tích {{success}} video. Tìm thấy {{tags}} tag duy nhất."
+  },
+
+  "overlap": {
+    "title": "Phân tích tag đối thủ",
+    "description": "Dán video của bạn + video đối thủ — xem chính xác tag nào họ có mà bạn không có",
+    "my_label": "URL video của bạn",
+    "their_label": "URL đối thủ",
+    "my_placeholder": "https://youtube.com/watch?v=VIDEO_CUA_BAN",
+    "their_placeholder": "https://youtube.com/watch?v=VIDEO_DOI_THU",
+    "analyze_btn": "Phân tích trùng lặp",
+    "analyzing": "Đang phân tích…",
+    "shared_title": "Tag chung",
+    "missing_title": "Bạn thiếu",
+    "unique_title": "Tag riêng của bạn",
+    "shared_desc": "Cả hai video đều sử dụng những tag này",
+    "missing_desc": "Họ có — bạn không có. Mục tiêu giá trị cao.",
+    "unique_desc": "Chỉ video của bạn sử dụng những tag này",
+    "steal_btn": "Sao chép những tag này",
+    "save_template_btn": "Lưu thành mẫu",
+    "steal_success": "Đã sao chép {{count}} tag thiếu (sẵn sàng cho YouTube).",
+    "error_need_my": "Vui lòng nhập URL video của bạn.",
+    "error_need_their": "Vui lòng nhập URL video đối thủ.",
+    "error_my_failed": "Video của bạn: {{error}}",
+    "error_their_failed": "Video đối thủ: {{error}}",
+    "overlap_label_very_high": "Trùng lặp rất cao",
+    "overlap_label_high": "Trùng lặp cao",
+    "overlap_label_moderate": "Trùng lặp trung bình",
+    "overlap_label_low": "Trùng lặp thấp",
+    "overlap_label_very_low": "Trùng lặp rất thấp",
+    "overlap_label_no_data": "Không có dữ liệu",
+    "col_empty_both": "Không có video nào có tag.",
+    "col_empty_mine": "Video của bạn không có tag.",
+    "col_empty_theirs": "Video đối thủ không có tag.",
+    "col_empty_shared_none": "Không có tag chung.",
+    "col_empty_missing_none": "Bạn đã sử dụng tất cả tag của đối thủ.",
+    "col_empty_unique_none": "Tất cả tag của bạn cũng được đối thủ sử dụng."
+  },
+
+  "templates": {
+    "title": "Mẫu tag",
+    "description": "Lưu các bộ tag bạn tái sử dụng trên nhiều video",
+    "empty": "Chưa có mẫu nào. Trích xuất video và nhấn 'Lưu thành mẫu'.",
+    "apply_btn": "Áp dụng", "delete_btn": "Xóa",
+    "confirm_delete": "Xóa mẫu này? Không thể hoàn tác.",
+    "deleted_toast": "Đã xóa mẫu.",
+    "save_prompt_title": "Tên cho mẫu này ({{count}} tag):",
+    "save_prompt_preview": "{{n}} tag đầu tiên: {{preview}}",
+    "saved_toast": "Đã lưu mẫu '{{name}}'.",
+    "save_failed_toast": "Lưu mẫu thất bại.",
+    "extract_first_toast": "Trích xuất video trước.",
+    "suggestions_heading": "Mẫu đã lưu liên quan",
+    "new_tags_label": "+{{count}} tag mới",
+    "strategy_union": "Thêm tag mới",
+    "strategy_union_desc": "Giữ tất cả tag hiện tại và thêm tag mới từ mẫu.",
+    "strategy_replace": "Thay thế tất cả tag",
+    "strategy_replace_desc": "Loại bỏ tag hiện tại và chỉ sử dụng mẫu.",
+    "strategy_prepend": "Ưu tiên mẫu",
+    "strategy_prepend_desc": "Tag mẫu xuất hiện trước.",
+    "strategy_append": "Thêm vào cuối",
+    "strategy_append_desc": "Giữ tag hiện tại và thêm tag mẫu vào cuối.",
+    "merge_added": "Đã thêm {{count}} tag mới. Đã dùng {{chars}}/500 ký tự.",
+    "merge_no_new": "Không có tag mới — tất cả tag mẫu đã có trong danh sách của bạn.",
+    "merge_replaced": "Đã thay thế {{count}} tag. Đã dùng {{chars}}/500 ký tự.",
+    "merge_over_limit": "⚠ Kết quả vượt giới hạn 500 ký tự ({{chars}}) — một số tag sẽ bị cắt ngắn.",
+    "name_required": "Tên mẫu là bắt buộc.",
+    "name_too_long": "Tên phải có 100 ký tự hoặc ít hơn.",
+    "name_invalid": "Tên phải chứa ít nhất một chữ hoặc số.",
+    "tags_empty": "Mẫu phải có ít nhất một tag.",
+    "tags_over_budget": "Mẫu này sử dụng {{chars}} ký tự — vượt {{over}} so với giới hạn.",
+    "export_btn": "Xuất mẫu", "import_btn": "Nhập mẫu",
+    "import_success": "Đã nhập {{count}} mẫu.",
+    "import_partial": "Đã nhập {{count}}, bỏ qua {{skipped}} (đã tồn tại).",
+    "import_failed": "Nhập thất bại — định dạng file không hợp lệ."
+  },
+
+  "history": {
+    "title": "Trích xuất gần đây",
+    "description": "Được lưu cục bộ trong trình duyệt của bạn — không cần tài khoản",
+    "clear_btn": "Xóa lịch sử",
+    "confirm_clear": "Xóa toàn bộ lịch sử? Không thể hoàn tác.",
+    "cleared_toast": "Đã xóa lịch sử.",
+    "empty": "Chưa có trích xuất nào — dán URL YouTube ở trên để bắt đầu.",
+    "reextract_btn": "Trích xuất lại", "remove_btn": "✕",
+    "just_now": "Vừa xong", "minutes_ago": "{{n}} phút trước",
+    "hours_ago": "{{n}} giờ trước", "days_ago": "{{n}} ngày trước", "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Vui lòng nhập URL YouTube hợp lệ hoặc ID video.",
+    "not_found": "Không tìm thấy video này. Có thể đã bị xóa hoặc chuyển sang riêng tư.",
+    "rate_limited": "Quá nhiều yêu cầu. Vui lòng đợi một chút.",
+    "timeout": "Yêu cầu đã hết thời gian. YouTube có thể đang chậm — thử lại.",
+    "network": "Không thể kết nối đến máy chủ. Kiểm tra kết nối internet của bạn.",
+    "offline": "Bạn dường như đang offline. Kiểm tra kết nối.",
+    "members_only": "Video này chỉ dành cho thành viên kênh.",
+    "age_restricted": "Video này bị giới hạn tuổi.",
+    "unknown": "Đã xảy ra lỗi không mong muốn. Thử lại.",
+    "extraction_failed_title": "Trích xuất thất bại",
+    "retry_btn": "Thử lại ↻",
+    "public_video_hint": "Đảm bảo URL là video YouTube công khai.",
+    "retried_toast": "Đã trích xuất ở lần thử thứ hai — YouTube đang chậm.",
+    "recovery_timeout": "Yêu cầu đã hết thời gian. YouTube có thể đang chậm.",
+    "recovery_offline": "Bạn dường như đang offline.",
+    "recovery_rate_limited": "Quá nhiều yêu cầu. Đợi 60 giây.",
+    "recovery_not_found": "Video này không tồn tại, đã bị xóa, hoặc là riêng tư.",
+    "recovery_age_restricted": "Video có giới hạn tuổi không thể phân tích mà không xác thực."
+  },
+
+  "trust": { "rating": "4,9★ hài lòng", "creators": "Được nhà sáng tạo trên toàn thế giới tin dùng", "free": "Miễn phí. Không cần đăng nhập. Không giới hạn." },
+
+  "share": {
+    "section_title": "Chia sẻ công cụ này",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "Email", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "Sao chép liên kết", "link_copied": "Đã sao chép liên kết!"
+  },
+
+  "faq": {
+    "section_title": "Câu hỏi thường gặp",
+    "section_sub": "Mọi thứ bạn cần biết về trích xuất tag YouTube và tải hình thu nhỏ.",
+    "q1": "Tag YouTube là gì và có còn quan trọng cho SEO không?",
+    "a1": "Tag YouTube là từ khóa bạn thêm vào video để giúp YouTube hiểu chủ đề của nó. Mặc dù có ít trọng lượng hơn so với trước đây, chúng vẫn góp phần vào cách YouTube phân loại nội dung của bạn.",
+    "q2": "Giới hạn ký tự cho tag YouTube là bao nhiêu?",
+    "a2": "YouTube áp dụng giới hạn 500 ký tự cho tổng độ dài của tất cả tag. Khi vượt giới hạn này, YouTube âm thầm cắt bỏ tag từ cuối danh sách mà không có cảnh báo nào.",
+    "q3": "Tôi có thể trích xuất tag từ bất kỳ video YouTube nào không?",
+    "a3": "Bạn có thể trích xuất tag từ bất kỳ video YouTube công khai nào mà nhà sáng tạo đã thêm tag. Video có giới hạn tuổi, riêng tư và chỉ dành cho thành viên không thể truy cập mà không đăng nhập.",
+    "q4": "Sự khác biệt giữa tag đuôi ngắn, trung và dài là gì?",
+    "a4": "Đuôi ngắn là từ đơn — rộng và rất cạnh tranh. Đuôi trung là hai từ. Đuôi dài là ba từ trở lên — rất cụ thể và ít cạnh tranh hơn.",
+    "q5": "Làm thế nào để tải hình thu nhỏ YouTube với chất lượng cao nhất?",
+    "a5": "ytspy cung cấp hình thu nhỏ ở năm độ phân giải: 1280×720, 640×480, 480×360, 320×180 và định dạng WebP.",
+    "q6": "Điểm sức khỏe tag đo lường điều gì?",
+    "a6": "Đây là đánh giá tổng hợp từ 0-100 đo lường hiệu quả ngân sách, phân bố đuôi, đa dạng từ vựng và đồng bộ hashtag.",
+    "q7": "Trích xuất hàng loạt hoạt động như thế nào?",
+    "a7": "Dán tối đa 10 URL. ytspy xử lý chúng theo lô và trả về tất cả tag, bảng tần suất và ZIP của tất cả hình thu nhỏ.",
+    "q8": "Làm thế nào để phân tích tag đối thủ?",
+    "a8": "Sử dụng phần phân tích đối thủ. Dán URL của bạn và URL của đối thủ. ytspy hiển thị ba cột: tag chung, tag thiếu và tag riêng của bạn.",
+    "q9": "ytspy có hoạt động với YouTube Shorts không?",
+    "a9": "Có. URL YouTube Shorts được hỗ trợ đầy đủ.",
+    "q10": "ytspy có miễn phí không? Có giới hạn nào không?",
+    "a10": "ytspy hoàn toàn miễn phí không cần tài khoản. Chế độ hàng loạt xử lý tối đa 10 video mỗi lần chạy.",
+    "q11": "Thư viện mẫu tag là gì?",
+    "a11": "Thư viện cho phép bạn lưu các bộ tag có tên để sử dụng trong tương lai. Áp dụng bất kỳ mẫu đã lưu nào chỉ với một lần nhấn.",
+    "q12": "Tại sao xem trước vị trí hình thu nhỏ lại quan trọng?",
+    "a12": "Hình thu nhỏ YouTube xuất hiện trong năm ngữ cảnh khác nhau, mỗi ngữ cảnh có kích thước khác nhau. Một hình thu nhỏ tuyệt vời ở độ phân giải cao có thể không đọc được ở 48×48 pixel (thông báo)."
+  },
+
+  "contact": {
+    "section_title": "Yêu cầu & liên hệ",
+    "section_sub": "Có câu hỏi, tìm thấy lỗi hoặc muốn đề xuất tính năng? Mọi tin nhắn đều được đọc.",
+    "name_label": "Tên", "email_label": "Email", "message_label": "Tin nhắn",
+    "name_placeholder": "Tên của bạn", "email_placeholder": "ban@email.com",
+    "message_placeholder": "Cho chúng tôi biết bạn đang nghĩ gì...",
+    "submit_btn": "Gửi tin nhắn",
+    "success_alert": "Cảm ơn! Yêu cầu của bạn đã được gửi.",
+    "error_alert": "Rất tiếc! Đã xảy ra lỗi khi gửi biểu mẫu của bạn."
+  },
+
+  "citation": {
+    "section_title": "Tài liệu tham khảo & nguồn",
+    "c1_text": "Trợ giúp YouTube — Thêm tag vào video của bạn",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Tìm kiếm và khám phá trên YouTube",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs kiện LinkedIn — thu thập dữ liệu công khai là hợp pháp",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "Tòa án Hoa Kỳ",
+    "c4_text": "Hướng dẫn thương hiệu Google — sử dụng nhãn hiệu YouTube được phép",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "TRẢ LỜI NHANH", "text": "Tag YouTube là từ khóa ẩn được nhúng trong mã nguồn của video. ytspy trích xuất chúng từ bất kỳ video YouTube công khai nào, hiển thị tag đối thủ bị thiếu và đánh giá chiến lược của bạn — tất cả miễn phí, không cần đăng ký." },
+  "logic": { "label": "LOGIC", "text": "YouTube nhúng tất cả metadata video bao gồm tag trong một đối tượng JavaScript có tên ytInitialData trên mỗi trang video công khai — không cần khóa API." },
+  "methodology": { "label": "PHƯƠNG PHÁP", "text": "ytspy sử dụng chuỗi trích xuất phía máy chủ 4 lớp với dự phòng tự động, chỉ trả về JSON có cấu trúc cho trình duyệt." },
+  "freshness": { "today": "Cập nhật hôm nay", "last_updated": "Cập nhật lần cuối {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Miễn phí vĩnh viễn. Không quảng cáo. Không thu thập dữ liệu.",
+    "disclaimer": "ytspy là một công cụ độc lập. Không liên kết, được chứng thực, hoặc kết nối với YouTube, Google LLC hoặc Alphabet Inc. YouTube là nhãn hiệu của Google LLC.",
+    "privacy": "Chính Sách Bảo Mật", "cookies": "Chính Sách Cookie", "terms": "Điều Khoản Sử Dụng",
+    "contact": "Liên Hệ", "about": "Giới Thiệu", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "Ngoại tuyến — ytspy", "heading": "Bạn đang ngoại tuyến", "sub": "Trích xuất mới cần kết nối internet. Lịch sử và mẫu đã lưu của bạn có sẵn dưới đây.", "retry_btn": "Thử lại", "cached_history_title": "Trích xuất gần đây của bạn", "no_history": "Chưa có trích xuất nào được lưu." },
+  "pwa": { "install_prompt": "Thêm ytspy vào màn hình chính để truy cập ngay lập tức.", "install_btn": "Cài đặt", "install_dismiss": "Không phải bây giờ" },
+
+  "lang": {
+    "select": "Ngôn ngữ",
+    "en": "Tiếng Anh", "es": "Tiếng Tây Ban Nha", "pt": "Tiếng Bồ Đào Nha", "hi": "Tiếng Hindi",
+    "id": "Tiếng Indonesia", "fr": "Tiếng Pháp", "de": "Tiếng Đức", "it": "Tiếng Ý",
+    "tr": "Tiếng Thổ Nhĩ Kỳ", "pl": "Tiếng Ba Lan", "nl": "Tiếng Hà Lan", "ru": "Tiếng Nga",
+    "ja": "Tiếng Nhật", "ko": "Tiếng Hàn", "ar": "Tiếng Ả Rập", "he": "Tiếng Hebrew",
+    "vi": "Tiếng Việt", "tl": "Tiếng Philippines", "th": "Tiếng Thái", "uk": "Tiếng Ukraine"
+  }
+}
