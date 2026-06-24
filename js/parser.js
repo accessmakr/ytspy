@@ -489,12 +489,11 @@ async function callApi(url, timeoutMs) {
 
     clearTimeout(timer);
 
-    // ── HTTP-level errors ────────────────────────────────────────────────
+    // ── Unambiguous HTTP-level errors — safe to fast-path without reading
+    //    the body, since the backend only ever uses these statuses for one
+    //    specific condition each ──────────────────────────────────────────
     if (response.status === 429) {
       return { ok: false, errorType: 'rate_limited', status: 429 };
-    }
-    if (response.status === 403) {
-      return { ok: false, errorType: 'forbidden', status: 403 };
     }
     if (response.status === 404) {
       return { ok: false, errorType: 'not_found', status: 404 };
@@ -506,6 +505,26 @@ async function callApi(url, timeoutMs) {
       data = await response.json();
     } catch {
       return { ok: false, errorType: 'parse_error', status: response.status };
+    }
+
+    // ── Any other non-2xx status (403, 400, 500, etc.) — READ the body
+    //    instead of guessing from the status code alone. The backend
+    //    reuses HTTP 403 for two unrelated conditions: members-only videos
+    //    AND rejected request signatures. Status code alone can't tell them
+    //    apart, but the body's `error` message text can — classify it via
+    //    resolveErrorTypeFromMessage() (which already knows to look for
+    //    "members" in the text) rather than collapsing both into a generic
+    //    'forbidden' bucket that no downstream code actually handles. This
+    //    also fixes 400-status errors, which previously fell through to
+    //    `return { ok: true, ... }` below and leaked raw, untranslated
+    //    backend English text straight to the UI via envelope.error.
+    if (!response.ok) {
+      return {
+        ok:         false,
+        errorType:  resolveErrorTypeFromMessage(data?.error),
+        status:     response.status,
+        rawMessage: data?.error,
+      };
     }
 
     return { ok: true, data, status: response.status };
@@ -533,11 +552,13 @@ async function callApi(url, timeoutMs) {
  */
 function resolveErrorMessage(result) {
   const messages = getErrorMessages();
-  if (result.timedOut)                     return messages.timeout;
-  if (result.errorType === 'offline')      return messages.offline;
-  if (result.errorType === 'network')      return messages.network;
-  if (result.errorType === 'rate_limited')  return messages.rate_limited;
-  if (result.errorType === 'not_found')    return messages.not_found;
+  if (result.timedOut)                       return messages.timeout;
+  if (result.errorType === 'offline')        return messages.offline;
+  if (result.errorType === 'network')        return messages.network;
+  if (result.errorType === 'rate_limited')   return messages.rate_limited;
+  if (result.errorType === 'not_found')      return messages.not_found;
+  if (result.errorType === 'members_only')   return messages.members_only;
+  if (result.errorType === 'age_restricted') return messages.age_restricted;
   return messages.unknown;
 }
 
