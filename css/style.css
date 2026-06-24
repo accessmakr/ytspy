@@ -2654,8 +2654,13 @@ button, a, input, textarea, select {
   padding:       8px 0;
 }
 
+/* Empty-state text is rendered by search-system.js via textContent + t()
+   (search.no_results, once that key exists) rather than CSS content: —
+   CSS content strings are completely outside i18n.js's reach and would
+   show "No results found." in English for every language. This rule now
+   only governs layout/spacing; search-system.js is responsible for
+   inserting and removing the actual empty-state element. */
 .search-results:empty::after {
-  content:    'No results found.';
   display:    block;
   text-align: center;
   padding:    24px 16px;
@@ -3378,8 +3383,11 @@ button, a, input, textarea, select {
 
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   59. RTL SUPPORT — Arabic (dir="rtl")
+   59. RTL SUPPORT — Arabic & Hebrew (dir="rtl")
    Applied by i18n.js: document.documentElement.setAttribute('dir', 'rtl')
+   for both 'ar' and 'he'. The [dir="rtl"] attribute selector below is
+   generic and applies to both languages automatically — verified during
+   the Phase 3 i18n audit, no changes needed here when 'he' was added.
    ───────────────────────────────────────────────────────────────────────────── */
 
 [dir="rtl"] {
