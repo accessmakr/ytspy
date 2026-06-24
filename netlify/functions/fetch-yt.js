@@ -111,10 +111,25 @@
 //   SUPABASE_URL          https://yourproject.supabase.co
 //   SUPABASE_ANON_KEY     your-anon-key-from-supabase-dashboard
 //   REQUEST_SIGN_SECRET   any-long-random-string (generate: openssl rand -hex 32)
-//   ALLOWED_ORIGIN        https://ytspy.cc (your domain, or * for development)
+//   ALLOWED_ORIGIN        comma-separated list of allowed origins, e.g.
+//                         https://ytspy.cc,https://www.ytspy.cc,capacitor://localhost,https://localhost
+//                         (or just * for development — default if unset)
 //
 // If SUPABASE_* vars are missing → tool works without caching (graceful degradation).
 // If REQUEST_SIGN_SECRET is missing → signature verification skipped (dev mode).
+//
+// CORS — IMPORTANT — fixed during the Phase 3 i18n audit:
+// `Access-Control-Allow-Origin` can only ever echo back ONE value per
+// response; it is not a list. The web app (https://ytspy.cc) and the
+// Capacitor Android/iOS app (capacitor://localhost or https://localhost
+// depending on platform/config) are different origins, so a single static
+// ALLOWED_ORIGIN value can never correctly serve both at once. This file
+// now reads the incoming request's Origin header and echoes back whichever
+// configured origin actually matches (see resolveAllowedOrigin() near the
+// response builders), with `Vary: Origin` added so Netlify's CDN cache
+// layer doesn't serve an origin-A cached response to an origin-B caller.
+// Before building the Capacitor app, set ALLOWED_ORIGIN to the explicit
+// comma-separated list above rather than leaving it as the open '*' default.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use strict';
@@ -168,19 +183,19 @@ exports.handler = async (event, context) => {
 
   // ── CORS Preflight ───────────────────────────────────────────────────────
   if (event.httpMethod === 'OPTIONS') {
-    return buildCorsPreflightResponse();
+    return buildCorsPreflightResponse(event);
   }
 
   // ── Method guard ─────────────────────────────────────────────────────────
   if (event.httpMethod !== 'GET') {
-    return buildErrorResponse(405, 'Method not allowed');
+    return buildErrorResponse(event, 405, 'Method not allowed');
   }
 
   // ── Rate limiting ─────────────────────────────────────────────────────────
   const clientIP = extractClientIP(event);
   const rateCheck = enforceRateLimit(clientIP);
   if (!rateCheck.allowed) {
-    return buildErrorResponse(429, 'Too many requests — please wait a moment before trying again.', {
+    return buildErrorResponse(event, 429, 'Too many requests — please wait a moment before trying again.', {
       'Retry-After':          '60',
       'X-RateLimit-Limit':    String(CONFIG.RATE_LIMIT_MAX),
       'X-RateLimit-Remaining':'0',
@@ -190,7 +205,7 @@ exports.handler = async (event, context) => {
   // ── Request signature verification ────────────────────────────────────────
   const sigCheck = verifyRequestSignature(event);
   if (!sigCheck.valid) {
-    return buildErrorResponse(403, 'Invalid or expired request signature');
+    return buildErrorResponse(event, 403, 'Invalid or expired request signature');
   }
 
   // ── Extract and normalize video ID from any URL format ───────────────────
@@ -201,13 +216,13 @@ exports.handler = async (event, context) => {
   ).trim();
 
   if (!rawInput) {
-    return buildErrorResponse(400, 'Missing url parameter. Provide a YouTube URL or video ID.');
+    return buildErrorResponse(event, 400, 'Missing url parameter. Provide a YouTube URL or video ID.');
   }
 
   const videoId = normalizeToVideoId(rawInput);
 
   if (!videoId) {
-    return buildErrorResponse(400, [
+    return buildErrorResponse(event, 400, [
       'Could not find a valid YouTube video ID in the provided input.',
       'Accepted formats: youtube.com/watch?v=ID, youtu.be/ID,',
       'youtube.com/shorts/ID, m.youtube.com/watch?v=ID,',
@@ -220,7 +235,7 @@ exports.handler = async (event, context) => {
   if (cached) {
     // Record cache hit stat (fire-and-forget)
     recordExtractionStat(0, true).catch(() => {});
-    return buildSuccessResponse(cached, {
+    return buildSuccessResponse(event, cached, {
       'X-Cache':    'HIT',
       'X-Video-Id': videoId,
     });
@@ -232,6 +247,7 @@ exports.handler = async (event, context) => {
   // ── Fatal errors (video not found, private, etc.) ─────────────────────────
   if (result.fatalError) {
     return buildErrorResponse(
+      event,
       result.statusCode || 500,
       result.error,
       { 'X-Error-Type': result.errorType || 'unknown' }
@@ -246,7 +262,7 @@ exports.handler = async (event, context) => {
     recordExtractionStat(result.extractionLayer || 0, false).catch(() => {});
   }
 
-  return buildSuccessResponse(result, {
+  return buildSuccessResponse(event, result, {
     'X-Cache':            'MISS',
     'X-Video-Id':         videoId,
     'X-Extraction-Layer': String(result.extractionLayer || 0),
@@ -1203,34 +1219,84 @@ function extractClientIP(event) {
 // RESPONSE BUILDERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
+// Supports multiple allowed origins (web domain + Capacitor app schemes)
+// simultaneously. `Access-Control-Allow-Origin` can only ever echo back ONE
+// value per response — it is not a list — so a single static env var can
+// never correctly serve both https://ytspy.cc (web) and the Capacitor app's
+// origin (capacitor://localhost on iOS, https://localhost on Android) at
+// the same time. This resolves the correct origin to echo back per-request
+// by checking the incoming Origin header against an allowlist instead.
+//
+// ALLOWED_ORIGIN env var accepts a comma-separated list, e.g.:
+//   ALLOWED_ORIGIN=https://ytspy.cc,https://www.ytspy.cc,capacitor://localhost,https://localhost
+// If unset, defaults to '*' (open — fine for development, tighten before
+// the Capacitor app build ships by setting the explicit list above).
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGIN || '*')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
 
-const SECURITY_HEADERS = {
-  'Content-Type':              'application/json; charset=utf-8',
-  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
-  'X-Content-Type-Options':    'nosniff',
-  'X-Frame-Options':           'DENY',
-  'Referrer-Policy':           'strict-origin-when-cross-origin',
-};
+/**
+ * Resolve which origin to echo back in Access-Control-Allow-Origin for this
+ * specific request. Falls back to the wildcard (or first allowed origin if
+ * the wildcard isn't in the list) when the request's Origin doesn't match —
+ * this only affects whether the browser accepts the response, it does not
+ * grant any additional server-side access.
+ *
+ * @param {object} event — Netlify function event
+ * @returns {string}
+ */
+function resolveAllowedOrigin(event) {
+  if (ALLOWED_ORIGINS.includes('*')) return '*';
 
-function buildCorsPreflightResponse() {
+  const requestOrigin = event.headers?.origin || event.headers?.Origin || '';
+  if (requestOrigin && ALLOWED_ORIGINS.includes(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  // Unrecognised origin — echo back the first configured origin rather than
+  // a wildcard, since an explicit allowlist was configured deliberately.
+  return ALLOWED_ORIGINS[0] || '*';
+}
+
+/**
+ * Build the security/CORS header set for a specific request.
+ * Includes `Vary: Origin` since the Access-Control-Allow-Origin value now
+ * varies per request — without this, Netlify's CDN cache (CDN_CACHE_SECONDS)
+ * could serve an origin-A response to an origin-B caller.
+ *
+ * @param {object} event
+ * @returns {object}
+ */
+function buildSecurityHeaders(event) {
+  return {
+    'Content-Type':                 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin':  resolveAllowedOrigin(event),
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With',
+    'Vary':                         'Origin',
+    'X-Content-Type-Options':       'nosniff',
+    'X-Frame-Options':               'DENY',
+    'Referrer-Policy':               'strict-origin-when-cross-origin',
+  };
+}
+
+function buildCorsPreflightResponse(event) {
   return {
     statusCode: 204,
     headers:    {
-      ...SECURITY_HEADERS,
+      ...buildSecurityHeaders(event),
       'Access-Control-Max-Age': '86400',
     },
     body: '',
   };
 }
 
-function buildSuccessResponse(data, extraHeaders = {}) {
+function buildSuccessResponse(event, data, extraHeaders = {}) {
   return {
     statusCode: 200,
     headers:    {
-      ...SECURITY_HEADERS,
+      ...buildSecurityHeaders(event),
       'Cache-Control': `public, s-maxage=${CONFIG.CDN_CACHE_SECONDS}, max-age=${CONFIG.BROWSER_CACHE_SECONDS}`,
       ...extraHeaders,
     },
@@ -1238,11 +1304,11 @@ function buildSuccessResponse(data, extraHeaders = {}) {
   };
 }
 
-function buildErrorResponse(statusCode, message, extraHeaders = {}) {
+function buildErrorResponse(event, statusCode, message, extraHeaders = {}) {
   return {
     statusCode,
     headers: {
-      ...SECURITY_HEADERS,
+      ...buildSecurityHeaders(event),
       'Cache-Control': 'no-store, no-cache',
       ...extraHeaders,
     },
