@@ -1,0 +1,387 @@
+{
+  "_language": "Filipino (Filipino)",
+  "_code": "tl",
+
+  "meta": {
+    "title": "ytspy — YouTube Tag Extractor + Thumbnail Downloader",
+    "description": "I-extract ang mga nakatagong YouTube tag, i-download ang mga thumbnail sa 5 resolution, suriin ang mga tag ng kakompitensya at i-rate ang iyong estratehiya. Libre, walang sign-up.",
+    "keywords": "youtube tag extractor, youtube thumbnail download, youtube tag analysis, libreng youtube seo tool"
+  },
+
+  "nav": {
+    "search": "Maghanap",
+    "language": "Wika",
+    "menu_open": "Buksan ang menu",
+    "menu_close": "Isara ang menu",
+    "home": "Home",
+    "guides": "Mga Gabay",
+    "about": "Tungkol",
+    "contact": "Makipag-ugnayan"
+  },
+
+  "hero": {
+    "h1_line1": "I-extract ang YouTube tags.",
+    "h1_line2": "I-download ang thumbnails.",
+    "h1_line3": "Talunin ang lahat.",
+    "sub": "I-paste ang kahit anong YouTube URL. Makuha ang nakatagong tags, thumbnails, competitor analysis — libre, walang account na kailangan.",
+    "tagline1": "YouTube Intelligence. Na-decode.",
+    "tagline2": "I-extract. Suriin. Talunin.",
+    "seasonal_spring": "Spring Edition",
+    "seasonal_summer": "Summer Edition",
+    "seasonal_fall": "Fall Edition",
+    "seasonal_winter": "Winter Edition"
+  },
+
+  "input": {
+    "placeholder": "I-paste ang YouTube URL dito — youtube.com/watch?v=... o youtu.be/...",
+    "paste_btn": "I-paste",
+    "extract_btn": "I-extract",
+    "clipboard_detected": "May na-detect na YouTube URL sa clipboard — pindutin ang Extract o Enter.",
+    "invalid_url_toast": "Mangyaring maglagay ng valid na YouTube URL o video ID."
+  },
+
+  "cta": {
+    "v1": "I-extract",
+    "v2": "Suriin",
+    "v3": "Tingnan",
+    "v4": "I-decode",
+    "v5": "Kunin ang tags",
+    "v6": "I-reveal ang tags"
+  },
+
+  "mode": {
+    "both": "Pareho",
+    "tags_only": "Tags lang",
+    "thumbnails_only": "Thumbnails lang"
+  },
+
+  "meta_card": {
+    "load_metadata": "I-load ang buong metadata",
+    "badge_live": "LIVE",
+    "badge_short": "SHORT",
+    "badge_restricted": "MAY AGE RESTRICTION",
+    "badge_cached": "MULA SA CACHE",
+    "title_unavailable": "Walang available na title"
+  },
+
+  "tags_panel": {
+    "title": "Na-extract na tags",
+    "char_limit_label": "/ 500 character",
+    "remaining": "{{n}} natitira",
+    "over_limit": "{{n}} LUMABIS SA LIMIT",
+    "short_tail_label": "Short-tail",
+    "mid_tail_label": "Mid-tail",
+    "long_tail_label": "Long-tail",
+    "one_word": "1 salita",
+    "two_words": "2 salita",
+    "three_plus": "3+ salita",
+    "no_tags_default": "Walang nahanap na tags para sa video na ito.",
+    "copy_as_label": "Kopyahin bilang:",
+    "save_template_btn": "I-save bilang template",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tags",
+    "hashtags_title": "Hashtags sa description",
+    "truncated_title": "tahimik na hindi pinapansin ng YouTube (lumagpas sa 500-character limit)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} character na natitira — maayos na nagagamit ang tag budget.",
+    "getting_close": "{{remaining}} character na natitira — malapit na sa limit.",
+    "near_limit": "Tanging {{remaining}} character ang natitira — malapit na sa limit.",
+    "under_tagged_severe": "{{pct}}% lang ng 500-character budget ang nagamit. Ang mas maraming tags ay gumagawa ng mas maraming discovery pathway.",
+    "under_tagged_moderate": "{{remaining}} character ang available. May puwang para sa {{n}} pang long-tail tags.",
+    "over_limit": "⚠ {{over}} character ang lumagpas sa limit — {{count}} tag(s) sa dulo ng listahan ang tahimik na hindi pinapansin ng YouTube. Naka-highlight sa pula sa ibaba."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Hindi naglagay ng tags ang creator na ito. Available pa rin ang thumbnails at metadata.",
+    "age_restricted": "May age restriction ang video na ito. Hindi available ang tag data kung walang login.",
+    "private": "Private o unlisted ang video na ito.",
+    "live_stream": "Ang live streams ay gumagamit ng ibang metadata structure.",
+    "members_only": "Members-only ang video na ito.",
+    "all_layers_failed": "Hindi successful ang tag extraction para sa video na ito. Available pa rin ang thumbnails."
+  },
+
+  "copy_formats": {
+    "plain": "Plain text",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "Handa para sa YouTube"
+  },
+
+  "copy_success": "Na-copy ang tags bilang {{format}}.",
+  "copy_failed": "Hindi nag-copy — subukan ulit.",
+  "single_tag_copied": "Na-copy ang tag.",
+  "tags_file_downloaded": "Na-download ang tags file.",
+
+  "health": {
+    "panel_title": "Tag Health Score",
+    "out_of": "/ 100",
+    "label_excellent": "Excellent",
+    "label_good": "Maganda",
+    "label_average": "Average",
+    "label_weak": "Mahina",
+    "label_no_tags": "Walang tags",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "N/A",
+    "comp_budget": "Budget Efficiency",
+    "comp_tail": "Tail Distribution",
+    "comp_diversity": "Word Diversity",
+    "comp_hashtag": "Hashtag Alignment",
+    "suggestions_label": "Mga Pagpapahusay",
+    "potential_gain": "+{{n}} pts",
+    "no_tags_summary": "Walang nahanap na tags para sa video na ito."
+  },
+
+  "budget_labels": { "optimal": "Optimal", "good": "Maganda", "under_used": "Hindi gamit gamit", "severely_under": "Sobrang hindi gamit gamit", "over_limit": "Lumagpas sa limit", "no_tags": "Walang tags" },
+  "distribution_labels": { "well_balanced": "Balanced na", "fairly_balanced": "Medyo balanced", "uneven": "Hindi pantay", "heavily_skewed": "Sobrang baluktot", "no_data": "Walang data" },
+  "diversity_labels": { "excellent": "Excellent na variety", "good": "Magandang variety", "repetitive": "Repetitive", "very_repetitive": "Sobrang repetitive", "no_data": "Walang data" },
+  "hashtag_labels": { "perfect": "Perfect alignment", "strong": "Malakas na alignment", "partial": "Bahagyang alignment", "weak": "Mahinang alignment", "none": "Walang alignment", "no_hashtags": "Walang hashtags" },
+
+  "thumbnails": {
+    "panel_title": "Thumbnails",
+    "preview_label": "Kung paano ito makikita sa YouTube search",
+    "placement_heading": "Thumbnail placement preview",
+    "placement_sub": "Kung paano lumalabas ang thumbnail mo sa 5 konteksto ng YouTube",
+    "canva_text": "Gusto mo i-redesign ang thumbnail na ito?",
+    "canva_cta": "I-edit sa Canva →",
+    "download_btn": "↓ I-download",
+    "downloading": "Dina-download…",
+    "webp_note": "Mas bagong format — posibleng hindi mabukas sa lahat ng image editor",
+    "unavailable": "Hindi available para sa video na ito",
+    "unavailable_reason": "Walang 1280×720 thumbnail ang video na ito. Gamitin ang SD o HQ.",
+    "placement_desktop_home": "Desktop Homepage",
+    "placement_desktop_search": "Desktop Search",
+    "placement_mobile_search": "Mobile Search",
+    "placement_suggested": "Mga Suggested Video",
+    "placement_notification": "Notification",
+    "placement_shorts_feed": "Shorts Feed"
+  },
+
+  "bulk": {
+    "title": "Bulk extraction",
+    "badge_new": "BAGO",
+    "description": "I-paste ang hanggang 10 URLs — kumuha ng tags ng lahat ng video + combined frequency table",
+    "expand": "I-expand ↓",
+    "collapse": "I-collapse ↑",
+    "textarea_placeholder": "I-paste ang isang YouTube URL kada linya (hanggang 10)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "I-extract lahat",
+    "extracting": "Ina-extract {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URLs",
+    "hint_invalid": "{{count}} / 10 URLs · {{invalid}} hindi valid — ililiban",
+    "hint_duplicates": "{{count}} / 10 URLs · {{dupes}} duplicate na tinanggal",
+    "hint_over_limit": "{{count}} / 10 URLs · Tanging unang 10 ang maproseso",
+    "zip_btn": "I-download lahat ng thumbnails bilang ZIP",
+    "zipping": "Zinizip {{done}}/{{total}}…",
+    "csv_btn": "I-download ang research CSV",
+    "copy_union_btn": "Kopyahin lahat ng unique tags",
+    "freq_table_title": "Tag frequency sa lahat ng video",
+    "freq_table_desc": "Naka-sort ang tags base sa kung ilang video ang nag-share nito.",
+    "freq_th_tag": "Tag", "freq_th_appears": "Lumalabas sa", "freq_th_frequency": "Frequency", "freq_th_type": "Type",
+    "show_tags_btn": "Ipakita ang tags ↓",
+    "hide_tags_btn": "Itago ang tags ↑",
+    "video_failed": "Video {{n}}: Hindi successful ang extraction",
+    "zip_success": "Na-download ang {{count}} thumbnails bilang ZIP.",
+    "zip_skipped": "({{skipped}} hindi na-load.)",
+    "zip_failed": "Hindi successful ang ZIP download.",
+    "csv_downloaded": "Na-download ang research CSV.",
+    "union_copied": "Na-copy ang {{count}} unique tags (YouTube-ready format).",
+    "no_urls_error": "I-paste ang kahit isang valid na YouTube URL.",
+    "summary": "Na-analyze ang {{success}} video. {{tags}} unique tags ang nahanap."
+  },
+
+  "overlap": {
+    "title": "Competitor tag analysis",
+    "description": "I-paste ang video mo + video ng kakompitensya — tingnan kung anong tags meron sila na wala sa iyo",
+    "my_label": "URL ng video mo",
+    "their_label": "URL ng kakompitensya",
+    "my_placeholder": "https://youtube.com/watch?v=VIDEO_MO",
+    "their_placeholder": "https://youtube.com/watch?v=VIDEO_NG_KAKOMPITENSYA",
+    "analyze_btn": "Suriin ang overlap",
+    "analyzing": "Sinusuri…",
+    "shared_title": "Shared tags",
+    "missing_title": "Kulang sa iyo",
+    "unique_title": "Unique tags mo",
+    "shared_desc": "Pareho silang ginagamit ng dalawang video",
+    "missing_desc": "Meron sila — wala sa iyo. High-value targets.",
+    "unique_desc": "Tangi lang ang video mo ang gumagamit nito",
+    "steal_btn": "Kopyahin ang mga tags na ito",
+    "save_template_btn": "I-save bilang template",
+    "steal_success": "Na-copy ang {{count}} kulang na tags (YouTube-ready).",
+    "error_need_my": "Mangyaring ilagay ang URL ng video mo.",
+    "error_need_their": "Mangyaring ilagay ang URL ng video ng kakompitensya.",
+    "error_my_failed": "Video mo: {{error}}",
+    "error_their_failed": "Video ng kakompitensya: {{error}}",
+    "overlap_label_very_high": "Sobrang taas ng overlap",
+    "overlap_label_high": "Mataas ang overlap",
+    "overlap_label_moderate": "Katamtaman ang overlap",
+    "overlap_label_low": "Mababa ang overlap",
+    "overlap_label_very_low": "Sobrang baba ng overlap",
+    "overlap_label_no_data": "Walang data",
+    "col_empty_both": "Walang video na may tags.",
+    "col_empty_mine": "Walang tags ang video mo.",
+    "col_empty_theirs": "Walang tags ang video ng kakompitensya.",
+    "col_empty_shared_none": "Walang common na tags.",
+    "col_empty_missing_none": "Ginagamit mo na lahat ng tags ng kakompitensya.",
+    "col_empty_unique_none": "Lahat ng tags mo ay ginagamit din ng kakompitensya."
+  },
+
+  "templates": {
+    "title": "Tag templates",
+    "description": "I-save ang tag sets na ginagamit mo ulit sa maraming video",
+    "empty": "Walang template pa. I-extract ang isang video at i-click ang \"I-save bilang template\".",
+    "apply_btn": "I-apply", "delete_btn": "Burahin",
+    "confirm_delete": "Burahin ang template na ito? Hindi na ito mababawi.",
+    "deleted_toast": "Nabura ang template.",
+    "save_prompt_title": "Pangalan para sa template na ito ({{count}} tags):",
+    "save_prompt_preview": "Unang {{n}} tags: {{preview}}",
+    "saved_toast": "Na-save ang template \"{{name}}\".",
+    "save_failed_toast": "Hindi na-save ang template.",
+    "extract_first_toast": "I-extract muna ang isang video.",
+    "suggestions_heading": "Mga kaugnay na naka-save na template",
+    "new_tags_label": "+{{count}} bagong tags",
+    "strategy_union": "Magdagdag ng bagong tags",
+    "strategy_union_desc": "Panatilihin ang lahat ng current tags at magdagdag ng bago mula sa template.",
+    "strategy_replace": "Palitan lahat ng tags",
+    "strategy_replace_desc": "Itapon ang current tags at gamitin lang ang template.",
+    "strategy_prepend": "Unahin ang template",
+    "strategy_prepend_desc": "Mauna ang tags ng template.",
+    "strategy_append": "Idagdag sa huli",
+    "strategy_append_desc": "Panatilihin ang current tags at idagdag ang template tags sa huli.",
+    "merge_added": "{{count}} bagong tag(s) na idinagdag. {{chars}}/500 character na nagamit.",
+    "merge_no_new": "Walang bagong tags — nasa listahan mo na lahat ng template tags.",
+    "merge_replaced": "{{count}} tag(s) na napalitan. {{chars}}/500 character na nagamit.",
+    "merge_over_limit": "⚠ Lumagpas sa 500-character limit ang resulta ({{chars}}) — ititrim ang ilang tags.",
+    "name_required": "Kinakailangan ang pangalan ng template.",
+    "name_too_long": "Dapat 100 character o mas mababa ang pangalan.",
+    "name_invalid": "Dapat may hindi bababa sa isang letra o numero ang pangalan.",
+    "tags_empty": "Dapat may hindi bababa sa isang tag ang template.",
+    "tags_over_budget": "Gumagamit ang template na ito ng {{chars}} character — {{over}} lampas sa limit.",
+    "export_btn": "I-export ang templates", "import_btn": "I-import ang templates",
+    "import_success": "Na-import ang {{count}} template(s).",
+    "import_partial": "Na-import ang {{count}}, na-skip ang {{skipped}} (existing na).",
+    "import_failed": "Hindi successful ang import — invalid na file format."
+  },
+
+  "history": {
+    "title": "Mga kamakailang extraction",
+    "description": "Na-save locally sa browser mo — walang kailangang account",
+    "clear_btn": "I-clear ang history",
+    "confirm_clear": "I-clear lahat ng history? Hindi na ito mababawi.",
+    "cleared_toast": "Na-clear ang history.",
+    "empty": "Walang extraction pa — i-paste ang YouTube URL sa itaas para magsimula.",
+    "reextract_btn": "I-extract ulit", "remove_btn": "✕",
+    "just_now": "Ngayon lang", "minutes_ago": "{{n}}min ang nakalipas",
+    "hours_ago": "{{n}}oras ang nakalipas", "days_ago": "{{n}}araw ang nakalipas", "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Mangyaring maglagay ng valid na YouTube URL o video ID.",
+    "not_found": "Hindi nahanap ang video na ito. Maaaring na-delete o na-private.",
+    "rate_limited": "Sobra na ang requests. Mangyaring maghintay sandali.",
+    "timeout": "Nag-timeout ang request. Posibleng mabagal ang YouTube — subukan ulit.",
+    "network": "Hindi makaconnect sa server. I-check ang internet connection mo.",
+    "offline": "Mukhang offline ka. I-check ang connection.",
+    "members_only": "Members-only ang video na ito.",
+    "age_restricted": "May age restriction ang video na ito.",
+    "unknown": "Nagkaroon ng unexpected error. Subukan ulit.",
+    "extraction_failed_title": "Hindi successful ang extraction",
+    "retry_btn": "Subukan ulit ↻",
+    "public_video_hint": "Siguraduhing public YouTube video ang URL.",
+    "retried_toast": "Na-extract sa second attempt — mabagal ang YouTube.",
+    "recovery_timeout": "Nag-timeout ang request. Posibleng mabagal ang YouTube.",
+    "recovery_offline": "Mukhang offline ka.",
+    "recovery_rate_limited": "Sobra na ang requests. Maghintay ng 60 segundo.",
+    "recovery_not_found": "Walang ganitong video, na-delete, o private.",
+    "recovery_age_restricted": "Hindi ma-analyze ang mga age-restricted video kung walang authentication."
+  },
+
+  "trust": { "rating": "4.9★ satisfaction", "creators": "Pinagkakatiwalaan ng creators sa buong mundo", "free": "Libre. Walang login. Walang limits." },
+
+  "share": {
+    "section_title": "I-share ang tool na ito",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "Email", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "Kopyahin ang link", "link_copied": "Na-copy ang link!"
+  },
+
+  "faq": {
+    "section_title": "Mga madalas itanong",
+    "section_sub": "Lahat ng kailangan mong malaman tungkol sa YouTube tag extraction at thumbnail downloading.",
+    "q1": "Ano ang YouTube tags at importante pa ba ito sa SEO?",
+    "a1": "Ang YouTube tags ay mga keyword na idinaragdag mo sa video para matulungan ang YouTube na maintindihan ang topic nito. Bagama't hindi na ito gaanong importante kaysa noon, tumutulong pa rin ito sa pag-categorize ng YouTube sa content mo.",
+    "q2": "Ano ang character limit para sa YouTube tags?",
+    "a2": "Nagpapatupad ang YouTube ng 500-character limit sa kabuuang haba ng lahat ng tags. Pagdating sa limit na ito, tahimik na pinuputol ng YouTube ang tags mula sa dulo ng listahan na walang warning.",
+    "q3": "Maari ba akong mag-extract ng tags mula sa kahit anong YouTube video?",
+    "a3": "Maari kang mag-extract ng tags mula sa kahit anong public YouTube video na may tags na idinagdag ng creator. Ang age-restricted, private, at members-only video ay hindi accessible kung walang login.",
+    "q4": "Ano ang pagkaiba ng short-tail, mid-tail, at long-tail tags?",
+    "a4": "Ang short-tail ay single words — malawak at sobrang competitive. Ang mid-tail ay dalawang salita. Ang long-tail ay tatlo o higit pang salita — sobrang specific at hindi gaanong competitive.",
+    "q5": "Paano mag-download ng YouTube thumbnails sa pinakamataas na quality?",
+    "a5": "Nagbibigay ang ytspy ng thumbnails sa limang resolution: 1280×720, 640×480, 480×360, 320×180, at WebP format.",
+    "q6": "Ano ang sinusukat ng tag health score?",
+    "a6": "Isang 0-100 composite rating na sumusukat sa budget efficiency, tail distribution, word diversity, at hashtag alignment.",
+    "q7": "Paano gumagana ang bulk extraction?",
+    "a7": "I-paste ang hanggang 10 URLs. Pinoproseso ito ng ytspy sa batches at ibinibigay ang lahat ng tags, frequency table, at ZIP ng lahat ng thumbnails.",
+    "q8": "Paano mag-analyze ng competitor tags?",
+    "a8": "Gamitin ang competitor analysis section. I-paste ang URL mo at URL ng kakompitensya. Nagpapakita ang ytspy ng tatlong column: shared tags, missing tags, at unique tags mo.",
+    "q9": "Gumagana ba ang ytspy sa YouTube Shorts?",
+    "a9": "Oo. Fully supported ang YouTube Shorts URLs.",
+    "q10": "Libre ba ang ytspy? May limits ba?",
+    "a10": "Completely free ang ytspy na walang account. Pinoproseso ng bulk mode ang hanggang 10 video kada run.",
+    "q11": "Ano ang tag template library?",
+    "a11": "Ang library ay nagbibigay-daan sa iyo na i-save ang named tag sets para sa future use. I-apply ang kahit anong na-save na template sa isang click.",
+    "q12": "Bakit importante ang thumbnail placement preview?",
+    "a12": "Ang YouTube thumbnails ay lumalabas sa limang magkaibang konteksto, bawat isa sa ibang size. Ang isang magandang thumbnail sa high resolution ay maaaring hindi mabasa sa 48×48 pixels (notifications)."
+  },
+
+  "contact": {
+    "section_title": "Request at contact",
+    "section_sub": "May tanong, nakakita ng bug, o gusto mag-suggest ng feature? Binabasa namin ang bawat message.",
+    "name_label": "Pangalan", "email_label": "Email", "message_label": "Mensahe",
+    "name_placeholder": "Pangalan mo", "email_placeholder": "iyo@email.com",
+    "message_placeholder": "Sabihin sa amin kung ano ang nasa isip mo...",
+    "submit_btn": "Ipadala ang mensahe",
+    "success_alert": "Salamat! Naipadala na ang request mo.",
+    "error_alert": "Oops! Nagkaroon ng problema sa pag-submit ng form mo."
+  },
+
+  "citation": {
+    "section_title": "Mga reference at source",
+    "c1_text": "YouTube Help — Pagdaragdag ng tags sa video mo",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Search at discovery sa YouTube",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs v. LinkedIn — legal ang scraping ng public data",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "US Court",
+    "c4_text": "Google Brand Guidelines — pinahihintulutang paggamit ng YouTube trademark",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "MABILISANG SAGOT", "text": "Ang YouTube tags ay nakatagong keywords na naka-embed sa source code ng video. Kinukuha ito ng ytspy mula sa kahit anong public YouTube video, ipinapakita ang missing competitor tags, at nire-rate ang estratehiya mo — lahat libre, walang sign-up." },
+  "logic": { "label": "LOGIC", "text": "Naka-embed ang YouTube ng lahat ng video metadata kabilang ang tags sa isang JavaScript object na tinatawag na ytInitialData sa bawat public video page — walang kailangang API key." },
+  "methodology": { "label": "METODOLOHIYA", "text": "Gumagamit ang ytspy ng 4-layer server-side extraction chain na may automatic fallback, na ibinabalik lang ang structured JSON sa browser." },
+  "freshness": { "today": "Updated ngayon", "last_updated": "Huling update {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Libre magpakailanman. Walang ads. Walang data collection.",
+    "disclaimer": "Independent tool ang ytspy. Hindi affiliated, endorsed, o connected sa YouTube, Google LLC, o Alphabet Inc. Trademark ng Google LLC ang YouTube.",
+    "privacy": "Privacy Policy", "cookies": "Cookies Policy", "terms": "Terms of Use",
+    "contact": "Makipag-ugnayan", "about": "Tungkol", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "Offline — ytspy", "heading": "Offline ka", "sub": "Kailangan ng internet connection ang mga bagong extraction. Available sa ibaba ang naka-save mong history at templates.", "retry_btn": "Subukan ulit", "cached_history_title": "Mga kamakailang extraction mo", "no_history": "Walang naka-save na extraction pa." },
+  "pwa": { "install_prompt": "Idagdag ang ytspy sa home screen mo para sa instant access.", "install_btn": "I-install", "install_dismiss": "Sa ibang pagkakataon" },
+
+  "lang": {
+    "select": "Wika",
+    "en": "Ingles", "es": "Espanyol", "pt": "Portuguese", "hi": "Hindi",
+    "id": "Indonesian", "fr": "French", "de": "German", "it": "Italian",
+    "tr": "Turkish", "pl": "Polish", "nl": "Dutch", "ru": "Russian",
+    "ja": "Japanese", "ko": "Korean", "ar": "Arabic", "he": "Hebrew",
+    "vi": "Vietnamese", "tl": "Filipino", "th": "Thai", "uk": "Ukrainian"
+  }
+}
