@@ -1,0 +1,387 @@
+{
+  "_language": "Indonesia (Indonesian)",
+  "_code": "id",
+
+  "meta": {
+    "title": "ytspy — Pengekstrak Tag YouTube + Pengunduh Thumbnail",
+    "description": "Ekstrak tag YouTube tersembunyi, unduh thumbnail dalam 5 resolusi, analisis tag pesaing dan nilai strategi Anda. Gratis, tanpa registrasi.",
+    "keywords": "pengekstrak tag youtube, unduh thumbnail youtube, analisis tag youtube, alat seo youtube gratis"
+  },
+
+  "nav": {
+    "search": "Cari",
+    "language": "Bahasa",
+    "menu_open": "Buka menu",
+    "menu_close": "Tutup menu",
+    "home": "Beranda",
+    "guides": "Panduan",
+    "about": "Tentang",
+    "contact": "Kontak"
+  },
+
+  "hero": {
+    "h1_line1": "Ekstrak tag YouTube.",
+    "h1_line2": "Unduh thumbnail.",
+    "h1_line3": "Ungguli semua orang.",
+    "sub": "Tempel URL YouTube mana pun. Dapatkan tag tersembunyi, thumbnail, analisis pesaing — gratis, tanpa akun.",
+    "tagline1": "Intelijen YouTube. Terdekripsi.",
+    "tagline2": "Ekstrak. Analisis. Ungguli.",
+    "seasonal_spring": "Edisi Semi",
+    "seasonal_summer": "Edisi Panas",
+    "seasonal_fall": "Edisi Gugur",
+    "seasonal_winter": "Edisi Dingin"
+  },
+
+  "input": {
+    "placeholder": "Tempel URL YouTube di sini — youtube.com/watch?v=... atau youtu.be/...",
+    "paste_btn": "Tempel",
+    "extract_btn": "Ekstrak",
+    "clipboard_detected": "URL YouTube terdeteksi di clipboard — tekan Ekstrak atau Enter.",
+    "invalid_url_toast": "Masukkan URL YouTube yang valid atau ID video."
+  },
+
+  "cta": {
+    "v1": "Ekstrak",
+    "v2": "Analisis",
+    "v3": "Intai",
+    "v4": "Dekripsi",
+    "v5": "Ambil tag",
+    "v6": "Lihat tag"
+  },
+
+  "mode": {
+    "both": "Keduanya",
+    "tags_only": "Tag saja",
+    "thumbnails_only": "Thumbnail saja"
+  },
+
+  "meta_card": {
+    "load_metadata": "Muat metadata lengkap",
+    "badge_live": "SIARAN LANGSUNG",
+    "badge_short": "SHORT",
+    "badge_restricted": "DIBATASI USIA",
+    "badge_cached": "DARI CACHE",
+    "title_unavailable": "Judul tidak tersedia"
+  },
+
+  "tags_panel": {
+    "title": "Tag yang diekstrak",
+    "char_limit_label": "/ 500 karakter",
+    "remaining": "{{n}} tersisa",
+    "over_limit": "{{n}} MELEBIHI BATAS",
+    "short_tail_label": "Ekor pendek",
+    "mid_tail_label": "Ekor menengah",
+    "long_tail_label": "Ekor panjang",
+    "one_word": "1 kata",
+    "two_words": "2 kata",
+    "three_plus": "3+ kata",
+    "no_tags_default": "Tidak ada tag ditemukan untuk video ini.",
+    "copy_as_label": "Salin sebagai:",
+    "save_template_btn": "Simpan sebagai template",
+    "tag_count_one": "{{n}} tag",
+    "tag_count_many": "{{n}} tag",
+    "hashtags_title": "Hashtag dalam deskripsi",
+    "truncated_title": "diabaikan diam-diam oleh YouTube (batas 500 karakter terlampaui)"
+  },
+
+  "char_hints": {
+    "optimal": "{{remaining}} karakter tersisa — anggaran tag digunakan dengan baik.",
+    "getting_close": "{{remaining}} karakter tersisa — mendekati batas.",
+    "near_limit": "Hanya {{remaining}} karakter tersisa — hampir mencapai batas.",
+    "under_tagged_severe": "Hanya {{pct}}% anggaran 500 karakter digunakan. Lebih banyak tag menciptakan lebih banyak jalur penemuan.",
+    "under_tagged_moderate": "{{remaining}} karakter tersedia. Ada ruang untuk {{n}} tag ekor panjang lagi.",
+    "over_limit": "⚠ {{over}} karakter melebihi batas — {{count}} tag di akhir daftar diabaikan diam-diam oleh YouTube. Disorot merah di bawah."
+  },
+
+  "no_tags": {
+    "creator_set_no_tags": "Kreator ini tidak menambahkan tag. Thumbnail dan metadata masih tersedia.",
+    "age_restricted": "Video ini dibatasi usia. Data tag tidak dapat diakses tanpa login.",
+    "private": "Video ini bersifat privat atau tidak terdaftar.",
+    "live_stream": "Siaran langsung menggunakan struktur metadata yang berbeda.",
+    "members_only": "Ini adalah video eksklusif anggota.",
+    "all_layers_failed": "Ekstraksi tag tidak berhasil. Thumbnail masih tersedia."
+  },
+
+  "copy_formats": {
+    "plain": "Teks biasa",
+    "csv": "CSV",
+    "json": "JSON",
+    "yt": "Siap untuk YouTube"
+  },
+
+  "copy_success": "Tag disalin sebagai {{format}}.",
+  "copy_failed": "Salin gagal — coba lagi.",
+  "single_tag_copied": "Tag disalin.",
+  "tags_file_downloaded": "File tag diunduh.",
+
+  "health": {
+    "panel_title": "Skor Kesehatan Tag",
+    "out_of": "/ 100",
+    "label_excellent": "Sangat Baik",
+    "label_good": "Baik",
+    "label_average": "Rata-rata",
+    "label_weak": "Lemah",
+    "label_no_tags": "Tidak ada tag",
+    "grade_a_plus": "A+", "grade_a": "A", "grade_b_plus": "B+", "grade_b": "B",
+    "grade_c_plus": "C+", "grade_c": "C", "grade_d": "D", "grade_f": "F", "grade_na": "T/A",
+    "comp_budget": "Efisiensi Anggaran",
+    "comp_tail": "Distribusi Ekor",
+    "comp_diversity": "Keragaman Kata",
+    "comp_hashtag": "Keselarasan Hashtag",
+    "suggestions_label": "Perbaikan",
+    "potential_gain": "+{{n}} poin",
+    "no_tags_summary": "Tidak ada tag ditemukan untuk video ini."
+  },
+
+  "budget_labels": { "optimal": "Optimal", "good": "Baik", "under_used": "Kurang digunakan", "severely_under": "Sangat kurang digunakan", "over_limit": "Melebihi batas", "no_tags": "Tidak ada tag" },
+  "distribution_labels": { "well_balanced": "Sangat seimbang", "fairly_balanced": "Cukup seimbang", "uneven": "Tidak merata", "heavily_skewed": "Sangat condong", "no_data": "Tidak ada data" },
+  "diversity_labels": { "excellent": "Keragaman sangat baik", "good": "Keragaman baik", "repetitive": "Repetitif", "very_repetitive": "Sangat repetitif", "no_data": "Tidak ada data" },
+  "hashtag_labels": { "perfect": "Keselarasan sempurna", "strong": "Keselarasan kuat", "partial": "Keselarasan sebagian", "weak": "Keselarasan lemah", "none": "Tidak ada keselarasan", "no_hashtags": "Tidak ada hashtag" },
+
+  "thumbnails": {
+    "panel_title": "Thumbnail",
+    "preview_label": "Tampilan di pencarian YouTube",
+    "placement_heading": "Pratinjau penempatan thumbnail",
+    "placement_sub": "Tampilan thumbnail Anda di 5 konteks YouTube",
+    "canva_text": "Ingin mendesain ulang thumbnail ini?",
+    "canva_cta": "Edit di Canva →",
+    "download_btn": "↓ Unduh",
+    "downloading": "Mengunduh…",
+    "webp_note": "Format terbaru — mungkin tidak terbuka di semua editor gambar",
+    "unavailable": "Tidak tersedia untuk video ini",
+    "unavailable_reason": "Video ini tidak memiliki thumbnail 1280×720. Gunakan SD atau HQ.",
+    "placement_desktop_home": "Beranda Desktop",
+    "placement_desktop_search": "Pencarian Desktop",
+    "placement_mobile_search": "Pencarian Mobile",
+    "placement_suggested": "Video yang Disarankan",
+    "placement_notification": "Notifikasi",
+    "placement_shorts_feed": "Feed Shorts"
+  },
+
+  "bulk": {
+    "title": "Ekstrak massal",
+    "badge_new": "BARU",
+    "description": "Tempel hingga 10 URL — dapatkan tag semua video + tabel frekuensi gabungan",
+    "expand": "Perluas ↓",
+    "collapse": "Ciutkan ↑",
+    "textarea_placeholder": "Tempel satu URL YouTube per baris (hingga 10)\nhttps://youtube.com/watch?v=...",
+    "extract_btn": "Ekstrak semua",
+    "extracting": "Mengekstrak {{done}}/{{total}}…",
+    "hint_base": "{{count}} / 10 URL",
+    "hint_invalid": "{{count}} / 10 URL · {{invalid}} tidak valid — akan dilewati",
+    "hint_duplicates": "{{count}} / 10 URL · {{dupes}} duplikat dihapus",
+    "hint_over_limit": "{{count}} / 10 URL · Hanya 10 pertama yang akan diproses",
+    "zip_btn": "Unduh semua thumbnail sebagai ZIP",
+    "zipping": "Mengompres {{done}}/{{total}}…",
+    "csv_btn": "Unduh CSV riset",
+    "copy_union_btn": "Salin semua tag unik",
+    "freq_table_title": "Frekuensi tag di semua video",
+    "freq_table_desc": "Tag diurutkan berdasarkan jumlah video yang menggunakannya.",
+    "freq_th_tag": "Tag", "freq_th_appears": "Muncul di", "freq_th_frequency": "Frekuensi", "freq_th_type": "Jenis",
+    "show_tags_btn": "Tampilkan tag ↓",
+    "hide_tags_btn": "Sembunyikan tag ↑",
+    "video_failed": "Video {{n}}: Ekstraksi gagal",
+    "zip_success": "{{count}} thumbnail diunduh sebagai ZIP.",
+    "zip_skipped": "({{skipped}} gagal dimuat.)",
+    "zip_failed": "Unduhan ZIP gagal.",
+    "csv_downloaded": "CSV riset diunduh.",
+    "union_copied": "{{count}} tag unik disalin (format siap YouTube).",
+    "no_urls_error": "Tempel setidaknya satu URL YouTube yang valid.",
+    "summary": "{{success}} video dianalisis. {{tags}} tag unik ditemukan."
+  },
+
+  "overlap": {
+    "title": "Analisis tag pesaing",
+    "description": "Tempel video Anda + video pesaing — lihat tag apa yang mereka miliki yang Anda tidak",
+    "my_label": "URL video Anda",
+    "their_label": "URL pesaing",
+    "my_placeholder": "https://youtube.com/watch?v=VIDEO_ANDA",
+    "their_placeholder": "https://youtube.com/watch?v=VIDEO_PESAING",
+    "analyze_btn": "Analisis tumpang tindih",
+    "analyzing": "Menganalisis…",
+    "shared_title": "Tag bersama",
+    "missing_title": "Yang Anda butuhkan",
+    "unique_title": "Tag unik Anda",
+    "shared_desc": "Kedua video menggunakan ini",
+    "missing_desc": "Mereka punya — Anda tidak. Target bernilai tinggi.",
+    "unique_desc": "Hanya video Anda yang menggunakan ini",
+    "steal_btn": "Salin tag ini",
+    "save_template_btn": "Simpan sebagai template",
+    "steal_success": "{{count}} tag yang hilang disalin (siap YouTube).",
+    "error_need_my": "Masukkan URL video Anda.",
+    "error_need_their": "Masukkan URL video pesaing.",
+    "error_my_failed": "Video Anda: {{error}}",
+    "error_their_failed": "Video pesaing: {{error}}",
+    "overlap_label_very_high": "Tumpang tindih sangat tinggi",
+    "overlap_label_high": "Tumpang tindih tinggi",
+    "overlap_label_moderate": "Tumpang tindih sedang",
+    "overlap_label_low": "Tumpang tindih rendah",
+    "overlap_label_very_low": "Tumpang tindih sangat rendah",
+    "overlap_label_no_data": "Tidak ada data",
+    "col_empty_both": "Tidak ada video yang memiliki tag.",
+    "col_empty_mine": "Video Anda tidak memiliki tag.",
+    "col_empty_theirs": "Video pesaing tidak memiliki tag.",
+    "col_empty_shared_none": "Tidak ada tag bersama.",
+    "col_empty_missing_none": "Anda sudah menggunakan semua tag pesaing.",
+    "col_empty_unique_none": "Semua tag Anda juga digunakan oleh pesaing."
+  },
+
+  "templates": {
+    "title": "Template tag",
+    "description": "Simpan kumpulan tag yang Anda gunakan kembali di beberapa video",
+    "empty": "Belum ada template. Ekstrak video dan klik 'Simpan sebagai template'.",
+    "apply_btn": "Terapkan", "delete_btn": "Hapus",
+    "confirm_delete": "Hapus template ini? Tindakan ini tidak dapat dibatalkan.",
+    "deleted_toast": "Template dihapus.",
+    "save_prompt_title": "Nama untuk template ini ({{count}} tag):",
+    "save_prompt_preview": "{{n}} tag pertama: {{preview}}",
+    "saved_toast": "Template '{{name}}' disimpan.",
+    "save_failed_toast": "Gagal menyimpan template.",
+    "extract_first_toast": "Ekstrak video terlebih dahulu.",
+    "suggestions_heading": "Template tersimpan yang relevan",
+    "new_tags_label": "+{{count}} tag baru",
+    "strategy_union": "Tambah tag baru",
+    "strategy_union_desc": "Pertahankan semua tag saat ini dan tambahkan yang baru dari template.",
+    "strategy_replace": "Ganti semua tag",
+    "strategy_replace_desc": "Buang tag saat ini dan gunakan template saja.",
+    "strategy_prepend": "Prioritaskan template",
+    "strategy_prepend_desc": "Tag template muncul lebih dulu.",
+    "strategy_append": "Tambah di akhir",
+    "strategy_append_desc": "Pertahankan tag saat ini dan tambahkan tag template di akhir.",
+    "merge_added": "{{count}} tag baru ditambahkan. {{chars}}/500 karakter digunakan.",
+    "merge_no_new": "Tidak ada tag baru — semua tag template sudah ada di daftar Anda.",
+    "merge_replaced": "{{count}} tag diganti. {{chars}}/500 karakter digunakan.",
+    "merge_over_limit": "⚠ Hasil melebihi batas 500 karakter ({{chars}}) — beberapa tag akan dipotong.",
+    "name_required": "Nama template diperlukan.",
+    "name_too_long": "Nama harus 100 karakter atau kurang.",
+    "name_invalid": "Nama harus mengandung setidaknya satu huruf atau angka.",
+    "tags_empty": "Template harus memiliki setidaknya satu tag.",
+    "tags_over_budget": "Template ini menggunakan {{chars}} karakter — {{over}} melebihi batas.",
+    "export_btn": "Ekspor template", "import_btn": "Impor template",
+    "import_success": "{{count}} template diimpor.",
+    "import_partial": "{{count}} diimpor, {{skipped}} dilewati (sudah ada).",
+    "import_failed": "Impor gagal — format file tidak valid."
+  },
+
+  "history": {
+    "title": "Ekstraksi terbaru",
+    "description": "Disimpan secara lokal di browser Anda — tidak perlu akun",
+    "clear_btn": "Hapus riwayat",
+    "confirm_clear": "Hapus semua riwayat? Tindakan ini tidak dapat dibatalkan.",
+    "cleared_toast": "Riwayat dihapus.",
+    "empty": "Belum ada ekstraksi — tempel URL YouTube di atas untuk memulai.",
+    "reextract_btn": "Ekstrak ulang", "remove_btn": "✕",
+    "just_now": "Baru saja", "minutes_ago": "{{n}} menit lalu",
+    "hours_ago": "{{n}} jam lalu", "days_ago": "{{n}} hari lalu", "date_format": "D MMM"
+  },
+
+  "errors": {
+    "invalid_url": "Masukkan URL YouTube yang valid atau ID video.",
+    "not_found": "Video ini tidak ditemukan. Mungkin telah dihapus atau dijadikan privat.",
+    "rate_limited": "Terlalu banyak permintaan. Harap tunggu sebentar.",
+    "timeout": "Permintaan habis waktu. YouTube mungkin lambat — coba lagi.",
+    "network": "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
+    "offline": "Anda tampaknya sedang offline. Periksa koneksi.",
+    "members_only": "Video ini hanya untuk anggota saluran.",
+    "age_restricted": "Video ini dibatasi usia.",
+    "unknown": "Terjadi kesalahan tak terduga. Coba lagi.",
+    "extraction_failed_title": "Ekstraksi gagal",
+    "retry_btn": "Coba lagi ↻",
+    "public_video_hint": "Pastikan URL adalah video YouTube publik.",
+    "retried_toast": "Diekstrak pada percobaan kedua — YouTube lambat.",
+    "recovery_timeout": "Permintaan habis waktu. YouTube mungkin lambat.",
+    "recovery_offline": "Anda tampaknya sedang offline.",
+    "recovery_rate_limited": "Terlalu banyak permintaan. Tunggu 60 detik.",
+    "recovery_not_found": "Video ini tidak ada, telah dihapus, atau bersifat privat.",
+    "recovery_age_restricted": "Video dengan batasan usia tidak dapat dianalisis tanpa autentikasi."
+  },
+
+  "trust": { "rating": "4,9★ kepuasan", "creators": "Dipercaya oleh kreator di seluruh dunia", "free": "Gratis. Tanpa login. Tanpa batas." },
+
+  "share": {
+    "section_title": "Bagikan alat ini",
+    "whatsapp": "WhatsApp", "facebook": "Facebook", "twitter": "Twitter / X",
+    "linkedin": "LinkedIn", "reddit": "Reddit", "quora": "Quora",
+    "telegram": "Telegram", "email": "Email", "pinterest": "Pinterest",
+    "discord": "Discord", "medium": "Medium", "tiktok": "TikTok",
+    "instagram": "Instagram", "snapchat": "Snapchat", "vimeo": "Vimeo",
+    "copy_link": "Salin tautan", "link_copied": "Tautan disalin!"
+  },
+
+  "faq": {
+    "section_title": "Pertanyaan yang sering diajukan",
+    "section_sub": "Semua yang perlu Anda ketahui tentang ekstraksi tag YouTube dan pengunduhan thumbnail.",
+    "q1": "Apa itu tag YouTube dan apakah masih penting untuk SEO?",
+    "a1": "Tag YouTube adalah kata kunci yang Anda tambahkan ke video untuk membantu YouTube memahami topiknya. Meskipun bobotnya berkurang dibanding dulu, tag masih berkontribusi pada pengkategorian konten Anda.",
+    "q2": "Berapa batas karakter untuk tag YouTube?",
+    "a2": "YouTube menerapkan batas 500 karakter untuk total panjang semua tag. Saat batas ini terlampaui, YouTube secara diam-diam memotong tag dari akhir daftar tanpa peringatan.",
+    "q3": "Bisakah saya mengekstrak tag dari video YouTube mana pun?",
+    "a3": "Anda dapat mengekstrak tag dari video YouTube publik mana pun yang kreatornya menambahkan tag. Video dengan batasan usia, privat, dan eksklusif anggota tidak dapat diakses tanpa login.",
+    "q4": "Apa perbedaan antara tag ekor pendek, menengah, dan panjang?",
+    "a4": "Ekor pendek adalah kata tunggal — luas dan sangat kompetitif. Ekor menengah dua kata. Ekor panjang tiga kata atau lebih — sangat spesifik dan kurang kompetitif.",
+    "q5": "Bagaimana cara mengunduh thumbnail YouTube dengan kualitas tertinggi?",
+    "a5": "ytspy menyediakan thumbnail dalam lima resolusi: 1280×720, 640×480, 480×360, 320×180, dan format WebP.",
+    "q6": "Apa yang diukur oleh skor kesehatan tag?",
+    "a6": "Ini adalah penilaian gabungan 0-100 yang mengukur efisiensi anggaran, distribusi ekor, keragaman kata, dan keselarasan hashtag.",
+    "q7": "Bagaimana cara kerja ekstraksi massal?",
+    "a7": "Tempel hingga 10 URL. ytspy memprosesnya dalam batch dan mengembalikan semua tag, tabel frekuensi, dan ZIP semua thumbnail.",
+    "q8": "Bagaimana cara menganalisis tag pesaing?",
+    "a8": "Gunakan bagian analisis pesaing. Tempel URL Anda dan URL pesaing. ytspy menampilkan tiga kolom: tag bersama, tag yang hilang, dan tag unik Anda.",
+    "q9": "Apakah ytspy bekerja dengan YouTube Shorts?",
+    "a9": "Ya. URL YouTube Shorts didukung sepenuhnya.",
+    "q10": "Apakah ytspy gratis? Apakah ada batasan?",
+    "a10": "ytspy sepenuhnya gratis tanpa akun. Mode massal memproses hingga 10 video sekaligus.",
+    "q11": "Apa itu pustaka template tag?",
+    "a11": "Pustaka memungkinkan Anda menyimpan kumpulan tag bernama untuk digunakan di masa mendatang. Terapkan template tersimpan mana pun dengan satu klik.",
+    "q12": "Mengapa pratinjau penempatan thumbnail penting?",
+    "a12": "Thumbnail YouTube muncul dalam lima konteks berbeda, masing-masing dengan ukuran berbeda. Thumbnail yang luar biasa dalam resolusi tinggi mungkin tidak terbaca pada 48×48 piksel (notifikasi)."
+  },
+
+  "contact": {
+    "section_title": "Permintaan & kontak",
+    "section_sub": "Ada pertanyaan, menemukan bug, atau ingin menyarankan fitur? Setiap pesan dibaca.",
+    "name_label": "Nama", "email_label": "Email", "message_label": "Pesan",
+    "name_placeholder": "Nama Anda", "email_placeholder": "anda@email.com",
+    "message_placeholder": "Ceritakan apa yang ada di pikiran Anda...",
+    "submit_btn": "Kirim pesan",
+    "success_alert": "Terima kasih! Permintaan Anda telah dikirim.",
+    "error_alert": "Ups! Ada masalah saat mengirim formulir Anda."
+  },
+
+  "citation": {
+    "section_title": "Referensi & sumber",
+    "c1_text": "Bantuan YouTube — Menambahkan tag ke video Anda",
+    "c1_url": "https://support.google.com/youtube/answer/146402", "c1_label": "Google",
+    "c2_text": "YouTube Creator Academy — Penelusuran dan penemuan di YouTube",
+    "c2_url": "https://creatoracademy.youtube.com/", "c2_label": "YouTube",
+    "c3_text": "hiQ Labs v. LinkedIn — scraping data publik adalah legal",
+    "c3_url": "https://law.justia.com/cases/federal/appellate-courts/ca9/17-16783/17-16783-2022-04-18.html", "c3_label": "Pengadilan AS",
+    "c4_text": "Panduan merek Google — penggunaan merek dagang YouTube yang diizinkan",
+    "c4_url": "https://about.youtube/brand-resources/", "c4_label": "Google"
+  },
+
+  "quick_answer": { "label": "JAWABAN CEPAT", "text": "Tag YouTube adalah kata kunci tersembunyi yang tertanam dalam kode sumber video. ytspy mengekstraknya dari video YouTube publik mana pun, menampilkan tag pesaing yang hilang, dan menilai strategi Anda — semuanya gratis, tanpa registrasi." },
+  "logic": { "label": "LOGIKA", "text": "YouTube menyematkan semua metadata video termasuk tag dalam objek JavaScript bernama ytInitialData di setiap halaman video publik — tidak memerlukan kunci API." },
+  "methodology": { "label": "METODOLOGI", "text": "ytspy menggunakan rantai ekstraksi sisi server 4 lapis dengan fallback otomatis, hanya mengembalikan JSON terstruktur ke browser." },
+  "freshness": { "today": "Diperbarui hari ini", "last_updated": "Terakhir diperbarui {{date}}" },
+
+  "footer": {
+    "brand": "ytspy",
+    "tagline": "Gratis selamanya. Tanpa iklan. Tanpa pengumpulan data.",
+    "disclaimer": "ytspy adalah alat independen. Tidak berafiliasi, didukung, atau terhubung dengan YouTube, Google LLC, atau Alphabet Inc. YouTube adalah merek dagang Google LLC.",
+    "privacy": "Kebijakan Privasi", "cookies": "Kebijakan Cookie", "terms": "Syarat Penggunaan",
+    "contact": "Kontak", "about": "Tentang", "twitter_link": "Twitter / X", "github_link": "GitHub"
+  },
+
+  "offline": { "page_title": "Offline — ytspy", "heading": "Anda sedang offline", "sub": "Ekstraksi baru memerlukan koneksi internet. Riwayat dan template tersimpan Anda tersedia di bawah.", "retry_btn": "Coba lagi", "cached_history_title": "Ekstraksi terbaru Anda", "no_history": "Belum ada ekstraksi tersimpan." },
+  "pwa": { "install_prompt": "Tambahkan ytspy ke layar beranda untuk akses instan.", "install_btn": "Pasang", "install_dismiss": "Nanti saja" },
+
+  "lang": {
+    "select": "Bahasa",
+    "en": "Inggris", "es": "Spanyol", "pt": "Portugis", "hi": "Hindi",
+    "id": "Indonesia", "fr": "Prancis", "de": "Jerman", "it": "Italia",
+    "tr": "Turki", "pl": "Polandia", "nl": "Belanda", "ru": "Rusia",
+    "ja": "Jepang", "ko": "Korea", "ar": "Arab", "he": "Ibrani",
+    "vi": "Vietnam", "tl": "Filipina", "th": "Thai", "uk": "Ukraina"
+  }
+}
