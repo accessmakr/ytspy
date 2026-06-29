@@ -107,6 +107,12 @@
   --content-width:    900px;
   --page-padding:     24px;
   --ticker-height:    28px;
+  /* Shared "something is fixed at the bottom of the viewport" spacer.
+     Web: the ticker. App: the bottom tab bar (redefined in §60).
+     body padding, toast position, and footer margin all key off THIS
+     variable rather than --ticker-height directly, so the app platform
+     gets correct spacing without duplicating those three rules. */
+  --bottom-bar-height: var(--ticker-height);
 }
 
 
@@ -135,7 +141,7 @@ body {
   line-height:     1.5;
   min-height:      100vh;
   overflow-x:      hidden;
-  padding-bottom:  var(--ticker-height);  /* room for fixed ticker */
+  padding-bottom:  var(--bottom-bar-height);  /* room for whatever's fixed at the bottom — ticker (web) or tab bar (app) */
 }
 
 img {
@@ -1960,7 +1966,7 @@ select {
 
 #toast-container {
   position:       fixed;
-  bottom:         calc(var(--ticker-height) + 16px);
+  bottom:         calc(var(--bottom-bar-height) + 16px);
   right:          20px;
   z-index:        200;
   display:        flex;
@@ -2128,7 +2134,7 @@ select {
   border-top:  1px solid var(--border-primary);
   padding:     20px var(--page-padding);
   background:  var(--bg-primary);
-  margin-bottom: var(--ticker-height);
+  margin-bottom: var(--bottom-bar-height);
 }
 
 .footer-inner {
@@ -3561,4 +3567,152 @@ button, a, input, textarea, select {
 /* Language selector wrap — positioned relative for dropdown */
 .lang-selector-wrap {
   position: relative;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   60. PLATFORM / APP-SHELL — web vs. Capacitor app
+   Driven by js/platform.js (Phase 4, not yet built), which is expected to set
+   data-platform="web" or data-platform="app" on <html> as early as possible
+   in page load — before first paint if feasible, to avoid a flash of the
+   wrong chrome (e.g. both the ticker AND the bottom tab bar visible for a
+   frame). Default state (no attribute yet, or platform.js hasn't run) shows
+   WEB chrome and hides APP-only chrome — the safer default for the actual
+   website and for anything that crawls it (search engines, link previews),
+   which never run platform.js's Capacitor.isNativePlatform() check.
+
+   EXPECTED HTML CONTRACT (for Phase 7 index.html, and Phase 4 platform.js):
+     <html data-platform="web"|"app">
+       ...
+       <div id="ticker-bar" class="web-only">...</div>          (already exists)
+       <nav class="app-bottom-nav app-only">...</nav>            (new — built here)
+   Any other element that should differ by platform gets .web-only / .app-only
+   added directly — these two classes are the general-purpose mechanism, the
+   ticker/tab-bar pair below is just the first concrete use of them.
+
+   FORWARD DEPENDENCY FLAGGED (not fixed here, deliberately — see note below):
+   .app-bottom-nav__label text content will need locale keys once Phase 7
+   wires real tab labels in (e.g. Home/History/Templates/Settings). No keys
+   exist for these yet — this is new schema surface this CSS work implies,
+   not a translation gap in already-written content. Add to en.json + lock
+   the schema addition the same day Phase 4/7 actually builds the nav labels,
+   per the §7 discipline in AUDIT_i18n_Phase3.md — do not let it sit half-done
+   the way affiliate/ticker did.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Native safe-area insets — 0 on web (env() resolves to nothing meaningful
+     outside an app webview, so the fallback is what actually applies there).
+     Real values are supplied by the OS inside the Capacitor webview. */
+  --safe-area-top:    env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left:   env(safe-area-inset-left, 0px);
+  --safe-area-right:  env(safe-area-inset-right, 0px);
+
+  --app-bottom-nav-height: 56px;
+}
+
+/* ── Default: hide app-only chrome until platform.js proves otherwise ──────── */
+.app-only { display: none; }
+
+/* ── Once platform.js has run ────────────────────────────────────────────── */
+[data-platform="app"] .web-only { display: none !important; }
+[data-platform="app"] .app-only { display: flex; }   /* most app-only chrome is flex (nav bars, toolbars) — override display per-element if a given .app-only element needs something else */
+
+[data-platform="web"] .app-only { display: none; }   /* explicit web case, same as the pre-platform-detection default — kept for clarity/symmetry */
+
+/* ── Bottom-bar height handoff (see :root §1 above) + Firefox scrollbar hiding
+     in the app webview, consolidated into one block. ───────────────────────── */
+[data-platform="app"] {
+  --bottom-bar-height: calc(var(--app-bottom-nav-height) + var(--safe-area-bottom));
+  scrollbar-width: none;
+}
+
+/* ── App bottom tab bar ──────────────────────────────────────────────────── */
+.app-bottom-nav {
+  position:        fixed;
+  bottom:           0;
+  left:             0;
+  right:            0;
+  height:           calc(var(--app-bottom-nav-height) + var(--safe-area-bottom));
+  padding-bottom:   var(--safe-area-bottom);
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-around;
+  background:       var(--bg-primary);
+  border-top:       1px solid var(--border-primary);
+  z-index:          100;   /* same layer as #ticker-bar — they never show simultaneously */
+}
+
+.app-bottom-nav__item {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  gap:             2px;
+  flex:            1;
+  height:          100%;
+  background:      transparent;
+  border:          none;
+  cursor:          pointer;
+  color:           var(--text-muted);
+  transition:      color var(--transition);
+}
+
+.app-bottom-nav__item:hover,
+.app-bottom-nav__item:focus-visible {
+  color: var(--text-secondary);
+}
+
+.app-bottom-nav__item.active {
+  color: var(--accent-red);
+}
+
+.app-bottom-nav__icon {
+  width:  22px;
+  height: 22px;
+}
+
+.app-bottom-nav__label {
+  font-size:   10px;
+  font-family: var(--font-ui);
+  letter-spacing: 0.02em;
+}
+
+/* ── App header / status-bar safe area ──────────────────────────────────── */
+/* For any fixed top header used only in the app shell (Phase 7 may or may
+   not introduce one — this rule is a no-op until something has both classes). */
+[data-platform="app"] .app-only.app-header,
+[data-platform="app"] .app-header.app-only {
+  padding-top: var(--safe-area-top);
+}
+
+/* ── Native-app feel polish (app platform only) ─────────────────────────── */
+/* Left/right safe areas for landscape / curved-edge devices, applied to the
+   outermost layout wrapper so every page benefits without per-element rules;
+   plus disabling the browser's pull-to-refresh / rubber-band overscroll glow,
+   which reads as "broken native app" rather than "web page" if left on. */
+[data-platform="app"] body {
+  padding-left:           var(--safe-area-left);
+  padding-right:          var(--safe-area-right);
+  overscroll-behavior-y:  none;
+}
+
+/* Disable iOS/Android long-press callout (copy/select/share popup) on
+   navigational chrome — but deliberately NOT on tag pills, inputs, or any
+   text the user legitimately wants to select and copy. Scoped narrowly. */
+[data-platform="app"] .app-bottom-nav,
+[data-platform="app"] nav,
+[data-platform="app"] button {
+  -webkit-touch-callout: none;
+  -webkit-user-select:   none;
+  user-select:           none;
+}
+
+/* Hide desktop-style scrollbars in the app webview — native apps don't show
+   them; leaving them visible is one of the more obvious "this is just a
+   website in a wrapper" tells. (Firefox's scrollbar-width is set on the
+   consolidated [data-platform="app"] block above.) */
+[data-platform="app"] ::-webkit-scrollbar {
+  display: none;
 }
