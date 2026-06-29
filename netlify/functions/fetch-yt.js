@@ -179,7 +179,36 @@ let   requestsSinceLastPurge = 0;
 // MAIN HANDLER
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ── Top-level exception safety net ──────────────────────────────────────────
+// Netlify Functions run on AWS Lambda — an UNHANDLED exception anywhere in
+// this file returns a raw, platform-level error response with none of
+// buildErrorResponse()'s CORS headers and none of the {success:false,error}
+// JSON shape parser.js's callApi() expects. The riskiest code in this file —
+// runExtractionChain()'s parsing of live, externally-controlled YouTube HTML
+// — has no internal try/catch of its own (only the network fetch inside it,
+// via fetchYouTubePage(), is protected). If YouTube ever changes their page
+// structure in a way that breaks a destructure/parse call, that exception
+// would previously propagate all the way out unhandled.
+//
+// This was a known, previously-flagged gap that was never actually fixed —
+// caught during the Phase 3 exhaustive re-audit. Fix: handleRequest() holds
+// the actual logic; exports.handler wraps it in one outer try/catch.
 exports.handler = async (event, context) => {
+  try {
+    return await handleRequest(event, context);
+  } catch (err) {
+    // Server-side visibility (Netlify function logs) — never sent to the client.
+    console.error('[fetch-yt] Unhandled exception:', err?.stack || err);
+    return buildErrorResponse(
+      event,
+      500,
+      'An unexpected server error occurred while processing this video. Please try again.',
+      { 'X-Error-Type': 'unhandled_exception' }
+    );
+  }
+};
+
+async function handleRequest(event, context) {
 
   // ── CORS Preflight ───────────────────────────────────────────────────────
   if (event.httpMethod === 'OPTIONS') {
@@ -267,7 +296,7 @@ exports.handler = async (event, context) => {
     'X-Video-Id':         videoId,
     'X-Extraction-Layer': String(result.extractionLayer || 0),
   });
-};
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // URL NORMALIZATION — ALL YOUTUBE URL FORMATS → 11-CHARACTER VIDEO ID
